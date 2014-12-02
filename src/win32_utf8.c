@@ -8,6 +8,30 @@
 
 #include "win32_utf8.h"
 
+const w32u8_dll_t* w32u8_get_wrapped_functions()
+{
+	// Yes, this is the prettiest way I came up with.
+	extern const w32u8_pair_t gdi32_pairs[];
+	extern const w32u8_pair_t kernel32_pairs[];
+	extern const w32u8_pair_t msvcrt_pairs[];
+	extern const w32u8_pair_t psapi_pairs[];
+	extern const w32u8_pair_t shell32_pairs[];
+	extern const w32u8_pair_t shlwapi_pairs[];
+	extern const w32u8_pair_t user32_pairs[];
+
+	static const w32u8_dll_t dlls[] = {
+		{"gdi32.dll", gdi32_pairs},
+		{"kernel32.dll", kernel32_pairs},
+		{"msvcrt.dll", msvcrt_pairs},
+		{"psapi.dll", psapi_pairs},
+		{"shell32.dll", shell32_pairs},
+		{"shlwapi.dll", shlwapi_pairs},
+		{"user32.dll", user32_pairs},
+		NULL
+	};
+	return dlls;
+}
+
 UINT fallback_codepage = CP_ACP;
 
 void w32u8_set_fallback_codepage(UINT codepage)

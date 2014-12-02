@@ -8,6 +8,11 @@
 
 #include "win32_utf8.h"
 
+const w32u8_pair_t psapi_pairs[] = {
+	{"GetModuleFileNameExA", GetModuleFileNameExU},
+	NULL
+};
+
 DWORD WINAPI GetModuleFileNameExU(
 	__in HANDLE hProcess,
 	__in_opt HMODULE hModule,

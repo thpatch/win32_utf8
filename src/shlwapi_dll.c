@@ -10,6 +10,13 @@
 #include "win32_utf8.h"
 #include "wrappers.h"
 
+const w32u8_pair_t shlwapi_pairs[] = {
+	{"PathFileExistsA", PathFileExistsU},
+	{"PathMatchSpecA", PathMatchSpecU},
+	{"PathRemoveFileSpecA", PathRemoveFileSpecU},
+	NULL
+};
+
 BOOL STDAPICALLTYPE PathFileExistsU(
 	__in LPCSTR pszPath
 )

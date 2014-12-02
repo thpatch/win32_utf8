@@ -11,6 +11,12 @@
 #include "win32_utf8.h"
 #include "wrappers.h"
 
+const w32u8_pair_t shell32_pairs[] = {
+	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
+	{"DragQueryFileA", DragQueryFileU},
+	NULL
+};
+
 // The HDROP type would be he only reason for #include <shellapi.h> here,
 // so let's declare the function ourselves to reduce header bloat.
 SHSTDAPI_(UINT) DragQueryFileW(

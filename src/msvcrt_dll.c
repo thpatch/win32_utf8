@@ -8,6 +8,11 @@
 
 #include "win32_utf8.h"
 
+const w32u8_pair_t msvcrt_pairs[] = {
+	{"fopen", fopen_u},
+	NULL
+};
+
 // Yes, this should better be implemented as a wrapper around fopen_s() (and
 // thus, _wfopen_s()), but XP's msvcrt.dll doesn't have that function.
 _Check_return_ FILE * __cdecl fopen_u(

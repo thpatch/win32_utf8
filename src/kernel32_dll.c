@@ -9,6 +9,34 @@
 #include "win32_utf8.h"
 #include "wrappers.h"
 
+const w32u8_pair_t kernel32_pairs[] = {
+	{"CreateDirectoryA", CreateDirectoryU},
+	{"CreateFileA", CreateFileU},
+	{"CreateProcessA", CreateProcessU},
+	{"DeleteFileA", DeleteFileU},
+	{"FindFirstFileA", FindFirstFileU},
+	{"FindNextFileA", FindNextFileU},
+	{"FormatMessageA", FormatMessageU},
+	{"GetCurrentDirectoryA", GetCurrentDirectoryU},
+	{"GetEnvironmentVariableA", GetEnvironmentVariableU},
+	{"GetFileAttributesA", GetFileAttributesU},
+	{"GetFileAttributesExA", GetFileAttributesExU},
+	{"GetModuleFileNameA", GetModuleFileNameU},
+	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
+	{"GetStartupInfoA", GetStartupInfoU},
+	{"GetTempPathA", GetTempPathU},
+	{"IsDBCSLeadByte", IsDBCSLeadByteFB},
+	{"LoadLibraryA", LoadLibraryU},
+	{"MoveFileA", MoveFileU},
+	{"MoveFileExA", MoveFileExU},
+	{"MoveFileWithProgressA", MoveFileWithProgressU},
+	{"MultiByteToWideChar", MultiByteToWideCharU},
+	{"RemoveDirectoryA", RemoveDirectoryU},
+	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
+	{"WideCharToMultiByte", WideCharToMultiByteU},
+	NULL
+};
+
 // GetStartupInfo
 // --------------
 static char *startupinfo_desktop = NULL;

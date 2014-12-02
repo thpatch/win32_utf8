@@ -8,6 +8,16 @@
 
 #include "win32_utf8.h"
 
+const w32u8_pair_t gdi32_pairs[] = {
+	{"CreateFontA", CreateFontU},
+	{"CreateFontIndirectA", CreateFontIndirectU},
+	{"CreateFontIndirectExA", CreateFontIndirectExU},
+	{"EnumFontFamiliesExA", EnumFontFamiliesExU},
+	{"GetTextExtentPoint32A", GetTextExtentPoint32U},
+	{"TextOutA", TextOutU},
+	NULL
+};
+
 /// Font conversion helpers
 /// -----------------------
 static LOGFONTA* LogfontWToA(LOGFONTA *a, const LOGFONTW *w)

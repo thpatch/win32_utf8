@@ -8,6 +8,31 @@
 
 #include "win32_utf8.h"
 
+// Some of the message-related functions here link straight to their W
+// counterparts. In these cases, both the A and W functions use the same
+// parameters, but since we only ever create Unicode windows, we also have
+// to ensure that Unicode is used on the entire message path.
+const w32u8_pair_t user32_pairs[] = {
+	{"CharNextA", CharNextU},
+	{"CreateDialogParamA", CreateDialogParamU},
+	{"CreateWindowExA", CreateWindowExU},
+	{"DefWindowProcA", DefWindowProcW},
+	{"DialogBoxParamA", DialogBoxParamU},
+	{"DrawTextA", DrawTextU},
+	{"GetWindowLongA", GetWindowLongW},
+	{"GetWindowLongPtrA", GetWindowLongPtrW},
+	{"InsertMenuItemA", InsertMenuItemU},
+	{"LoadStringA", LoadStringU},
+	{"MessageBoxA", MessageBoxU},
+	{"RegisterClassA", RegisterClassU},
+	{"RegisterClassExA", RegisterClassExU},
+	{"SetDlgItemTextA", SetDlgItemTextU},
+	{"SetWindowLongA", SetWindowLongW},
+	{"SetWindowLongPtrA", SetWindowLongPtrW},
+	{"SetWindowTextA", SetWindowTextU},
+	NULL
+};
+
 LPSTR WINAPI CharNextU(
 	__in LPSTR lpsz
 )
