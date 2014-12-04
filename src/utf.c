@@ -36,6 +36,22 @@ int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len)
 	return WideCharToMultiByte(CP_UTF8, 0, str_w, -1, str_utf8, str_utf8_len, NULL, NULL);
 }
 
+int StringToMBFixed(char *str_mb, const wchar_t *str_w, int str_mb_len, int str_w_len)
+{
+	BOOL invalid = FALSE;
+	extern UINT fallback_codepage;
+	int ret = WideCharToMultiByte(
+		fallback_codepage, WC_NO_BEST_FIT_CHARS,
+		str_w, str_w_len, str_mb, str_mb_len, NULL, &invalid
+	);
+	if(!ret || invalid) {
+		ret = WideCharToMultiByte(
+			CP_UTF8, 0, str_w, str_w_len, str_mb, str_mb_len, NULL, NULL
+		);
+	}
+	return ret;
+}
+
 char* EnsureUTF8(const char *str, int str_len)
 {
 	char *str_utf8 = NULL;

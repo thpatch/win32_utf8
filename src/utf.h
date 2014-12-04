@@ -32,6 +32,12 @@ wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len);
 // [str_utf8_len] takes the size of [str_utf8] in bytes.
 int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len);
 
+// Converts the fixed-length string [str_w] to the fallback codepage or, if
+// that conversion failed, to UTF-8. Useful in cases where applications
+// concatenate strings returned from Windows functions with hardcoded strings
+// in the application's native encoding.
+int StringToMBFixed(char *str_mb, const wchar_t *str_w, int str_mb_len, int str_w_len);
+
 // Returns [str] in UTF-8.
 // Return value has to be free()d by the caller!
 char* EnsureUTF8(const char *str, int str_len);

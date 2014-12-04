@@ -206,9 +206,8 @@ int WINAPI LoadStringU(
 				((LPCWSTR)str_res) + str_res->Length + 1
 			);
 		}
-		ret = WideCharToMultiByte(
-			CP_UTF8, 0, str_res->NameString, str_res->Length,
-			lpBuffer, cchBufferMax, NULL, NULL
+		ret = StringToMBFixed(
+			lpBuffer, str_res->NameString, cchBufferMax, str_res->Length
 		);
 		lpBuffer[ret] = 0;
 	}

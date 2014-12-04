@@ -8,6 +8,7 @@ EXPORTS
 	StringToUTF16
 	StringToUTF16_VLA
 	StringToUTF8
+	StringToMBFixed
 	EnsureUTF8
 
 	; gdi32.dll
