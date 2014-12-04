@@ -8,7 +8,7 @@
 
 #pragma once
 
-UINT DragQueryFileU(
+UINT WINAPI DragQueryFileU(
 	__in HANDLE hDrop,
 	__in UINT iFile,
 	__out_ecount_opt(cch) LPSTR lpszFile,
@@ -17,7 +17,7 @@ UINT DragQueryFileU(
 #undef DragQueryFile
 #define DragQueryFile DragQueryFileU
 
-BOOL SHGetPathFromIDListU(
+BOOL WINAPI SHGetPathFromIDListU(
 	__in PCIDLIST_ABSOLUTE pidl,
 	__out_ecount(MAX_PATH) LPSTR pszPath
 );
