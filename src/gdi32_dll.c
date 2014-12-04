@@ -32,8 +32,15 @@ static LOGFONTA* LogfontWToA(LOGFONTA *a, const LOGFONTW *w)
 static LOGFONTW* LogfontAToW(LOGFONTW *w, const LOGFONTA *a)
 {
 	if(a) {
+		// Limit the number of converted bytes to the actual length of
+		// the face name, as any garbage past the 0 byte would cause
+		// MultiByteToWideChar() with MB_ERR_INVALID_CHARS to fail.
+		// This should maybe be done in StringToUTF16(), but I'm not
+		// sure whether that would break something else...
+		// (Fixes udm Self Extract Updater.)
+		int facename_len = strnlen(a->lfFaceName, LF_FACESIZE) + 1;
 		memcpy(w, a, offsetof(LOGFONT, lfFaceName));
-		StringToUTF16(w->lfFaceName, a->lfFaceName, LF_FACESIZE);
+		StringToUTF16(w->lfFaceName, a->lfFaceName, facename_len);
 	}
 	return a ? w : NULL;
 }
