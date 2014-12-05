@@ -17,6 +17,18 @@ UINT WINAPI DragQueryFileU(
 #undef DragQueryFile
 #define DragQueryFile DragQueryFileU
 
+PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
+	__in LPBROWSEINFOA lpbi
+);
+#undef SHBrowseForFolder
+#define SHBrowseForFolder SHBrowseForFolderU
+#undef BROWSEINFO
+#undef PBROWSEINFO
+#undef LPBROWSEINFO
+#define BROWSEINFO BROWSEINFOA
+#define PBROWSEINFO PBROWSEINFOA
+#define LPBROWSEINFO LPBROWSEINFOA
+
 BOOL WINAPI SHGetPathFromIDListU(
 	__in PCIDLIST_ABSOLUTE pidl,
 	__out_ecount(MAX_PATH) LPSTR pszPath

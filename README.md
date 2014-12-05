@@ -16,6 +16,10 @@ In addition, this library also adds new useful functionality to some original Wi
 * `CreateDirectoryU()` works recursively - the function creates all necessary directories to form the given path.
 * `GetModuleFileNameU()` returns the necessary length of a buffer to hold the module file name if NULL is passed for `nSize` or `lpFilename`, similar to what `GetCurrentDirectory()` can do by default.
 
+###### shell32.dll ######
+
+* `SHBrowseForFolderU()` always displays an edit box and shows a resizable window if the active thread's COM settings allow it.
+
 ###### shlwapi.dll ######
 
 * `PathRemoveFileSpecU()` correctly works as intended for paths containing forward slashes
