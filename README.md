@@ -23,3 +23,6 @@ In addition, this library also adds new useful functionality to some original Wi
 ###### shlwapi.dll ######
 
 * `PathRemoveFileSpecU()` correctly works as intended for paths containing forward slashes
+
+### Building ###
+A project file for Visual C++ is provided. The default configuration requires the Visual Studio 2013 platform toolset with Windows XP targeting support, but the project should generally build under every version since Visual C++ 2010 Express after changing the platform toolset (*Project → Properties → General → Platform Toolset*) to a supported option.
