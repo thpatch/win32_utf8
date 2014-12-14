@@ -78,7 +78,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>psapi.lib;shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;shlwapi.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>win32_utf8.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
@@ -98,6 +98,7 @@
     <ClInclude Include="src\user32_dll.h" />
     <ClInclude Include="src\utf.h" />
     <ClInclude Include="src\win32_utf8.h" />
+    <ClInclude Include="src\wininet_dll.h" />
     <ClInclude Include="src\wrappers.h" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +111,7 @@
     <ClCompile Include="src\user32_dll.c" />
     <ClCompile Include="src\utf.c" />
     <ClCompile Include="src\win32_utf8.c" />
+    <ClCompile Include="src\wininet_dll.c" />
     <ClCompile Include="src\wrappers.c" />
   </ItemGroup>
   <ItemGroup>

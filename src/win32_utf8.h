@@ -15,6 +15,7 @@
 #include <ShlObj.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <WinInet.h>
 
 #include "macros.h"
 #include "utf.h"
@@ -26,6 +27,7 @@
 #include "shell32_dll.h"
 #include "shlwapi_dll.h"
 #include "user32_dll.h"
+#include "wininet_dll.h"
 
 typedef struct {
 	// Name of the original ANSI function (e.g. "CreateFileA")

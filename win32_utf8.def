@@ -84,3 +84,9 @@ EXPORTS
 	RegisterClassExU
 	SetDlgItemTextU
 	SetWindowTextU
+
+	; wininet.dll
+	; -----------
+	InternetCombineUrlU
+	InternetCrackUrlU
+	InternetOpenUrlU
