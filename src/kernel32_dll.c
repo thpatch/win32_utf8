@@ -34,6 +34,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"RemoveDirectoryA", RemoveDirectoryU},
 	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
 	{"WideCharToMultiByte", WideCharToMultiByteU},
+	{"WritePrivateProfileStringA", WritePrivateProfileStringU},
 	NULL
 };
 
@@ -41,6 +42,80 @@ const w32u8_pair_t kernel32_pairs[] = {
 // --------------
 static char *startupinfo_desktop = NULL;
 static char *startupinfo_title = NULL;
+// --------------
+
+// INI conversion
+// --------------
+static BOOL EnsurePrivateProfileUTF16(__in LPCWSTR fn)
+{
+	// These are all supported encodings, at least according to Wine.
+	const BYTE BOM_UTF16_LE[] = {0xFF, 0xFE};
+	const BYTE BOM_UTF16_BE[] = {0xFE, 0xFF};
+	const BYTE BOM_UTF8[] = {0xEF, 0xBB, 0xBF};
+
+	BOOL ret = 0;
+	DWORD byte_ret;
+	LARGE_INTEGER file_size;
+	HANDLE hHeap = GetProcessHeap();
+	size_t cont_a_len;
+	size_t cont_w_len;
+	LPSTR cont_a = NULL;
+	LPWSTR cont_w = NULL;
+	HANDLE hFile = CreateFileW(
+		fn, GENERIC_READ | GENERIC_WRITE, 0, NULL,
+		OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL
+	);
+	if(hFile == INVALID_HANDLE_VALUE) {
+		return 0;
+	}
+	if(
+		GetFileSizeEx(hFile, &file_size)
+		&& file_size.QuadPart > sizeof(BOM_UTF8)
+	) {
+		BYTE file_bom[3];
+		cont_a_len = (size_t)file_size.QuadPart;
+		if(!ReadFile(hFile, file_bom, sizeof(file_bom), &byte_ret, NULL)) {
+			goto end;
+		}
+		// Nothing to do if we're UTF-16, but seek back if we're ANSI
+		if(
+			!memcmp(file_bom, BOM_UTF16_LE, sizeof(BOM_UTF16_LE))
+			|| !memcmp(file_bom, BOM_UTF16_BE, sizeof(BOM_UTF16_BE))
+		) {
+			ret = 1;
+			goto end;
+		} else if(!memcmp(file_bom, BOM_UTF8, sizeof(BOM_UTF8))) {
+			cont_a_len -= sizeof(BOM_UTF8);
+		} else {
+			SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+		}
+		// OK, we have to do a full file conversion
+		cont_a = HeapAlloc(hHeap, 0, cont_a_len * sizeof(char));
+		cont_w = HeapAlloc(hHeap, 0, cont_a_len * sizeof(wchar_t));
+		if(!cont_a || !cont_w) {
+			goto end;
+		}
+		if(!ReadFile(hFile, cont_a, cont_a_len, &byte_ret, NULL)) {
+			goto end;
+		}
+		cont_w_len = StringToUTF16(cont_w, cont_a, cont_a_len);
+	}
+	SetFilePointer(hFile, 0, NULL, FILE_BEGIN);
+	WriteFile(hFile, BOM_UTF16_LE, sizeof(BOM_UTF16_LE), &byte_ret, NULL);
+	if(cont_w && cont_w_len) {
+		WriteFile(hFile, cont_w, cont_w_len * sizeof(wchar_t), &byte_ret, NULL);
+	}
+	SetEndOfFile(hFile);
+end:
+	if(cont_a) {
+		HeapFree(hHeap, 0, cont_a);
+	}
+	if(cont_w) {
+		HeapFree(hHeap, 0, cont_w);
+	}
+	CloseHandle(hFile);
+	return ret;
+}
 // --------------
 
 BOOL WINAPI CreateDirectoryU(
@@ -510,6 +585,27 @@ int WINAPI WideCharToMultiByteU(
 		CP_UTF8, 0, lpWideCharStr, cchWideChar,
 		lpMultiByteStr, cbMultiByte, NULL, NULL
 	);
+}
+
+BOOL WINAPI WritePrivateProfileStringU(
+	__in_opt LPCSTR lpAppName,
+	__in_opt LPCSTR lpKeyName,
+	__in_opt LPCSTR lpString,
+	__in_opt LPCSTR lpFileName
+)
+{
+	BOOL ret;
+	INI_MACRO_EXPAND(WCHAR_T_DEC);
+	WCHAR_T_DEC(lpString);
+	INI_MACRO_EXPAND(WCHAR_T_CONV);
+	WCHAR_T_CONV(lpString);
+	EnsurePrivateProfileUTF16(lpFileName_w);
+	ret = WritePrivateProfileStringW(
+		lpAppName_w, lpKeyName_w, lpString_w, lpFileName_w
+	);
+	INI_MACRO_EXPAND(WCHAR_T_FREE);
+	WCHAR_T_CONV(lpString);
+	return ret;
 }
 
 // Patcher functions

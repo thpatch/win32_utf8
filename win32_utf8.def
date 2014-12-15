@@ -49,6 +49,7 @@ EXPORTS
 	RemoveDirectoryU
 	SetCurrentDirectoryU
 	WideCharToMultiByteU
+	WritePrivateProfileStringU
 
 	; msvcrt.dll
 	; ----------

@@ -204,6 +204,15 @@ int WINAPI WideCharToMultiByteU(
 	__out_opt LPBOOL lpUsedDefaultChar
 );
 
+BOOL WINAPI WritePrivateProfileStringU(
+	__in_opt LPCSTR lpAppName,
+	__in_opt LPCSTR lpKeyName,
+	__in_opt LPCSTR lpString,
+	__in_opt LPCSTR lpFileName
+);
+#undef WritePrivateProfileString
+#define WritePrivateProfileString WritePrivateProfileStringU
+
 // Patchers
 int kernel32_init(HMODULE hMod);
 void kernel32_exit(void);
