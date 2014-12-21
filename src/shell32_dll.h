@@ -17,6 +17,24 @@ UINT WINAPI DragQueryFileU(
 #undef DragQueryFile
 #define DragQueryFile DragQueryFileU
 
+HICON WINAPI ExtractIconU(
+	__reserved HINSTANCE hInst,
+	__in LPCSTR lpszExeFileName,
+	__in UINT nIconIndex
+);
+#undef ExtractIcon
+#define ExtractIcon ExtractIconU
+
+UINT WINAPI ExtractIconExU(
+	LPCSTR lpszFile,
+	int nIconIndex,
+	__out_ecount_opt(nIcons) HICON *phiconLarge,
+	__out_ecount_opt(nIcons) HICON *phiconSmall,
+	UINT nIcons
+);
+#undef ExtractIconEx
+#define ExtractIconEx ExtractIconExU
+
 PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 	__in LPBROWSEINFOA lpbi
 );

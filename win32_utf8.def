@@ -62,6 +62,8 @@ EXPORTS
 	; shell32.dll
 	; -----------
 	DragQueryFileU
+	ExtractIconU
+	ExtractIconExU
 	SHBrowseForFolderU
 	SHGetPathFromIDListU
 

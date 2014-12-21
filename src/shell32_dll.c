@@ -13,6 +13,8 @@
 
 const w32u8_pair_t shell32_pairs[] = {
 	{"DragQueryFileA", DragQueryFileU},
+	{"ExtractIconA", ExtractIconU},
+	{"ExtractIconExA", ExtractIconExU},
 	{"SHBrowseForFolderA", SHBrowseForFolderU},
 	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
 	NULL
@@ -52,6 +54,38 @@ UINT WINAPI DragQueryFileU(
 		}
 	}
 	VLA_FREE(lpszFile_w);
+	return ret;
+}
+
+HICON WINAPI ExtractIconU(
+	__reserved HINSTANCE hInst,
+	__in LPCSTR lpszExeFileName,
+	__in UINT nIconIndex
+)
+{
+	HICON ret;
+	WCHAR_T_DEC(lpszExeFileName);
+	WCHAR_T_CONV_VLA(lpszExeFileName);
+	ret = ExtractIconW(hInst, lpszExeFileName_w, nIconIndex);
+	WCHAR_T_FREE(lpszExeFileName);
+	return ret;
+}
+
+UINT WINAPI ExtractIconExU(
+	LPCSTR lpszFile,
+	int nIconIndex,
+	__out_ecount_opt(nIcons) HICON *phiconLarge,
+	__out_ecount_opt(nIcons) HICON *phiconSmall,
+	UINT nIcons
+)
+{
+	UINT ret;
+	WCHAR_T_DEC(lpszFile);
+	WCHAR_T_CONV_VLA(lpszFile);
+	ret = ExtractIconExW(
+		lpszFile_w, nIconIndex, phiconLarge, phiconSmall, nIcons
+	);
+	WCHAR_T_FREE(lpszFile);
 	return ret;
 }
 
