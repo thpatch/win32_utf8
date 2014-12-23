@@ -20,6 +20,7 @@ EXPORTS
 	CreateFontIndirectU
 	CreateFontIndirectExU
 	EnumFontFamiliesExU
+	GetGlyphOutlineU
 	GetTextExtentPoint32U
 	TextOutU
 
