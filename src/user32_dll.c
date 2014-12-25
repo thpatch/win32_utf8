@@ -30,6 +30,7 @@ const w32u8_pair_t user32_pairs[] = {
 	{"SetWindowLongA", SetWindowLongW},
 	{"SetWindowLongPtrA", SetWindowLongPtrW},
 	{"SetWindowTextA", SetWindowTextU},
+	{"UnregisterClassA", UnregisterClassU},
 	NULL
 };
 
@@ -306,5 +307,18 @@ BOOL WINAPI SetWindowTextU(
 	WCHAR_T_CONV_VLA(lpString);
 	ret = SetWindowTextW(hWnd, lpString_w);
 	VLA_FREE(lpString_w);
+	return ret;
+}
+
+BOOL WINAPI UnregisterClassU(
+	__in LPCSTR lpClassName,
+	__in_opt HINSTANCE hInstance
+)
+{
+	BOOL ret;
+	WCHAR_T_DEC(lpClassName);
+	WCHAR_T_CONV_VLA(lpClassName);
+	ret = UnregisterClassW(lpClassName_w, hInstance);
+	WCHAR_T_FREE(lpClassName);
 	return ret;
 }

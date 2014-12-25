@@ -131,3 +131,10 @@ BOOL WINAPI SetWindowTextU(
 );
 #undef SetWindowText
 #define SetWindowText SetWindowTextU
+
+BOOL WINAPI UnregisterClassU(
+	__in LPCSTR lpClassName,
+	__in_opt HINSTANCE hInstance
+);
+#undef UnregisterClass
+#define UnregisterClass UnregisterClassU
