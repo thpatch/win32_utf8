@@ -34,6 +34,41 @@ const w32u8_pair_t user32_pairs[] = {
 	NULL
 };
 
+/// Structure conversions
+/// ---------------------
+// Needs to be a macro because these members unfortunately have different
+// offsets in WNDCLASS and WNDCLASSEX. Also, no reason to cast the individual
+// W and A types to the common WNDCLASS(EX) just to calm down the compiler.
+#define WndclassCopyBase(wc_dst, wc_src) \
+	(wc_dst)->style = (wc_src)->style; \
+	(wc_dst)->lpfnWndProc = (wc_src)->lpfnWndProc; \
+	(wc_dst)->cbClsExtra = (wc_src)->cbClsExtra; \
+	(wc_dst)->cbWndExtra = (wc_src)->cbWndExtra; \
+	(wc_dst)->hInstance = (wc_src)->hInstance; \
+	(wc_dst)->hIcon = (wc_src)->hIcon; \
+	(wc_dst)->hCursor = (wc_src)->hCursor; \
+	(wc_dst)->hbrBackground = (wc_src)->hbrBackground;
+
+#define WndclassExCopyBase(wc_dst, wc_src) \
+	(wc_dst)->cbSize = (wc_src)->cbSize; \
+	(wc_dst)->hIconSm = (wc_src)->hIconSm;
+
+#define WndclassAToW(w, a) \
+	size_t lpszClassName_len = strlen((a)->lpszClassName) + 1; \
+	size_t lpszMenuName_len = strlen((a)->lpszMenuName) + 1; \
+	VLA(wchar_t, lpszClassName_w, lpszClassName_len); \
+	VLA(wchar_t, lpszMenuName_w, lpszMenuName_len); \
+	lpszClassName_w = StringToUTF16_VLA(lpszClassName_w, (a)->lpszClassName, lpszClassName_len); \
+	lpszMenuName_w = StringToUTF16_VLA(lpszMenuName_w, (a)->lpszMenuName, lpszMenuName_len); \
+	(w)->lpszClassName = lpszClassName_w; \
+	(w)->lpszMenuName = lpszMenuName_w; \
+	WndclassCopyBase((w), (a))
+
+#define WndclassWClean() \
+	VLA_FREE(lpszClassName_w); \
+	VLA_FREE(lpszMenuName_w)
+/// ---------------------
+
 LPSTR WINAPI CharNextU(
 	__in LPSTR lpsz
 )
@@ -233,39 +268,15 @@ int WINAPI MessageBoxU(
 	return ret;
 }
 
-#define RegisterClassBaseConvert(wcNew, lpwcOld) \
-	size_t lpszClassName_len = strlen(lpwcOld->lpszClassName) + 1; \
-	size_t lpszMenuName_len = strlen(lpwcOld->lpszMenuName) + 1; \
-	VLA(wchar_t, lpszClassName_w, lpszClassName_len); \
-	VLA(wchar_t, lpszMenuName_w, lpszMenuName_len); \
-	\
-	lpszClassName_w = StringToUTF16_VLA(lpszClassName_w, lpwcOld->lpszClassName, lpszClassName_len); \
-	lpszMenuName_w = StringToUTF16_VLA(lpszMenuName_w, lpwcOld->lpszMenuName, lpszMenuName_len); \
-	\
-	wcNew.style = lpwcOld->style; \
-	wcNew.lpfnWndProc = lpwcOld->lpfnWndProc; \
-	wcNew.cbClsExtra = lpwcOld->cbClsExtra; \
-	wcNew.cbWndExtra = lpwcOld->cbWndExtra; \
-	wcNew.hInstance = lpwcOld->hInstance; \
-	wcNew.hIcon = lpwcOld->hIcon; \
-	wcNew.hCursor = lpwcOld->hCursor; \
-	wcNew.hbrBackground = lpwcOld->hbrBackground; \
-	wcNew.lpszClassName = lpszClassName_w; \
-	wcNew.lpszMenuName = lpszMenuName_w;
-
-#define RegisterClassBaseClean() \
-	VLA_FREE(lpszClassName_w); \
-	VLA_FREE(lpszMenuName_w)
-
 ATOM WINAPI RegisterClassU(
 	__in CONST WNDCLASSA *lpWndClass
 )
 {
 	ATOM ret;
 	WNDCLASSW WndClassW;
-	RegisterClassBaseConvert(WndClassW, lpWndClass);
+	WndclassAToW(&WndClassW, lpWndClass);
 	ret = RegisterClassW(&WndClassW);
-	RegisterClassBaseClean();
+	WndclassWClean();
 	return ret;
 }
 
@@ -275,11 +286,10 @@ ATOM WINAPI RegisterClassExU(
 {
 	ATOM ret;
 	WNDCLASSEXW WndClassW;
-	RegisterClassBaseConvert(WndClassW, lpWndClass);
-	WndClassW.cbSize = lpWndClass->cbSize;
-	WndClassW.hIconSm = lpWndClass->hIconSm;
+	WndclassAToW(&WndClassW, lpWndClass);
+	WndclassExCopyBase(&WndClassW, lpWndClass);
 	ret = RegisterClassExW(&WndClassW);
-	RegisterClassBaseClean();
+	WndclassWClean();
 	return ret;
 }
 
