@@ -78,6 +78,19 @@ int WINAPI EnumFontFamiliesExU(
 #undef EnumFontFamiliesEx
 #define EnumFontFamiliesEx EnumFontFamiliesExU
 
+BOOL WINAPI ExtTextOutU(
+	__in HDC hdc,
+	__in int x,
+	__in int y,
+	__in UINT options,
+	__in_opt CONST RECT * lprect,
+	__in_ecount_opt(c) LPCSTR lpString,
+	__in UINT c,
+	__in_ecount_opt(c) CONST INT * lpDx
+);
+#undef ExtTextOut
+#define ExtTextOut ExtTextOutU
+
 DWORD WINAPI GetGlyphOutlineU(
 	__in HDC hdc,
 	__in UINT uChar,

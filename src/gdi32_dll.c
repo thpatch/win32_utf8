@@ -13,6 +13,7 @@ const w32u8_pair_t gdi32_pairs[] = {
 	{"CreateFontIndirectA", CreateFontIndirectU},
 	{"CreateFontIndirectExA", CreateFontIndirectExU},
 	{"EnumFontFamiliesExA", EnumFontFamiliesExU},
+	{"ExtTextOutA", ExtTextOutU},
 	{"GetGlyphOutlineA", GetGlyphOutlineU},
 	{"GetTextExtentPoint32A", GetTextExtentPoint32U},
 	{"TextOutA", TextOutU},
@@ -241,6 +242,24 @@ int WINAPI EnumFontFamiliesExU(
 	);
 }
 
+BOOL WINAPI ExtTextOutU(
+	__in HDC hdc,
+	__in int x,
+	__in int y,
+	__in UINT options,
+	__in_opt CONST RECT * lprect,
+	__in_ecount_opt(c) LPCSTR lpString,
+	__in UINT c,
+	__in_ecount_opt(c) CONST INT * lpDx
+)
+{
+	BOOL ret;
+	FixedLengthStringConvert(lpString, c);
+	ret = ExtTextOutW(hdc, x, y, options, lprect, lpString_w, wcslen(lpString_w), lpDx);
+	WCHAR_T_FREE(lpString);
+	return ret;
+}
+
 DWORD WINAPI GetGlyphOutlineU(
 	__in HDC hdc,
 	__in UINT uChar,
@@ -322,9 +341,5 @@ BOOL WINAPI TextOutU(
 	__in int c
 )
 {
-	BOOL ret;
-	FixedLengthStringConvert(lpString, c);
-	ret = TextOutW(hdc, x, y, lpString_w, wcslen(lpString_w));
-	WCHAR_T_FREE(lpString);
-	return ret;
+	return ExtTextOutU(hdc, x, y, 0, NULL, lpString, c, NULL);
 }

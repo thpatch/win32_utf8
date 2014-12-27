@@ -132,6 +132,19 @@ BOOL WINAPI SetWindowTextU(
 #undef SetWindowText
 #define SetWindowText SetWindowTextU
 
+LONG WINAPI TabbedTextOutU(
+	__in HDC hdc,
+	__in int x,
+	__in int y,
+	__in_ecount(chCount) LPCSTR lpString,
+	__in int chCount,
+	__in int nTabPositions,
+	__in_ecount_opt(nTabPositions) CONST INT *lpnTabStopPositions,
+	__in int nTabOrigin
+);
+#undef TabbedTextOut
+#define TabbedTextOut TabbedTextOutU
+
 BOOL WINAPI UnregisterClassU(
 	__in LPCSTR lpClassName,
 	__in_opt HINSTANCE hInstance

@@ -30,6 +30,7 @@ const w32u8_pair_t user32_pairs[] = {
 	{"SetWindowLongA", SetWindowLongW},
 	{"SetWindowLongPtrA", SetWindowLongPtrW},
 	{"SetWindowTextA", SetWindowTextU},
+	{"TabbedTextOutA", TabbedTextOutU},
 	{"UnregisterClassA", UnregisterClassU},
 	NULL
 };
@@ -317,6 +318,27 @@ BOOL WINAPI SetWindowTextU(
 	WCHAR_T_CONV_VLA(lpString);
 	ret = SetWindowTextW(hWnd, lpString_w);
 	VLA_FREE(lpString_w);
+	return ret;
+}
+
+LONG WINAPI TabbedTextOutU(
+	__in HDC hdc,
+	__in int x,
+	__in int y,
+	__in_ecount(chCount) LPCSTR lpString,
+	__in int chCount,
+	__in int nTabPositions,
+	__in_ecount_opt(nTabPositions) CONST INT *lpnTabStopPositions,
+	__in int nTabOrigin
+)
+{
+	BOOL ret;
+	FixedLengthStringConvert(lpString, chCount);
+	ret = TabbedTextOutW(
+		hdc, x, y, lpString_w, wcslen(lpString_w),
+		nTabPositions, lpnTabStopPositions, nTabOrigin
+	);
+	WCHAR_T_FREE(lpString);
 	return ret;
 }
 

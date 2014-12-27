@@ -20,6 +20,7 @@ EXPORTS
 	CreateFontIndirectU
 	CreateFontIndirectExU
 	EnumFontFamiliesExU
+	ExtTextOutU
 	GetGlyphOutlineU
 	GetTextExtentPoint32U
 	TextOutU
@@ -88,6 +89,7 @@ EXPORTS
 	RegisterClassExU
 	SetDlgItemTextU
 	SetWindowTextU
+	TabbedTextOutU
 	UnregisterClassU
 
 	; wininet.dll
