@@ -82,6 +82,22 @@ BOOL WINAPI InsertMenuItemU(
 #define GetWindowLong GetWindowLongW
 #define GetWindowLongPtr GetWindowLongPtrW
 
+BOOL WINAPI GetClassInfoU(
+	__in_opt HINSTANCE hInstance,
+	__in LPCSTR lpClassName,
+	__out LPWNDCLASSA lpWndClass
+);
+#undef GetClassInfo
+#define GetClassInfo GetClassInfoU
+
+BOOL WINAPI GetClassInfoExU(
+	__in_opt HINSTANCE hInstance,
+	__in LPCSTR lpszClass,
+	__out LPWNDCLASSEXA lpwcx
+);
+#undef GetClassInfoEx
+#define GetClassInfoEx GetClassInfoExU
+
 int WINAPI LoadStringU(
 	__in_opt HINSTANCE hInstance,
 	__in UINT uID,

@@ -19,6 +19,8 @@ const w32u8_pair_t user32_pairs[] = {
 	{"DefWindowProcA", DefWindowProcW},
 	{"DialogBoxParamA", DialogBoxParamU},
 	{"DrawTextA", DrawTextU},
+	{"GetClassInfoA", GetClassInfoU},
+	{"GetClassInfoExA", GetClassInfoExU},
 	{"GetWindowLongA", GetWindowLongW},
 	{"GetWindowLongPtrA", GetWindowLongPtrW},
 	{"InsertMenuItemA", InsertMenuItemU},
@@ -176,6 +178,41 @@ int WINAPI DrawTextU(
 	FixedLengthStringConvert(lpchText, cchText);
 	ret = DrawTextW(hdc, lpchText_w, wcslen(lpchText_w) + 1, lprc, format);
 	VLA_FREE(lpchText_w);
+	return ret;
+}
+
+BOOL WINAPI GetClassInfoU(
+	__in_opt HINSTANCE hInstance,
+	__in LPCSTR lpClassName,
+	__out LPWNDCLASSA wc
+)
+{
+	WNDCLASSEXA wcex;
+	BOOL ret = GetClassInfoExU(hInstance, lpClassName, &wcex);
+	if(ret) {
+		WndclassCopyBase(wc, &wcex);
+		wc->lpszClassName = lpClassName;
+	}
+	return ret;
+}
+
+BOOL WINAPI GetClassInfoExU(
+	__in_opt HINSTANCE hInstance,
+	__in LPCSTR lpClassName,
+	__out LPWNDCLASSEXA wcex_a
+)
+{
+	BOOL ret;
+	WNDCLASSEXW wcex_w = {sizeof(WNDCLASSEXW), 0};
+	WCHAR_T_DEC(lpClassName);
+	WCHAR_T_CONV_VLA(lpClassName);
+	ret = GetClassInfoExW(hInstance, lpClassName_w, &wcex_w);
+	if(ret) {
+		WndclassCopyBase(wcex_a, &wcex_w);
+		WndclassExCopyBase(wcex_a, &wcex_w);
+		wcex_a->lpszClassName = lpClassName;
+	}
+	WCHAR_T_FREE(lpClassName);
 	return ret;
 }
 
