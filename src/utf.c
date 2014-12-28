@@ -25,10 +25,9 @@ wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len)
 {
 	if(str_mb) {
 		StringToUTF16(str_w, str_mb, str_len);
-	} else {
-		VLA_FREE(str_w);
+		return str_w;
 	}
-	return str_w;
+	return NULL;
 }
 
 int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len)

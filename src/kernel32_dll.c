@@ -192,18 +192,20 @@ BOOL WINAPI CreateProcessU(
 	WCHAR_T_CONV_VLA(lpCurrentDirectory);
 
 	if(lpSI) {
-		size_t si_lpDesktop_len = strlen(lpSI->lpDesktop) + 1;
-		VLA(wchar_t, si_lpDesktopW, si_lpDesktop_len);
-		size_t si_lpTitle_len = strlen(lpSI->lpTitle) + 1;
-		VLA(wchar_t, si_lpTitleW, si_lpTitle_len);
-
 		// At least the structure sizes are identical here
 		memcpy(&lpSI_w, lpSI, sizeof(STARTUPINFOW));
-		si_lpDesktopW = StringToUTF16_VLA(si_lpDesktopW, lpSI->lpDesktop, si_lpDesktop_len);
-		si_lpTitleW = StringToUTF16_VLA(si_lpTitleW, lpSI->lpTitle, si_lpTitle_len);
-
-		lpSI_w.lpDesktop = si_lpDesktopW;
-		lpSI_w.lpTitle = si_lpTitleW;
+		if(lpSI->lpDesktop) {
+			size_t si_lpDesktop_len = strlen(lpSI->lpDesktop) + 1;
+			VLA(wchar_t, si_lpDesktopW, si_lpDesktop_len);
+			StringToUTF16(si_lpDesktopW, lpSI->lpDesktop, si_lpDesktop_len);
+			lpSI_w.lpDesktop = si_lpDesktopW;
+		}
+		if(lpSI->lpTitle) {
+			size_t si_lpTitle_len = strlen(lpSI->lpTitle) + 1;
+			VLA(wchar_t, si_lpTitleW, si_lpTitle_len);
+			StringToUTF16(si_lpTitleW, lpSI->lpTitle, si_lpTitle_len);
+			lpSI_w.lpDesktop = si_lpTitleW;
+		}
 	} else {
 		ZeroMemory(&lpSI_w, sizeof(STARTUPINFOW));
 	}

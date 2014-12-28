@@ -24,8 +24,10 @@
   */
 int StringToUTF16(wchar_t *str_w, const char *str_mb, int str_len);
 
-// StringToUTF16 for VLAs. Returs NULL if [str_mb] is NULL,
-// and frees the VLA if necessary.
+// StringToUTF16 for assigning VLA strings to optional structure members.
+// Returns NULL if [str_mb] is NULL. Note that [str_w] still has to be freed
+// by the caller in this case - which, however, it needs to do anyway if
+// [str_mb] (and thus, [str_w]) point to a valid string.
 wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len);
 
 // Converts a UTF-16 string to UTF-8.
