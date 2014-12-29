@@ -18,6 +18,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions()
 	extern const w32u8_pair_t shell32_pairs[];
 	extern const w32u8_pair_t shlwapi_pairs[];
 	extern const w32u8_pair_t user32_pairs[];
+	extern const w32u8_pair_t version_pairs[];
 	extern const w32u8_pair_t wininet_pairs[];
 
 	static const w32u8_dll_t dlls[] = {
@@ -28,6 +29,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions()
 		{"shell32.dll", shell32_pairs},
 		{"shlwapi.dll", shlwapi_pairs},
 		{"user32.dll", user32_pairs},
+		{"version.dll", version_pairs},
 		{"wininet.dll", wininet_pairs},
 		NULL
 	};

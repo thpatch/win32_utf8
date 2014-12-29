@@ -17,6 +17,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <WinInet.h>
+#include <WinVer.h>
 
 #include "macros.h"
 #include "utf.h"
@@ -28,6 +29,7 @@
 #include "shell32_dll.h"
 #include "shlwapi_dll.h"
 #include "user32_dll.h"
+#include "version_dll.h"
 #include "wininet_dll.h"
 
 typedef struct {

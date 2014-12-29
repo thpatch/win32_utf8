@@ -92,6 +92,13 @@ EXPORTS
 	TabbedTextOutU
 	UnregisterClassU
 
+	; version.dll
+	; -----------
+	GetFileVersionInfoU
+	GetFileVersionInfoExU
+	GetFileVersionInfoSizeU
+	GetFileVersionInfoSizeExU
+
 	; wininet.dll
 	; -----------
 	InternetCombineUrlU
