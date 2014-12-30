@@ -56,18 +56,16 @@ const w32u8_pair_t user32_pairs[] = {
 
 #define WndclassAToW(w, a) \
 	size_t lpszClassName_len = strlen((a)->lpszClassName) + 1; \
-	size_t lpszMenuName_len = strlen((a)->lpszMenuName) + 1; \
 	VLA(wchar_t, lpszClassName_w, lpszClassName_len); \
-	VLA(wchar_t, lpszMenuName_w, lpszMenuName_len); \
-	lpszClassName_w = StringToUTF16_VLA(lpszClassName_w, (a)->lpszClassName, lpszClassName_len); \
-	lpszMenuName_w = StringToUTF16_VLA(lpszMenuName_w, (a)->lpszMenuName, lpszMenuName_len); \
-	(w)->lpszClassName = lpszClassName_w; \
+	RESID_DEC(lpszMenuName); \
+	(w)->lpszClassName = StringToUTF16_VLA(lpszClassName_w, (a)->lpszClassName, lpszClassName_len); \
+	RESID_CONV(lpszMenuName, (a)->lpszMenuName); \
 	(w)->lpszMenuName = lpszMenuName_w; \
 	WndclassCopyBase((w), (a))
 
-#define WndclassWClean() \
+#define WndclassWClean(a) \
 	VLA_FREE(lpszClassName_w); \
-	VLA_FREE(lpszMenuName_w)
+	RESID_FREE(lpszMenuName, (a)->lpszMenuName);
 /// ---------------------
 
 LPSTR WINAPI CharNextU(
@@ -100,36 +98,21 @@ LPSTR WINAPI CharNextU(
 	return ret;
 }
 
-// Now, if Microsoft just had used integer identifiers for resources instead
-// of names plus the MAKEINTRESOURCE hack, we could just re-point
-// all these calls to their wide versions and be done with it.
-// Instead, there is some maintenance to do...
-#define ResourceBaseConvert(lpTemplateName) \
-	LPWSTR lptn_w = NULL; \
-	if(HIWORD(lpTemplateName) != 0) { \
-		WCHAR_T_DEC(lpTemplateName); \
-		WCHAR_T_CONV_VLA(lpTemplateName); \
-	} else { \
-		lptn_w = (LPWSTR)lpTemplateName; \
-	}
-
-#define ResourceBaseClean(lpTemplateName) \
-	if(HIWORD(lpTemplateName) != 0) { \
-		VLA_FREE(lptn_w); \
-	}
-
 HWND WINAPI CreateDialogParamU(
 	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpTemplateName,
+	__in RESID lpTemplateRes,
 	__in_opt HWND hWndParent,
 	__in_opt DLGPROC lpDialogFunc,
 	__in LPARAM dwInitParam
 )
 {
 	HWND ret;
-	ResourceBaseConvert(lpTemplateName);
-	ret = CreateDialogParamW(hInstance, lptn_w, hWndParent, lpDialogFunc, dwInitParam);
-	ResourceBaseClean(lpTemplateName);
+	RESID_DEC(lpTemplateRes);
+	RESID_CONV(lpTemplateRes, lpTemplateRes);
+	ret = CreateDialogParamW(
+		hInstance, lpTemplateRes_w, hWndParent, lpDialogFunc, dwInitParam
+	);
+	RESID_FREE(lpTemplateRes, lpTemplateRes);
 	return ret;
 }
 
@@ -165,16 +148,19 @@ HWND WINAPI CreateWindowExU(
 
 INT_PTR WINAPI DialogBoxParamU(
 	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpTemplateName,
+	__in RESID lpTemplateRes,
 	__in_opt HWND hWndParent,
 	__in_opt DLGPROC lpDialogFunc,
 	__in LPARAM dwInitParam
 )
 {
 	INT_PTR ret;
-	ResourceBaseConvert(lpTemplateName);
-	ret = DialogBoxParamW(hInstance, lptn_w, hWndParent, lpDialogFunc, dwInitParam);
-	ResourceBaseClean(lpTemplateName);
+	RESID_DEC(lpTemplateRes);
+	RESID_CONV(lpTemplateRes, lpTemplateRes);
+	ret = DialogBoxParamW(
+		hInstance, lpTemplateRes_w, hWndParent, lpDialogFunc, dwInitParam
+	);
+	RESID_FREE(lpTemplateRes, lpTemplateRes);
 	return ret;
 }
 
@@ -277,7 +263,7 @@ ATOM WINAPI RegisterClassU(
 	WNDCLASSW WndClassW;
 	WndclassAToW(&WndClassW, lpWndClass);
 	ret = RegisterClassW(&WndClassW);
-	WndclassWClean();
+	WndclassWClean(lpWndClass);
 	return ret;
 }
 
@@ -290,7 +276,7 @@ ATOM WINAPI RegisterClassExU(
 	WndclassAToW(&WndClassW, lpWndClass);
 	WndclassExCopyBase(&WndClassW, lpWndClass);
 	ret = RegisterClassExW(&WndClassW);
-	WndclassWClean();
+	WndclassWClean(lpWndClass);
 	return ret;
 }
 

@@ -16,7 +16,7 @@ LPSTR WINAPI CharNextU(
 
 HWND WINAPI CreateDialogParamU(
 	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpTemplateName,
+	__in RESID lpTemplateRes,
 	__in_opt HWND hWndParent,
 	__in_opt DLGPROC lpDialogFunc,
 	__in LPARAM dwInitParam
@@ -47,7 +47,7 @@ HWND WINAPI CreateWindowExU(
 
 INT_PTR WINAPI DialogBoxParamU(
 	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpTemplateName,
+	__in RESID lpTemplateRes,
 	__in_opt HWND hWndParent,
 	__in_opt DLGPROC lpDialogFunc,
 	__in LPARAM dwInitParam

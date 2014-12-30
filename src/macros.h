@@ -29,6 +29,34 @@
 #include <malloc.h>
 #endif
 
+/**
+  * Resource identifier type. Either a multi-byte or wide string or, if the
+  * high word is 0, an integer. Therefore, pretending that these are just
+  * mere strings (as both their variable name *and* their Hungarian notation
+  * prefix would suggest) is not only misleading, but downright harmful.
+  *
+  * I thought about using the completely type-safe approach of defining a
+  * union for both string types. This would throw a compile error when a RESID
+  * is accessed as if it were a string. However, there are pretty much only
+  * drawbacks to that approach:
+  * • This would exactly require to redeclare *all* structures to use the
+  *   (W)RESID unions where applicable.
+  * • Pretty much all of the A and W structures are typedef'd and thus can't
+  *   easily be re-#define'd like the functions. This means that, in the case
+  *   of static linking, these new declarations then wouldn't even propagate
+  *   to existing application code.
+  * • It would break compilation of existing, perfectly fine code as all
+  *   function calls that pass a RESID union in one of their parameters or
+  *   structures would also throw a compiler error.
+  * • Finally, even if we only used the RESID union internally ourselves, it
+  *   only adds complication to the conversion macros, which would need to
+  *   validly convert the input "strings" into RESID unions.
+  * So, it's just down to a mere typedef alias.
+  */
+
+typedef const char* RESID;
+typedef const wchar_t* WRESID;
+
 // Most Win32 API functions return TRUE on success and FALSE on failure,
 // requiring a separate call to GetLastError() to get the actual error code.
 // This macro wraps these function calls to use the opposite, more sensible
@@ -112,9 +140,29 @@
 #endif
 
 // Convenience macro to convert one fixed-length string to UTF-16.
-// TODO: place this somewhere else?
 #define FixedLengthStringConvert(str_in, str_len) \
 	size_t str_in##_len = (str_len != -1 ? str_len : strlen(str_in)) + 1; \
 	VLA(wchar_t, str_in##_w, str_in##_len); \
 	ZeroMemory(str_in##_w, str_in##_len * sizeof(wchar_t)); \
 	StringToUTF16(str_in##_w, str_in, str_len);
+
+// Now, if Microsoft just had used integer identifiers for resources instead
+// of names plus the MAKEINTRESOURCE hack, we could just re-point all these
+// calls to their wide versions and be done with it.
+// Instead, there is some maintenance to do...
+#define RESID_DEC(local) \
+	LPWSTR local##_w = NULL;
+
+#define RESID_CONV(local, src) \
+	if(HIWORD(src) != 0) { \
+		size_t local##_len = strlen(src) + 1; \
+		VLA(wchar_t, local##_w_vla, local##_len); \
+		local##_w = StringToUTF16_VLA(local##_w_vla, src, local##_len); \
+	} else { \
+		local##_w = (LPWSTR)(src); \
+	}
+
+#define RESID_FREE(local, src) \
+	if(HIWORD(src) != 0) { \
+		WCHAR_T_FREE(local); \
+	}
