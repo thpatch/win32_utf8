@@ -41,3 +41,5 @@ DWORD WINAPI GetFileVersionInfoSizeExU(
 );
 #undef GetFileVersionInfoSizeEx
 #define GetFileVersionInfoSizeEx GetFileVersionInfoSizeExU
+
+void version_init(void);

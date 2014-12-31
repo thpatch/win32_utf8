@@ -46,6 +46,7 @@ void w32u8_set_fallback_codepage(UINT codepage)
 void InitDll(HMODULE hMod)
 {
 	kernel32_init(hMod);
+	version_init();
 }
 
 void ExitDll(HMODULE hMod)

@@ -125,6 +125,35 @@ typedef const wchar_t* WRESID;
 	VLA_FREE(src_wchar##_utf8)
 /// ------------------------------------
 
+/// Convenient dynamic binding for functions not available before Vista
+/// -------------------------------------------------------------------
+#define DLL_FUNC(dll, func) \
+	dll##_##func
+
+#define DLL_FUNC_TYPE(dll, func) \
+	DLL_FUNC(dll, func)##_t
+
+#define DLL_FUNC_DEF(dll, func) \
+	DLL_FUNC_TYPE(dll, func) *DLL_FUNC(dll, func) = NULL
+
+#define DLL_FUNC_GET(dll, func) \
+	DLL_FUNC(dll, func) = (DLL_FUNC_TYPE(dll, func)*)GetProcAddress(dll, #func)
+
+#define DLL_FUNC_CALL(dll, func, ...) \
+	if(DLL_FUNC(dll, func)) { \
+		ret = DLL_FUNC(dll, func)(__VA_ARGS__); \
+	} else { \
+		MessageBoxU(NULL, \
+			"Tried to call "#func"() from "#dll".dll, " \
+			"which is not available on this Windows version.", \
+			"Win32 UTF-8 wrapper", \
+			MB_OK | MB_ICONEXCLAMATION \
+		); \
+		SetLastError(ERROR_CALL_NOT_IMPLEMENTED); \
+		ret = 0; \
+	}
+/// -------------------------------------------------------------------
+
 // Define Visual C++ warnings away
 #if (_MSC_VER >= 1600)
 # define itoa _itoa
