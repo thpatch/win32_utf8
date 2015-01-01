@@ -91,6 +91,10 @@ typedef const wchar_t* WRESID;
 #define strlen(s) (s ? strlen(s) : 0)
 #define wcslen(s) (s ? wcslen(s) : 0)
 
+// Returns the length of a double-null-terminated string, not including the
+// terminating two 0 bytes.
+size_t zzstrlen(const char *str);
+
 /// Convenient wchar_t conversion macros
 /// ------------------------------------
 #define STRLEN_DEC(src_char) \

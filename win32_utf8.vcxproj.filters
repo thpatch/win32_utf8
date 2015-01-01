@@ -52,6 +52,9 @@
     <ClInclude Include="src\version_dll.h">
       <Filter>Wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="src\comdlg32_dll.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utf.c">
@@ -89,6 +92,12 @@
     </ClCompile>
     <ClCompile Include="src\version_dll.c">
       <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\comdlg32_dll.c">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\macros.c">
+      <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

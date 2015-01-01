@@ -11,6 +11,11 @@ EXPORTS
 	StringToMBFixed
 	EnsureUTF8
 
+	; comdlg32.dll
+	; ------------
+	GetOpenFileNameU
+	GetSaveFileNameU
+
 	; gdi32.dll
 	; ---------
 	lower_CreateFontA
