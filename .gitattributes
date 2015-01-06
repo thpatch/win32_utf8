@@ -6,3 +6,6 @@
 *.c text
 *.cpp text
 *.h text
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
