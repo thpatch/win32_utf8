@@ -23,17 +23,17 @@ const w32u8_pair_t shell32_pairs[] = {
 // The HDROP type would be he only reason for #include <shellapi.h> here,
 // so let's declare the function ourselves to reduce header bloat.
 SHSTDAPI_(UINT) DragQueryFileW(
-	__in HANDLE hDrop,
-	__in UINT iFile,
-	__out_ecount_opt(cch) LPWSTR lpszFile,
-	__in UINT cch
+	HANDLE hDrop,
+	UINT iFile,
+	LPWSTR lpszFile,
+	UINT cch
 );
 
 UINT WINAPI DragQueryFileU(
-	__in HANDLE hDrop,
-	__in UINT iFile,
-	__out_ecount_opt(cch) LPSTR lpszFile,
-	__in UINT cch
+	HANDLE hDrop,
+	UINT iFile,
+	LPSTR lpszFile,
+	UINT cch
 )
 {
 	DWORD ret;
@@ -58,9 +58,9 @@ UINT WINAPI DragQueryFileU(
 }
 
 HICON WINAPI ExtractIconU(
-	__reserved HINSTANCE hInst,
-	__in LPCSTR lpszExeFileName,
-	__in UINT nIconIndex
+	HINSTANCE hInst,
+	LPCSTR lpszExeFileName,
+	UINT nIconIndex
 )
 {
 	HICON ret;
@@ -74,8 +74,8 @@ HICON WINAPI ExtractIconU(
 UINT WINAPI ExtractIconExU(
 	LPCSTR lpszFile,
 	int nIconIndex,
-	__out_ecount_opt(nIcons) HICON *phiconLarge,
-	__out_ecount_opt(nIcons) HICON *phiconSmall,
+	HICON *phiconLarge,
+	HICON *phiconSmall,
 	UINT nIcons
 )
 {
@@ -135,7 +135,7 @@ static HRESULT CoGetApartmentTypeCompat(
 }
 
 PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
-	__in LPBROWSEINFOA lpbi
+	LPBROWSEINFOA lpbi
 )
 {
 	APTTYPE apttype;
@@ -162,8 +162,8 @@ PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 }
 
 BOOL WINAPI SHGetPathFromIDListU(
-	__in PCIDLIST_ABSOLUTE pidl,
-	__out_ecount(MAX_PATH) LPSTR pszPath
+	PCIDLIST_ABSOLUTE pidl,
+	LPSTR pszPath
 )
 {
 	wchar_t pszPath_w[MAX_PATH];

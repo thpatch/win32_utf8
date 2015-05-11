@@ -18,15 +18,15 @@ const w32u8_pair_t shlwapi_pairs[] = {
 };
 
 BOOL STDAPICALLTYPE PathFileExistsU(
-	__in LPCSTR pszPath
+	LPCSTR pszPath
 )
 {
 	return Wrap1P((Wrap1PFunc_t)PathFileExistsW, pszPath);
 }
 
 BOOL STDAPICALLTYPE PathMatchSpecU(
-	__in LPCSTR pszFile,
-	__in LPCSTR pszSpec
+	LPCSTR pszFile,
+	LPCSTR pszSpec
 )
 {
 	BOOL ret;
@@ -41,7 +41,7 @@ BOOL STDAPICALLTYPE PathMatchSpecU(
 }
 
 BOOL STDAPICALLTYPE PathRemoveFileSpecU(
-	__inout LPSTR pszPath
+	LPSTR pszPath
 )
 {
 	// Hey, let's re-write the function to also handle forward slashes

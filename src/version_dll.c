@@ -11,17 +11,17 @@
 /// Functions not available before Vista
 /// ------------------------------------
 typedef DWORD WINAPI DLL_FUNC_TYPE(version, GetFileVersionInfoSizeExW)(
-	__in DWORD dwFlags,
-	__in LPCWSTR lpstrFilename,
-	__out LPDWORD lpdwHandle
+	DWORD dwFlags,
+	LPCWSTR lpstrFilename,
+	LPDWORD lpdwHandle
 );
 
 typedef BOOL WINAPI DLL_FUNC_TYPE(version, GetFileVersionInfoExW)(
-	__in DWORD dwFlags,
-	__in LPCWSTR lpstrFilename,
-	__reserved DWORD dwHandle,
-	__in DWORD dwLen,
-	__out_bcount(dwLen) LPVOID lpData
+	DWORD dwFlags,
+	LPCWSTR lpstrFilename,
+	DWORD dwHandle,
+	DWORD dwLen,
+	LPVOID lpData
 );
 
 DLL_FUNC_DEF(version, GetFileVersionInfoSizeExW);
@@ -37,10 +37,10 @@ const w32u8_pair_t version_pairs[] = {
 };
 
 BOOL WINAPI GetFileVersionInfoU(
-	__in LPCSTR lpstrFilename,
-	__reserved DWORD dwHandle,
-	__in DWORD dwLen,
-	__out_bcount(dwLen) LPVOID lpData
+	LPCSTR lpstrFilename,
+	DWORD dwHandle,
+	DWORD dwLen,
+	LPVOID lpData
 )
 {
 	BOOL ret;
@@ -52,11 +52,11 @@ BOOL WINAPI GetFileVersionInfoU(
 }
 
 BOOL WINAPI GetFileVersionInfoExU(
-	__in DWORD dwFlags,
-	__in LPCSTR lpstrFilename,
-	__reserved DWORD dwHandle,
-	__in DWORD dwLen,
-	__out_bcount(dwLen) LPVOID lpData
+	DWORD dwFlags,
+	LPCSTR lpstrFilename,
+	DWORD dwHandle,
+	DWORD dwLen,
+	LPVOID lpData
 )
 {
 	BOOL ret;
@@ -70,8 +70,8 @@ BOOL WINAPI GetFileVersionInfoExU(
 }
 
 DWORD WINAPI GetFileVersionInfoSizeU(
-	__in LPCSTR lpstrFilename,
-	__out_opt LPDWORD lpdwHandle
+	LPCSTR lpstrFilename,
+	LPDWORD lpdwHandle
 )
 {
 	BOOL ret;
@@ -83,9 +83,9 @@ DWORD WINAPI GetFileVersionInfoSizeU(
 }
 
 DWORD WINAPI GetFileVersionInfoSizeExU(
-	__in DWORD dwFlags,
-	__in LPCSTR lpstrFilename,
-	__out LPDWORD lpdwHandle
+	DWORD dwFlags,
+	LPCSTR lpstrFilename,
+	LPDWORD lpdwHandle
 )
 {
 	DWORD ret;

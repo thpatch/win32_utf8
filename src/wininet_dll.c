@@ -16,11 +16,11 @@ const w32u8_pair_t wininet_pairs[] = {
 };
 
 BOOL WINAPI InternetCombineUrlU(
-	__in LPCSTR lpszBaseUrl,
-	__in LPCSTR lpszRelativeUrl,
-	__out_ecount(*lpdwBufferLength) LPSTR lpszBuffer,
-	__inout LPDWORD lpdwBufferLength,
-	__in DWORD dwFlags
+	LPCSTR lpszBaseUrl,
+	LPCSTR lpszRelativeUrl,
+	LPSTR lpszBuffer,
+	LPDWORD lpdwBufferLength,
+	DWORD dwFlags
 )
 {
 	BOOL ret = FALSE;
@@ -90,10 +90,10 @@ BOOL WINAPI InternetCombineUrlU(
 	macro(ExtraInfo)
 
 BOOL WINAPI InternetCrackUrlU(
-	__in_ecount(dwUrlLength) LPCSTR lpszUrl,
-	__in DWORD dwUrlLength,
-	__in DWORD dwFlags,
-	__inout LPURL_COMPONENTSA lpUC
+	LPCSTR lpszUrl,
+	DWORD dwUrlLength,
+	DWORD dwFlags,
+	LPURL_COMPONENTSA lpUC
 )
 {
 	BOOL ret = FALSE;
@@ -122,12 +122,12 @@ BOOL WINAPI InternetCrackUrlU(
 }
 
 HINTERNET WINAPI InternetOpenUrlU(
-	__in HINTERNET hInternet,
-	__in LPCSTR lpszUrl,
-	__in_ecount_opt(dwHeadersLength) LPCSTR lpszHeaders,
-	__in DWORD dwHeadersLength,
-	__in DWORD dwFlags,
-	__in_opt DWORD_PTR dwContext
+	HINTERNET hInternet,
+	LPCSTR lpszUrl,
+	LPCSTR lpszHeaders,
+	DWORD dwHeadersLength,
+	DWORD dwFlags,
+	DWORD_PTR dwContext
 )
 {
 	HINTERNET ret = NULL;

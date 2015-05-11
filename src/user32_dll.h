@@ -9,34 +9,34 @@
 #pragma once
 
 LPSTR WINAPI CharNextU(
-	__in LPSTR lpsz
+	LPSTR lpsz
 );
 #undef CharNext
 #define CharNext CharNextU
 
 HWND WINAPI CreateDialogParamU(
-	__in_opt HINSTANCE hInstance,
-	__in RESID lpTemplateRes,
-	__in_opt HWND hWndParent,
-	__in_opt DLGPROC lpDialogFunc,
-	__in LPARAM dwInitParam
+	HINSTANCE hInstance,
+	RESID lpTemplateRes,
+	HWND hWndParent,
+	DLGPROC lpDialogFunc,
+	LPARAM dwInitParam
 );
 #undef CreateDialogParam
 #define CreateDialogParam CreateDialogParamU
 
 HWND WINAPI CreateWindowExU(
-	__in DWORD dwExStyle,
-	__in_opt LPCSTR lpClassName,
-	__in_opt LPCSTR lpWindowName,
-	__in DWORD dwStyle,
-	__in int X,
-	__in int Y,
-	__in int nWidth,
-	__in int nHeight,
-	__in_opt HWND hWndParent,
-	__in_opt HMENU hMenu,
-	__in_opt HINSTANCE hInstance,
-	__in_opt LPVOID lpParam
+	DWORD dwExStyle,
+	LPCSTR lpClassName,
+	LPCSTR lpWindowName,
+	DWORD dwStyle,
+	int X,
+	int Y,
+	int nWidth,
+	int nHeight,
+	HWND hWndParent,
+	HMENU hMenu,
+	HINSTANCE hInstance,
+	LPVOID lpParam
 );
 #undef CreateWindowEx
 #define CreateWindowEx CreateWindowExU
@@ -46,30 +46,30 @@ HWND WINAPI CreateWindowExU(
 #define DefWindowProc DefWindowProcW
 
 INT_PTR WINAPI DialogBoxParamU(
-	__in_opt HINSTANCE hInstance,
-	__in RESID lpTemplateRes,
-	__in_opt HWND hWndParent,
-	__in_opt DLGPROC lpDialogFunc,
-	__in LPARAM dwInitParam
+	HINSTANCE hInstance,
+	RESID lpTemplateRes,
+	HWND hWndParent,
+	DLGPROC lpDialogFunc,
+	LPARAM dwInitParam
 );
 #undef DialogBoxParam
 #define DialogBoxParam DialogBoxParamU
 
 int WINAPI DrawTextU(
-	__in HDC hdc,
-	__inout_ecount_opt(cchText) LPCSTR lpchText,
-	__in int cchText,
-	__inout LPRECT lprc,
-	__in UINT format
+	HDC hdc,
+	LPCSTR lpchText,
+	int cchText,
+	LPRECT lprc,
+	UINT format
 );
 #undef DrawText
 #define DrawText DrawTextU
 
 BOOL WINAPI InsertMenuItemU(
-	__in HMENU hmenu,
-	__in UINT item,
-	__in BOOL fByPosition,
-	__in LPCMENUITEMINFOA lpmi
+	HMENU hmenu,
+	UINT item,
+	BOOL fByPosition,
+	LPCMENUITEMINFOA lpmi
 );
 #undef InsertMenuItem
 #define InsertMenuItem InsertMenuItemU
@@ -83,55 +83,55 @@ BOOL WINAPI InsertMenuItemU(
 #define GetWindowLongPtr GetWindowLongPtrW
 
 BOOL WINAPI GetClassInfoU(
-	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpClassName,
-	__out LPWNDCLASSA lpWndClass
+	HINSTANCE hInstance,
+	LPCSTR lpClassName,
+	LPWNDCLASSA lpWndClass
 );
 #undef GetClassInfo
 #define GetClassInfo GetClassInfoU
 
 BOOL WINAPI GetClassInfoExU(
-	__in_opt HINSTANCE hInstance,
-	__in LPCSTR lpszClass,
-	__out LPWNDCLASSEXA lpwcx
+	HINSTANCE hInstance,
+	LPCSTR lpszClass,
+	LPWNDCLASSEXA lpwcx
 );
 #undef GetClassInfoEx
 #define GetClassInfoEx GetClassInfoExU
 
 int WINAPI LoadStringU(
-	__in_opt HINSTANCE hInstance,
-	__in UINT uID,
-	__out_ecount_part(cchBufferMax, return + 1) LPSTR lpBuffer,
-	__in int cchBufferMax
+	HINSTANCE hInstance,
+	UINT uID,
+	LPSTR lpBuffer,
+	int cchBufferMax
 );
 #undef LoadString
 #define LoadString LoadStringU
 
 int WINAPI MessageBoxU(
-	__in_opt HWND hWnd,
-	__in_opt LPCSTR lpText,
-	__in_opt LPCSTR lpCaption,
-	__in UINT uType
+	HWND hWnd,
+	LPCSTR lpText,
+	LPCSTR lpCaption,
+	UINT uType
 );
 #undef MessageBox
 #define MessageBox MessageBoxU
 
 ATOM WINAPI RegisterClassU(
-	__in CONST WNDCLASSA *lpWndClass
+	CONST WNDCLASSA *lpWndClass
 );
 #undef RegisterClass
 #define RegisterClass RegisterClassU
 
 ATOM WINAPI RegisterClassExU(
-	__in CONST WNDCLASSEXA *lpWndClass
+	CONST WNDCLASSEXA *lpWndClass
 );
 #undef RegisterClassEx
 #define RegisterClassEx RegisterClassExU
 
 BOOL WINAPI SetDlgItemTextU(
-	__in HWND hDlg,
-	__in int nIDDlgItem,
-	__in LPCSTR lpString
+	HWND hDlg,
+	int nIDDlgItem,
+	LPCSTR lpString
 );
 #undef SetDlgItemText
 #define SetDlgItemText SetDlgItemTextU
@@ -142,28 +142,28 @@ BOOL WINAPI SetDlgItemTextU(
 #define SetWindowLongPtr SetWindowLongPtrW
 
 BOOL WINAPI SetWindowTextU(
-	__in HWND hWnd,
-	__in_opt LPCSTR lpString
+	HWND hWnd,
+	LPCSTR lpString
 );
 #undef SetWindowText
 #define SetWindowText SetWindowTextU
 
 LONG WINAPI TabbedTextOutU(
-	__in HDC hdc,
-	__in int x,
-	__in int y,
-	__in_ecount(chCount) LPCSTR lpString,
-	__in int chCount,
-	__in int nTabPositions,
-	__in_ecount_opt(nTabPositions) CONST INT *lpnTabStopPositions,
-	__in int nTabOrigin
+	HDC hdc,
+	int x,
+	int y,
+	LPCSTR lpString,
+	int chCount,
+	int nTabPositions,
+	CONST INT *lpnTabStopPositions,
+	int nTabOrigin
 );
 #undef TabbedTextOut
 #define TabbedTextOut TabbedTextOutU
 
 BOOL WINAPI UnregisterClassU(
-	__in LPCSTR lpClassName,
-	__in_opt HINSTANCE hInstance
+	LPCSTR lpClassName,
+	HINSTANCE hInstance
 );
 #undef UnregisterClass
 #define UnregisterClass UnregisterClassU

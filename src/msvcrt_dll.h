@@ -8,9 +8,9 @@
 
 #pragma once
 
-_Check_return_ FILE * __cdecl fopen_u(
-	_In_z_ const char * _Filename,
-	_In_z_ const char * _Mode
+FILE * __cdecl fopen_u(
+	const char * _Filename,
+	const char * _Mode
 );
 #undef fopen
 #define fopen fopen_u

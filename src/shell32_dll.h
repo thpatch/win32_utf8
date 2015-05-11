@@ -9,18 +9,18 @@
 #pragma once
 
 UINT WINAPI DragQueryFileU(
-	__in HANDLE hDrop,
-	__in UINT iFile,
-	__out_ecount_opt(cch) LPSTR lpszFile,
-	__in UINT cch
+	HANDLE hDrop,
+	UINT iFile,
+	LPSTR lpszFile,
+	UINT cch
 );
 #undef DragQueryFile
 #define DragQueryFile DragQueryFileU
 
 HICON WINAPI ExtractIconU(
-	__reserved HINSTANCE hInst,
-	__in LPCSTR lpszExeFileName,
-	__in UINT nIconIndex
+	HINSTANCE hInst,
+	LPCSTR lpszExeFileName,
+	UINT nIconIndex
 );
 #undef ExtractIcon
 #define ExtractIcon ExtractIconU
@@ -28,15 +28,15 @@ HICON WINAPI ExtractIconU(
 UINT WINAPI ExtractIconExU(
 	LPCSTR lpszFile,
 	int nIconIndex,
-	__out_ecount_opt(nIcons) HICON *phiconLarge,
-	__out_ecount_opt(nIcons) HICON *phiconSmall,
+	HICON *phiconLarge,
+	HICON *phiconSmall,
 	UINT nIcons
 );
 #undef ExtractIconEx
 #define ExtractIconEx ExtractIconExU
 
 PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
-	__in LPBROWSEINFOA lpbi
+	LPBROWSEINFOA lpbi
 );
 #undef SHBrowseForFolder
 #define SHBrowseForFolder SHBrowseForFolderU
@@ -48,8 +48,8 @@ PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 #define LPBROWSEINFO LPBROWSEINFOA
 
 BOOL WINAPI SHGetPathFromIDListU(
-	__in PCIDLIST_ABSOLUTE pidl,
-	__out_ecount(MAX_PATH) LPSTR pszPath
+	PCIDLIST_ABSOLUTE pidl,
+	LPSTR pszPath
 );
 #undef SHGetPathFromIDList
 #define SHGetPathFromIDList SHGetPathFromIDListU

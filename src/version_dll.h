@@ -9,35 +9,35 @@
 #pragma once
 
 BOOL WINAPI GetFileVersionInfoU(
-	__in LPCSTR lpstrFilename,
-	__reserved DWORD dwHandle,
-	__in DWORD dwLen,
-	__out_bcount(dwLen) LPVOID lpData
+	LPCSTR lpstrFilename,
+	DWORD dwHandle,
+	DWORD dwLen,
+	LPVOID lpData
 );
 #undef GetFileVersionInfo
 #define GetFileVersionInfo GetFileVersionInfoU
 
 BOOL WINAPI GetFileVersionInfoExU(
-	__in DWORD dwFlags,
-	__in LPCSTR lpstrFilename,
-	__reserved DWORD dwHandle,
-	__in DWORD dwLen,
-	__out_bcount(dwLen) LPVOID lpData
+	DWORD dwFlags,
+	LPCSTR lpstrFilename,
+	DWORD dwHandle,
+	DWORD dwLen,
+	LPVOID lpData
 );
 #undef GetFileVersionInfoEx
 #define GetFileVersionInfoEx GetFileVersionInfoExU
 
 DWORD WINAPI GetFileVersionInfoSizeU(
-	__in LPCSTR lpstrFilename,
-	__out_opt LPDWORD lpdwHandle
+	LPCSTR lpstrFilename,
+	LPDWORD lpdwHandle
 );
 #undef GetFileVersionInfoSize
 #define GetFileVersionInfoSize GetFileVersionInfoSizeU
 
 DWORD WINAPI GetFileVersionInfoSizeExU(
-	__in DWORD dwFlags,
-	__in LPCSTR lpstrFilename,
-	__out LPDWORD lpdwHandle
+	DWORD dwFlags,
+	LPCSTR lpstrFilename,
+	LPDWORD lpdwHandle
 );
 #undef GetFileVersionInfoSizeEx
 #define GetFileVersionInfoSizeEx GetFileVersionInfoSizeExU

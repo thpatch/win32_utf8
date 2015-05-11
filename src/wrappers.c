@@ -10,8 +10,8 @@
 #include "wrappers.h"
 
 DWORD WINAPI Wrap1P(
-	__in Wrap1PFunc_t func,
-	__in LPCSTR lpsz
+	Wrap1PFunc_t func,
+	LPCSTR lpsz
 )
 {
 	BOOL ret;
@@ -23,9 +23,9 @@ DWORD WINAPI Wrap1P(
 }
 
 DWORD WINAPI WrapGetString(
-	__in WrapGetStringFunc_t func,
-	__in DWORD nBufferLength,
-	__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer
+	WrapGetStringFunc_t func,
+	DWORD nBufferLength,
+	LPSTR lpBuffer
 )
 {
 	DWORD ret;

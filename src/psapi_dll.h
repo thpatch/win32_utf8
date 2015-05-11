@@ -9,10 +9,10 @@
 #pragma once
 
 DWORD WINAPI GetModuleFileNameExU(
-	__in HANDLE hProcess,
-	__in_opt HMODULE hModule,
-	__out_ecount(nSize) LPSTR lpFilename,
-	__in DWORD nSize
+	HANDLE hProcess,
+	HMODULE hModule,
+	LPSTR lpFilename,
+	DWORD nSize
 );
 #undef GetModuleFileNameEx
 #define GetModuleFileNameEx GetModuleFileNameExU

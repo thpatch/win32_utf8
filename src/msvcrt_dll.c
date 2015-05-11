@@ -15,9 +15,9 @@ const w32u8_pair_t msvcrt_pairs[] = {
 
 // Yes, this should better be implemented as a wrapper around fopen_s() (and
 // thus, _wfopen_s()), but XP's msvcrt.dll doesn't have that function.
-_Check_return_ FILE * __cdecl fopen_u(
-	_In_z_ const char * _Filename,
-	_In_z_ const char * _Mode
+FILE * __cdecl fopen_u(
+	const char * _Filename,
+	const char * _Mode
 )
 {
 	FILE *ret = NULL;

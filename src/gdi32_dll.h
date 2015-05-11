@@ -14,110 +14,110 @@ typedef HFONT (WINAPI *CreateFontIndirectA_type)(CONST LOGFONTA*);
 typedef HFONT (WINAPI *CreateFontIndirectExA_type)(CONST ENUMLOGFONTEXDVA*);
 
 HFONT WINAPI lower_CreateFontA(
-	__in CreateFontIndirectA_type down_func,
-	__in int cHeight,
-	__in int cWidth,
-	__in int cEscapement,
-	__in int cOrientation,
-	__in int cWeight,
-	__in DWORD bItalic,
-	__in DWORD bUnderline,
-	__in DWORD bStrikeOut,
-	__in DWORD iCharSet,
-	__in DWORD iOutPrecision,
-	__in DWORD iClipPrecision,
-	__in DWORD iQuality,
-	__in DWORD iPitchAndFamily,
-	__in_opt LPCSTR pszFaceName
+	CreateFontIndirectA_type down_func,
+	int cHeight,
+	int cWidth,
+	int cEscapement,
+	int cOrientation,
+	int cWeight,
+	DWORD bItalic,
+	DWORD bUnderline,
+	DWORD bStrikeOut,
+	DWORD iCharSet,
+	DWORD iOutPrecision,
+	DWORD iClipPrecision,
+	DWORD iQuality,
+	DWORD iPitchAndFamily,
+	LPCSTR pszFaceName
 );
 
 HFONT WINAPI lower_CreateFontIndirectA(
-	__in CreateFontIndirectExA_type down_func,
-	__in CONST LOGFONTA *lplf
+	CreateFontIndirectExA_type down_func,
+	CONST LOGFONTA *lplf
 );
 /// ------------------
 
 HFONT WINAPI CreateFontU(
-	__in int cHeight,
-	__in int cWidth,
-	__in int cEscapement,
-	__in int cOrientation,
-	__in int cWeight,
-	__in DWORD bItalic,
-	__in DWORD bUnderline,
-	__in DWORD bStrikeOut,
-	__in DWORD iCharSet,
-	__in DWORD iOutPrecision,
-	__in DWORD iClipPrecision,
-	__in DWORD iQuality,
-	__in DWORD iPitchAndFamily,
-	__in_opt LPCSTR pszFaceName
+	int cHeight,
+	int cWidth,
+	int cEscapement,
+	int cOrientation,
+	int cWeight,
+	DWORD bItalic,
+	DWORD bUnderline,
+	DWORD bStrikeOut,
+	DWORD iCharSet,
+	DWORD iOutPrecision,
+	DWORD iClipPrecision,
+	DWORD iQuality,
+	DWORD iPitchAndFamily,
+	LPCSTR pszFaceName
 );
 #undef CreateFont
 #define CreateFont CreateFontU
 
 HFONT WINAPI CreateFontIndirectU(
-	__in CONST LOGFONTA *lplf
+	CONST LOGFONTA *lplf
 );
 #undef CreateFontIndirect
 #define CreateFontIndirect CreateFontIndirectU
 
 HFONT WINAPI CreateFontIndirectExU(
-	__in CONST ENUMLOGFONTEXDVA *lpelfe
+	CONST ENUMLOGFONTEXDVA *lpelfe
 );
 #undef CreateFontIndirectEx
 #define CreateFontIndirectEx CreateFontIndirectExU
 
 int WINAPI EnumFontFamiliesExU(
-	__in HDC hdc,
-	__in LPLOGFONTA lpLogfont,
-	__in FONTENUMPROCA lpProc,
-	__in LPARAM lParam,
-	__in DWORD dwFlags
+	HDC hdc,
+	LPLOGFONTA lpLogfont,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam,
+	DWORD dwFlags
 );
 #undef EnumFontFamiliesEx
 #define EnumFontFamiliesEx EnumFontFamiliesExU
 
 BOOL WINAPI ExtTextOutU(
-	__in HDC hdc,
-	__in int x,
-	__in int y,
-	__in UINT options,
-	__in_opt CONST RECT * lprect,
-	__in_ecount_opt(c) LPCSTR lpString,
-	__in UINT c,
-	__in_ecount_opt(c) CONST INT * lpDx
+	HDC hdc,
+	int x,
+	int y,
+	UINT options,
+	CONST RECT * lprect,
+	LPCSTR lpString,
+	UINT c,
+	CONST INT * lpDx
 );
 #undef ExtTextOut
 #define ExtTextOut ExtTextOutU
 
 DWORD WINAPI GetGlyphOutlineU(
-	__in HDC hdc,
-	__in UINT uChar,
-	__in UINT fuFormat,
-	__out LPGLYPHMETRICS lpgm,
-	__in DWORD cjBuffer,
-	__out_bcount_opt(cjBuffer) LPVOID pvBuffer,
-	__in CONST MAT2 *lpmat2
+	HDC hdc,
+	UINT uChar,
+	UINT fuFormat,
+	LPGLYPHMETRICS lpgm,
+	DWORD cjBuffer,
+	LPVOID pvBuffer,
+	CONST MAT2 *lpmat2
 );
 #undef GetGlyphOutline
 #define GetGlyphOutline GetGlyphOutlineU
 
 BOOL APIENTRY GetTextExtentPoint32U(
-	__in HDC hdc,
-	__in_ecount(c) LPCSTR lpString,
-	__in int c,
-	__out LPSIZE psizl
+	HDC hdc,
+	LPCSTR lpString,
+	int c,
+	LPSIZE psizl
 );
 #undef GetTextExtentPoint32
 #define GetTextExtentPoint32 GetTextExtentPoint32U
 
 BOOL WINAPI TextOutU(
-	__in HDC hdc,
-	__in int x,
-	__in int y,
-	__in_ecount(c) LPCSTR lpString,
-	__in int c
+	HDC hdc,
+	int x,
+	int y,
+	LPCSTR lpString,
+	int c
 );
 #undef TextOut
 #define TextOut TextOutU
