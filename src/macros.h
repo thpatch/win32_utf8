@@ -29,6 +29,8 @@
 #include <malloc.h>
 #endif
 
+#include <stdlib.h>
+
 /**
   * Resource identifier type. Either a multi-byte or wide string or, if the
   * high word is 0, an integer. Therefore, pretending that these are just
@@ -135,7 +137,7 @@ size_t zzstrlen(const char *str);
 	dll##_##func
 
 #define DLL_FUNC_TYPE(dll, func) \
-	DLL_FUNC(dll, func)##_t
+	dll##_##func##_t /* GCC doesn't accept DLL_FUNC(dll_func)##_t */
 
 #define DLL_FUNC_DEF(dll, func) \
 	DLL_FUNC_TYPE(dll, func) *DLL_FUNC(dll, func) = NULL

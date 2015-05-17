@@ -6,8 +6,6 @@
   * shell32.dll functions.
   */
 
-#pragma once
-
 #include "win32_utf8.h"
 #include "wrappers.h"
 
@@ -19,15 +17,6 @@ const w32u8_pair_t shell32_pairs[] = {
 	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
 	NULL
 };
-
-// The HDROP type would be he only reason for #include <shellapi.h> here,
-// so let's declare the function ourselves to reduce header bloat.
-SHSTDAPI_(UINT) DragQueryFileW(
-	HANDLE hDrop,
-	UINT iFile,
-	LPWSTR lpszFile,
-	UINT cch
-);
 
 UINT WINAPI DragQueryFileU(
 	HANDLE hDrop,
@@ -98,6 +87,15 @@ static HRESULT CoGetApartmentTypeCompat(
 {
 	int ret = S_FALSE;
 	APTTYPEQUALIFIER apttype_qualifier;
+
+	#ifdef __MINGW32__
+		// Since adding -luuid causes MinGW to link in *all* GUIDs, we define
+		// this manually, and therefore save ~17.5 KB in the compiled binary.
+		const IID IID_IComThreadingInfo = {
+			0x000001ce,0x0000,0x0000,0xc0,0x00,0x00,0x00,0x00,0x00,0x00,0x46
+		};
+	#endif
+
 	typedef HRESULT WINAPI CoGetApartmentType_t(
 		_Out_ APTTYPE *pAptType,
 		_Out_ APTTYPEQUALIFIER *pAptQualifier
