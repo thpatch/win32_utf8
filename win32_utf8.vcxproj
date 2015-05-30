@@ -65,7 +65,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v120_xp</PlatformToolset>
     <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)obj\$(Configuration) $(PlatformShortName)\</IntDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName) $(Configuration) $(PlatformShortName)\</IntDir>
     <TargetName>$(ProjectName)_$(Linking)_$(PlatformShortName)$(TargetSuffix)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup>
