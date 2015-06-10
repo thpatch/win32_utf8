@@ -6,7 +6,6 @@
   * shlwapi.dll functions.
   */
 
-#include <Shlwapi.h>
 #include "win32_utf8.h"
 #include "wrappers.h"
 

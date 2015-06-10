@@ -14,11 +14,10 @@
 #include <CommDlg.h>
 #include <psapi.h>
 #include <ShellAPI.h>
+#include <Shlwapi.h>
 #include <ShlObj.h>
-#include <stddef.h>
 #include <stdio.h>
 #include <WinInet.h>
-#include <WinVer.h>
 
 #include "macros.h"
 #include "utf.h"
