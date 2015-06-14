@@ -32,7 +32,10 @@ wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len)
 
 int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len)
 {
-	return WideCharToMultiByte(CP_UTF8, 0, str_w, -1, str_utf8, str_utf8_len, NULL, NULL);
+	int ret = WideCharToMultiByte(
+		CP_UTF8, 0, str_w, -1, str_utf8, str_utf8_len, NULL, NULL
+	);
+	return str_w ? ret - 1 : ret;
 }
 
 int StringToMBFixed(char *str_mb, const wchar_t *str_w, int str_mb_len, int str_w_len)

@@ -30,7 +30,8 @@ int StringToUTF16(wchar_t *str_w, const char *str_mb, int str_len);
 // [str_mb] (and thus, [str_w]) point to a valid string.
 wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len);
 
-// Converts a UTF-16 string to UTF-8.
+// Converts a null-terminated UTF-16 string to UTF-8 and returns the
+// converted size excluding the terminating null character.
 // [str_utf8_len] takes the size of [str_utf8] in bytes.
 int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len);
 

@@ -41,7 +41,7 @@ DWORD WINAPI WrapGetString(
 		// Hey, let's be nice and return the _actual_ length.
 		VLA(wchar_t, lpBufferReal_w, ret);
 		func(ret, lpBufferReal_w);
-		ret = StringToUTF8(NULL, lpBufferReal_w, 0);
+		ret = StringToUTF8(NULL, lpBufferReal_w, 0) + 1;
 		VLA_FREE(lpBufferReal_w);
 	}
 	VLA_FREE(lpBuffer_w);
