@@ -307,6 +307,14 @@ DWORD WINAPI FormatMessageU(
 )
 {
 	wchar_t *lpBufferW = NULL;
+	wchar_t *source_w = NULL;
+
+	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
+		WCHAR_T_DEC(lpSource);
+		WCHAR_T_CONV(lpSource);
+		source_w = lpSource_w;
+		lpSource = lpSource_w;
+	}
 
 	DWORD ret = FormatMessageW(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER | dwFlags, lpSource,
@@ -327,6 +335,7 @@ DWORD WINAPI FormatMessageU(
 	}
 	ret = StringToUTF8(lpBuffer, lpBufferW, ret);
 	LocalFree(lpBufferW);
+	VLA_FREE(source_w);
 	return ret;
 }
 
