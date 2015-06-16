@@ -326,14 +326,12 @@ DWORD WINAPI FormatMessageU(
 	if(dwFlags & FORMAT_MESSAGE_ALLOCATE_BUFFER) {
 		LPSTR* lppBuffer = (LPSTR*)lpBuffer;
 
-		ret = max(ret * sizeof(char) * UTF8_MUL, nSize);
+		nSize = max(ret * sizeof(char) * UTF8_MUL, nSize);
 
 		*lppBuffer = LocalAlloc(0, ret);
 		lpBuffer = *lppBuffer;
-	} else {
-		ret = min(ret, nSize);
 	}
-	ret = StringToUTF8(lpBuffer, lpBufferW, ret);
+	ret = StringToUTF8(lpBuffer, lpBufferW, nSize);
 	LocalFree(lpBufferW);
 	VLA_FREE(source_w);
 	return ret;
