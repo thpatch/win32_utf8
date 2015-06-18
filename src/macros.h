@@ -3,7 +3,7 @@
   *
   * ----
   *
-  * Macros.
+  * Random macros and utility functions.
   */
 
 #pragma once
@@ -201,3 +201,19 @@ size_t zzstrlen(const char *str);
 	if(HIWORD(src) != 0) { \
 		WCHAR_T_FREE(local); \
 	}
+
+/// printf format specifier parsing
+/// -------------------------------
+// Information about a single printf format specification.
+typedef struct {
+	int argc_before_type;
+	char type;
+	int type_size_in_ints;
+} printf_format_t;
+
+// Fills [fmt] with information about the printf format specification
+// starting at [p]. [p] is assumed to start after the initial % character,
+// and is returned after the final character denoting the type.
+// Based on Wine's implementation for msvcrt.dll (dlls/msvcrt/printf.h).
+const char* printf_format_parse(printf_format_t *fmt, const char *p);
+/// -------------------------------

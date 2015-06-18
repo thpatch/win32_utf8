@@ -2,6 +2,10 @@ EXPORTS
 	w32u8_set_fallback_codepage @1
 	w32u8_get_wrapped_functions
 
+	; Macros
+	; ------
+	printf_format_parse
+
 	; Unicode
 	; -------
 	StringToUTF16
