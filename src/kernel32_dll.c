@@ -306,8 +306,13 @@ DWORD WINAPI FormatMessageU(
 	va_list *Arguments
 )
 {
-	wchar_t *lpBufferW = NULL;
+	DWORD ret;
+	LPSTR* lppBuffer = (LPSTR*)lpBuffer;
+	int allocating = dwFlags & FORMAT_MESSAGE_ALLOCATE_BUFFER;
+	size_t lpBuffer_w_len;
+	wchar_t *lpBuffer_w = NULL;
 	wchar_t *source_w = NULL;
+	int i = 0;
 
 	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
 		WCHAR_T_DEC(lpSource);
@@ -316,23 +321,39 @@ DWORD WINAPI FormatMessageU(
 		lpSource = lpSource_w;
 	}
 
-	DWORD ret = FormatMessageW(
-		FORMAT_MESSAGE_ALLOCATE_BUFFER | dwFlags, lpSource,
-		dwMessageId, dwLanguageId, (LPWSTR)&lpBufferW, nSize, Arguments
+	ret = FormatMessageW(
+		(nSize ? FORMAT_MESSAGE_ALLOCATE_BUFFER : 0) | dwFlags,
+		lpSource, dwMessageId, dwLanguageId,
+		(!lpBuffer && allocating) ? NULL : (LPWSTR)&lpBuffer_w,
+		nSize, Arguments
 	);
 	if(!ret) {
-		return ret;
-	}
-	if(dwFlags & FORMAT_MESSAGE_ALLOCATE_BUFFER) {
-		LPSTR* lppBuffer = (LPSTR*)lpBuffer;
-
+		if(allocating && lpBuffer) {
+			*lppBuffer = NULL;
+		}
+		goto end;
+	} else if(allocating) {
 		nSize = max(ret * sizeof(char) * UTF8_MUL, nSize);
-
 		*lppBuffer = LocalAlloc(0, ret);
 		lpBuffer = *lppBuffer;
 	}
-	ret = StringToUTF8(lpBuffer, lpBufferW, nSize);
-	LocalFree(lpBufferW);
+	// Apparently, we're only supposed to either put all or nothing into
+	// the output buffer.
+	lpBuffer_w_len = wcslen(lpBuffer_w) + 1;
+	ret = WideCharToMultiByte(CP_UTF8, 0,
+		lpBuffer_w, lpBuffer_w_len, NULL, 0, NULL, NULL
+	);
+	if(ret <= nSize) {
+		WideCharToMultiByte(CP_UTF8, 0,
+			lpBuffer_w, lpBuffer_w_len, lpBuffer, nSize, NULL, NULL
+		);
+		ret--; // excluding the terminating NULL character...
+	} else {
+		SetLastError(ERROR_INSUFFICIENT_BUFFER);
+		ret = 0;
+	}
+end:
+	LocalFree(lpBuffer_w);
 	VLA_FREE(source_w);
 	return ret;
 }
