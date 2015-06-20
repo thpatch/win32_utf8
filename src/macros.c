@@ -42,7 +42,7 @@ const char* printf_format_parse(printf_format_t *fmt, const char *p)
 	int flag_double = 0;
 	
 	assert(fmt);
-	assert(p && *(p - 1) == '%');
+	assert(p && (*(p - 1) == '%' || *(p - 1) == '!'));
 
 	memset(fmt, 0, sizeof(printf_format_t));
 

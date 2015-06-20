@@ -296,6 +296,24 @@ BOOL WINAPI FindNextFileU(
 	return ret;
 }
 
+typedef enum {
+	VOA_VA,
+	VOA_ARRAY
+} va_or_array_t;
+
+static void** voa_arg(va_list *va, unsigned int n, va_or_array_t type)
+{
+	if(type == VOA_VA) {
+		va_list vacopy = *va;
+		unsigned int i;
+		for(i = 0; i < n; i++) {
+			va_arg(vacopy, void*);
+		}
+		return vacopy;
+	}
+	return va + (n * sizeof(void*));
+}
+
 DWORD WINAPI FormatMessageU(
 	DWORD dwFlags,
 	LPCVOID lpSource,
@@ -306,17 +324,96 @@ DWORD WINAPI FormatMessageU(
 	va_list *Arguments
 )
 {
-	DWORD ret;
+	DWORD ret = 0;
 	LPSTR* lppBuffer = (LPSTR*)lpBuffer;
 	int allocating = dwFlags & FORMAT_MESSAGE_ALLOCATE_BUFFER;
 	size_t lpBuffer_w_len;
 	wchar_t *lpBuffer_w = NULL;
 	wchar_t *source_w = NULL;
 	int i = 0;
+	int inserts_used = 0;
+	wchar_t *inserts_w[99] = {0};
+	va_or_array_t voa = (dwFlags & FORMAT_MESSAGE_ARGUMENT_ARRAY)
+		? VOA_ARRAY
+		: VOA_VA;
 
 	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
 		WCHAR_T_DEC(lpSource);
 		WCHAR_T_CONV(lpSource);
+		
+		if(dwFlags & ~FORMAT_MESSAGE_IGNORE_INSERTS && Arguments) {
+			const char *p = lpSource;
+			/** Whenever a width and/or precision format specifications are
+			  * used together with the va_list form, any following insert
+			  * numbers must be decremented in the argument string. To cite
+			  * the example on the MSDN page, a format specification that is
+			  * meant to return "  Bi    Bob Bill" with the argument list
+			  * [4, 2, "Bill", "Bob", 6, "Bill"] would have to be
+			  *
+			  *		"%1!*.*s! %3!*s! %4"
+			  *
+			  * for a va_list and
+			  *
+			  *		"%1!*.*s! %4!*s! %6"
+			  *
+			  *	for a FORMAT_MESSAGE_ARGUMENT_ARRAY. Therefore, we need to add
+			  * that drift value to the insert number ourselves in the former
+			  * case.
+			  */
+			int insert_drift = 0;
+			while(*p) {
+				printf_format_t fmt;
+				int insert;
+				
+				// Skip characters before '%'
+				for(; *p && *p != '%'; p++);
+				if(!*p) {
+					break;
+				}
+				// *p == '%' here
+				p++;
+
+				// Single characters
+				if(strchr("% .!nrt", *p)) {
+					p++;
+					continue;
+				// Insert number
+				} else if(*p >= '1' && *p <= '9') {
+					insert = (*p++) - '0';
+					if(*p >= '0' && *p <= '9') {
+						insert = (insert * 10) + (*p++) - '0';
+					}
+					insert--;
+
+					// printf format
+					if(*p == '!') {
+						p = printf_format_parse(&fmt, p + 1);
+						if(*(p++) != '!') {
+							// Something has to be wrong with the input string
+							SetLastError(ERROR_INVALID_PARAMETER);
+							goto end;
+						}
+					} else {
+						fmt.argc_before_type = 0;
+						fmt.type_size_in_ints = 1;
+						fmt.type = 's';
+					}
+					insert += fmt.argc_before_type + insert_drift;
+					if((fmt.type == 's' || fmt.type == 'S') && inserts_w[insert] == NULL) {
+						void **argptr = voa_arg(Arguments, insert, voa);
+						const char *src = *argptr;
+						WCHAR_T_DEC(src);
+						WCHAR_T_CONV_VLA(src);
+						inserts_w[insert] = src_w;
+						inserts_used = max(insert + 1, inserts_used);
+						*argptr = inserts_w[insert];
+					}
+					if(fmt.argc_before_type && voa == VOA_VA) {
+						insert_drift++;
+					}
+				}
+			}
+		}
 		source_w = lpSource_w;
 		lpSource = lpSource_w;
 	}
@@ -353,6 +450,9 @@ DWORD WINAPI FormatMessageU(
 		ret = 0;
 	}
 end:
+	for(i = 0; i < inserts_used; i++) {
+		VLA_FREE(inserts_w[i]);
+	}
 	LocalFree(lpBuffer_w);
 	VLA_FREE(source_w);
 	return ret;
