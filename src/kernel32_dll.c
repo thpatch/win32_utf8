@@ -431,7 +431,7 @@ DWORD WINAPI FormatMessageU(
 		goto end;
 	} else if(allocating) {
 		nSize = max(ret * sizeof(char) * UTF8_MUL, nSize);
-		*lppBuffer = LocalAlloc(0, ret);
+		*lppBuffer = LocalAlloc(0, nSize);
 		lpBuffer = *lppBuffer;
 	}
 	// Apparently, we're only supposed to either put all or nothing into
