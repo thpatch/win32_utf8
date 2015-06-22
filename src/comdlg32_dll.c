@@ -60,6 +60,12 @@ static BOOL WrapOFN(
 
 		if(ofn_a->lpstrFile) {
 			StringToUTF8(ofn_a->lpstrFile, ofn_w->lpstrFile, ofn_a->nMaxFile);
+			ofn_a->nFileOffset = WideCharToMultiByte(
+				CP_UTF8, 0, ofn_w->lpstrFile, ofn_w->nFileOffset, NULL, 0, NULL, NULL
+			);
+			ofn_a->nFileExtension = WideCharToMultiByte(
+				CP_UTF8, 0, ofn_w->lpstrFile, ofn_w->nFileExtension, NULL, 0, NULL, NULL
+			);
 		}
 		if(ofn_a->lpstrFileTitle) {
 			StringToUTF8(ofn_a->lpstrFileTitle, ofn_w->lpstrFileTitle, ofn_a->nMaxFileTitle);
