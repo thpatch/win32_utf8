@@ -99,6 +99,7 @@
     <ClCompile Include="src\macros.c">
       <Filter>General</Filter>
     </ClCompile>
+    <ClCompile Include="win32_utf8_build.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="win32_utf8.def">

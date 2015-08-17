@@ -40,4 +40,6 @@ The following functions are wrapped in this way:
 	 * GetFileVersionInfoEx()
 
 ### Building ###
-A project file for Visual C++ is provided. The default configuration requires the Visual Studio 2013 platform toolset with Windows XP targeting support, but the project should generally build under every version since Visual C++ 2010 Express after changing the platform toolset (*Project → Properties → General → Platform Toolset*) to a supported option.
+For static linking into your existing native Win32 code, simply replace all inclusions of `windows.h` with `win32_utf8.h`, and make sure that `win32_utf8_build.c` is compiled as part of your sources.
+
+For dynamic linking or other more special use cases, a project file for Visual C++ is provided. The default configuration requires the Visual Studio 2013 platform toolset with Windows XP targeting support, but the project should generally build under every version since Visual C++ 2010 Express after changing the platform toolset (*Project → Properties → General → Platform Toolset*) to a supported option.
