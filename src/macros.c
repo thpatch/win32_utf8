@@ -6,9 +6,6 @@
   * Random macros and utility functions.
   */
 
-#include "win32_utf8.h"
-#include <assert.h>
-
 size_t zzstrlen(const char *str)
 {
 	size_t len = 0;

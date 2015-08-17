@@ -6,9 +6,6 @@
   * Generic call wrappers to cut down redundancy.
   */
 
-#include "win32_utf8.h"
-#include "wrappers.h"
-
 DWORD WINAPI Wrap1P(
 	Wrap1PFunc_t func,
 	LPCSTR lpsz

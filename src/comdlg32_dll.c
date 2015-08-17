@@ -6,8 +6,6 @@
   * comdlg32.dll functions.
   */
 
-#include "win32_utf8.h"
-
 const w32u8_pair_t comdlg32_pairs[] = {
 	{"GetOpenFileNameA", GetOpenFileNameU},
 	{"GetSaveFileNameA", GetSaveFileNameU},

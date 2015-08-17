@@ -6,8 +6,6 @@
   * Unicode conversion functions.
   */
 
-#include "win32_utf8.h"
-
 int StringToUTF16(wchar_t *str_w, const char *str_mb, int str_len)
 {
 	int str_len_w;

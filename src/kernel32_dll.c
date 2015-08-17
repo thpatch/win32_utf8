@@ -6,9 +6,6 @@
   * kernel32.dll functions.
   */
 
-#include "win32_utf8.h"
-#include "wrappers.h"
-
 const w32u8_pair_t kernel32_pairs[] = {
 	{"CreateDirectoryA", CreateDirectoryU},
 	{"CreateFileA", CreateFileU},

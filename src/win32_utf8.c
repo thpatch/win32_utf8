@@ -6,8 +6,6 @@
   * Initialization stubs.
   */
 
-#include "win32_utf8.h"
-
 const w32u8_dll_t* w32u8_get_wrapped_functions()
 {
 	// Yes, this is the prettiest way I came up with.

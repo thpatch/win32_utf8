@@ -6,8 +6,6 @@
   * C runtime functions.
   */
 
-#include "win32_utf8.h"
-
 const w32u8_pair_t msvcrt_pairs[] = {
 	{"fopen", fopen_u},
 	NULL

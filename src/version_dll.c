@@ -6,8 +6,6 @@
   * version.dll functions.
   */
 
-#include "win32_utf8.h"
-
 /// Functions not available before Vista
 /// ------------------------------------
 typedef DWORD WINAPI DLL_FUNC_TYPE(version, GetFileVersionInfoSizeExW)(

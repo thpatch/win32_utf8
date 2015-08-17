@@ -6,8 +6,6 @@
   * user32.dll functions.
   */
 
-#include "win32_utf8.h"
-
 // Some of the message-related functions here link straight to their W
 // counterparts. In these cases, both the A and W functions use the same
 // parameters, but since we only ever create Unicode windows, we also have

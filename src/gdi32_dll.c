@@ -6,9 +6,6 @@
   * gdi32.dll functions.
   */
 
-#include "win32_utf8.h"
-#include <stddef.h>
-
 const w32u8_pair_t gdi32_pairs[] = {
 	{"CreateFontA", CreateFontU},
 	{"CreateFontIndirectA", CreateFontIndirectU},

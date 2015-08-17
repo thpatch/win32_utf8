@@ -6,8 +6,6 @@
   * wininet.dll functions.
   */
 
-#include "win32_utf8.h"
-
 const w32u8_pair_t wininet_pairs[] = {
 	{"InternetCombineUrlA", InternetCombineUrlU},
 	{"InternetCrackUrlA", InternetCrackUrlU},

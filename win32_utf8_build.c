@@ -10,6 +10,12 @@
 #define CINTERFACE
 #define COBJMACROS
 
+// Headers
+#include "src/win32_utf8.h"
+#include "src/wrappers.h"
+#include <stddef.h>
+#include <assert.h>
+
 // Helper functions
 #include "src/macros.c"
 #include "src/utf.c"

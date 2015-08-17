@@ -6,9 +6,6 @@
   * shell32.dll functions.
   */
 
-#include "win32_utf8.h"
-#include "wrappers.h"
-
 const w32u8_pair_t shell32_pairs[] = {
 	{"DragQueryFileA", DragQueryFileU},
 	{"ExtractIconA", ExtractIconU},
