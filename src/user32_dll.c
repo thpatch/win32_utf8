@@ -253,7 +253,7 @@ int WINAPI LoadStringU(
 	// (see http://blogs.msdn.com/b/oldnewthing/archive/2009/10/09/9904648.aspx),
 	// this indeed is not as easy as simply calling LoadStringW() and
 	// converting the result.
-	HRSRC hrsrc = FindResource(hInstance,
+	HRSRC hrsrc = FindResourceW(hInstance,
 		MAKEINTRESOURCEW((LOWORD(uID) >> 4) + 1), (LPWSTR)RT_STRING
 	);
 	IMAGE_RESOURCE_DIR_STRING_U *str_res = LoadResource(hInstance, hrsrc);
