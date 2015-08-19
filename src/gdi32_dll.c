@@ -279,7 +279,8 @@ DWORD WINAPI GetGlyphOutlineU(
 	UINT codepoint = 0;
 
 	char *p = c_a;
-	for(int i = 0; i < sizeof(UINT); i++) {
+	int i;
+	for(i = 0; i < sizeof(UINT); i++) {
 		UINT shift = (sizeof(UINT) - 1 - i) * 8;
 		char byte = (uChar & (0xFF << shift)) >> shift;
 		if(byte) {
