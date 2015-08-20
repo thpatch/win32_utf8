@@ -10,6 +10,12 @@
 #define CINTERFACE
 #define COBJMACROS
 
+#pragma comment(lib, "comdlg32.lib")
+#pragma comment(lib, "psapi.lib")
+#pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "version.lib")
+#pragma comment(lib, "wininet.lib")
+
 // Headers
 #include "src/win32_utf8.h"
 #include "src/wrappers.h"
