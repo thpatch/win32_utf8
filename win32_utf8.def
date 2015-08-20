@@ -42,6 +42,7 @@ EXPORTS
 	FindFirstFileU
 	FindNextFileU
 	FormatMessageU
+	GetCommandLineU
 	GetCurrentDirectoryU
 	GetEnvironmentVariableU
 	GetFileAttributesU

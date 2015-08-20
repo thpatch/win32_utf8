@@ -74,6 +74,12 @@ DWORD WINAPI FormatMessageU(
 #undef FormatMessage
 #define FormatMessage FormatMessageU
 
+LPSTR WINAPI GetCommandLineU(
+	VOID
+);
+#undef GetCommandLine
+#define GetCommandLine GetCommandLineU
+
 DWORD WINAPI GetCurrentDirectoryU(
 	DWORD nBufferLength,
 	LPSTR lpBuffer

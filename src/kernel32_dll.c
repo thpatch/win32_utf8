@@ -18,6 +18,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetEnvironmentVariableA", GetEnvironmentVariableU},
 	{"GetFileAttributesA", GetFileAttributesU},
 	{"GetFileAttributesExA", GetFileAttributesExU},
+	{"GetCommandLineA", GetCommandLineU},
 	{"GetModuleFileNameA", GetModuleFileNameU},
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
 	{"GetStartupInfoA", GetStartupInfoU},
@@ -453,6 +454,20 @@ end:
 	LocalFree(lpBuffer_w);
 	VLA_FREE(source_w);
 	return ret;
+}
+
+LPSTR WINAPI GetCommandLineU(
+	VOID
+)
+{
+	static char *command_line = NULL;
+	if(!command_line) {
+		const wchar_t *command_line_w = GetCommandLineW();
+		WCSLEN_DEC(command_line_w);
+		command_line = (char*)malloc(command_line_w_len);
+		StringToUTF8(command_line, command_line_w, command_line_w_len);
+	}
+	return command_line;
 }
 
 DWORD WINAPI GetCurrentDirectoryU(
