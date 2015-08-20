@@ -6,7 +6,7 @@
   * Generic call wrappers to cut down redundancy.
   */
 
-DWORD WINAPI Wrap1P(
+size_t WINAPI Wrap1P(
 	Wrap1PFunc_t func,
 	LPCSTR lpsz
 )

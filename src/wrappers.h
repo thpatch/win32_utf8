@@ -9,10 +9,10 @@
 #pragma once
 
 // Wrapper for functions that take only a single string parameter.
-typedef DWORD (WINAPI *Wrap1PFunc_t)(
+typedef size_t (WINAPI *Wrap1PFunc_t)(
 	LPCWSTR lpsz
 );
-DWORD WINAPI Wrap1P(
+size_t WINAPI Wrap1P(
 	Wrap1PFunc_t func,
 	LPCSTR lpsz
 );

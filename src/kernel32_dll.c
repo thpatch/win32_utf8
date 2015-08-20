@@ -486,7 +486,7 @@ DWORD WINAPI GetFileAttributesU(
 	LPCSTR lpFileName
 )
 {
-	return Wrap1P(GetFileAttributesW, lpFileName);
+	return Wrap1P((Wrap1PFunc_t)GetFileAttributesW, lpFileName);
 }
 
 BOOL WINAPI GetFileAttributesExU(
