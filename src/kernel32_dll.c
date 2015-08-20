@@ -308,7 +308,7 @@ static void** voa_arg(va_list *va, unsigned int n, va_or_array_t type)
 		}
 		return (void**)vacopy;
 	}
-	return (void**)(va + (n * sizeof(void*)));
+	return (void**)((char*)va + (n * sizeof(void*)));
 }
 
 DWORD WINAPI FormatMessageU(
