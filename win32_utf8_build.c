@@ -11,6 +11,7 @@
 #define COBJMACROS
 
 #pragma comment(lib, "comdlg32.lib")
+#pragma comment(lib, "dsound.lib")
 #pragma comment(lib, "psapi.lib")
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "version.lib")
@@ -30,6 +31,7 @@
 
 // Wrappers
 #include "src/comdlg32_dll.c"
+#include "src/dsound_dll.c"
 #include "src/gdi32_dll.c"
 #include "src/kernel32_dll.c"
 #include "src/msvcrt_dll.c"

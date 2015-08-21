@@ -10,6 +10,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions()
 {
 	// Yes, this is the prettiest way I came up with.
 	extern const w32u8_pair_t comdlg32_pairs[];
+	extern const w32u8_pair_t dsound_pairs[];
 	extern const w32u8_pair_t gdi32_pairs[];
 	extern const w32u8_pair_t kernel32_pairs[];
 	extern const w32u8_pair_t msvcrt_pairs[];
@@ -22,6 +23,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions()
 
 	static const w32u8_dll_t dlls[] = {
 		{"comdlg32.dll", comdlg32_pairs},
+		{"dsound.dll", dsound_pairs},
 		{"gdi32.dll", gdi32_pairs},
 		{"kernel32.dll", kernel32_pairs},
 		{"msvcrt.dll", msvcrt_pairs},

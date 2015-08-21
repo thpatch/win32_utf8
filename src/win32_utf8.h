@@ -8,10 +8,9 @@
 
 #pragma once
 
-#define WIN32_LEAN_AND_MEAN
-
 #include <Windows.h>
 #include <CommDlg.h>
+#include <dsound.h>
 #include <psapi.h>
 #include <ShellAPI.h>
 #include <Shlwapi.h>
@@ -23,6 +22,7 @@
 #include "utf.h"
 
 #include "comdlg32_dll.h"
+#include "dsound_dll.h"
 #include "gdi32_dll.h"
 #include "kernel32_dll.h"
 #include "msvcrt_dll.h"
