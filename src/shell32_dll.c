@@ -15,6 +15,44 @@ const w32u8_pair_t shell32_pairs[] = {
 	NULL
 };
 
+LPSTR* WINAPI CommandLineToArgvU(
+	LPCWSTR lpCmdLine,
+	int* pNumArgs
+)
+{
+	int cmd_line_pos; // Array "index" of the actual command line string
+	WCSLEN_DEC(lpCmdLine);
+	char **argv_u;
+
+	wchar_t **argv_w = CommandLineToArgvW(lpCmdLine, pNumArgs);
+	if(!argv_w) {
+		return NULL;
+	}
+	cmd_line_pos = *pNumArgs + 1;
+
+	// argv is indeed terminated with an additional sentinel NULL pointer.
+	argv_u = LocalAlloc(
+		LMEM_FIXED, cmd_line_pos * sizeof(char*) + lpCmdLine_len
+	);
+	if(argv_u) {
+		int i;
+		char *cur_arg_u = (char*)&argv_u[cmd_line_pos];
+		for(i = 0; i < *pNumArgs; i++) {
+			size_t cur_arg_u_len;
+			argv_u[i] = cur_arg_u;
+			cur_arg_u_len = StringToUTF8(
+				cur_arg_u, argv_w[i], lpCmdLine_len
+			) + 1;
+			cur_arg_u += cur_arg_u_len;
+			lpCmdLine_len -= cur_arg_u_len;
+		}
+		argv_u[i] = NULL;
+	}
+
+	LocalFree(argv_w);
+	return argv_u;
+}
+
 UINT WINAPI DragQueryFileU(
 	HANDLE hDrop,
 	UINT iFile,

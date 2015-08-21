@@ -8,6 +8,11 @@
 
 #pragma once
 
+LPSTR* WINAPI CommandLineToArgvU(
+	LPCWSTR lpCmdLine,
+	int* pNumArgs
+);
+
 UINT WINAPI DragQueryFileU(
 	HANDLE hDrop,
 	UINT iFile,

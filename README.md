@@ -24,6 +24,12 @@ In addition, this library also adds new useful functionality to some original Wi
 
 * `PathRemoveFileSpecU()` correctly works as intended for paths containing forward slashes
 
+#### UTF-8 versions of functions that originally only have UTF-16 versions
+
+* `LPSTR* WINAPI CommandLineToArgvU(LPCWSTR lpCmdLine, int* pNumArgs)`
+
+	Splits a UTF-16 command-line string (returned by e.g.`GetCommandLineW()`) into an UTF-8 `argv` array, and returns the number of arguments (`argc`) in `pNumArgs`. The caller has to free the returned array using LocalFree()`.
+
 ### OS compatibility
 win32_utf8 it meant to require at least Windows XP - that is, it statically references only Windows functions that were available on XP. Wrappers for functions that were introduced in later Windows versions load their original functions dynamically using GetProcAddress().
 
