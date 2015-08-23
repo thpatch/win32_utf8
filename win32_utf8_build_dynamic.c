@@ -3,12 +3,15 @@
   *
   * ----
   *
-  * Main compilation unit.
+  * Main compilation unit for dynamic builds. (Which is also used as the base
+  * for static builds.).
   */
 
 #define PSAPI_VERSION 1
 #define CINTERFACE
 #define COBJMACROS
+
+#define WIN32_UTF8_MAIN_UNIT
 
 #pragma comment(lib, "comdlg32.lib")
 #pragma comment(lib, "dsound.lib")

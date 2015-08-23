@@ -58,6 +58,9 @@
     <ClInclude Include="src\dsound_dll.h">
       <Filter>Wrappers</Filter>
     </ClInclude>
+    <ClInclude Include="src\entry.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\utf.c">

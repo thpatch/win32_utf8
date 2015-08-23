@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="src\comdlg32_dll.h" />
     <ClInclude Include="src\dsound_dll.h" />
+    <ClInclude Include="src\entry.h" />
     <ClInclude Include="src\gdi32_dll.h" />
     <ClInclude Include="src\kernel32_dll.h" />
     <ClInclude Include="src\macros.h" />
@@ -102,7 +103,13 @@
     <ClInclude Include="src\win32_utf8.h" />
     <ClInclude Include="src\wininet_dll.h" />
     <ClInclude Include="src\wrappers.h" />
-    <ClCompile Include="win32_utf8_build.c" />
+    <ClCompile Include="win32_utf8_build_dynamic.c">
+      <ExcludedFromBuild Condition="'$(ConfigurationType)'!='DynamicLibrary'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="win32_utf8_build_static.c">
+      <ExcludedFromBuild Condition="'$(ConfigurationType)'=='DynamicLibrary'">true</ExcludedFromBuild>
+    </ClCompile>
+    <None Include="src\entry.c" />
     <None Include="src\comdlg32_dll.c" />
     <None Include="src\dsound_dll.c" />
     <None Include="src\gdi32_dll.c" />

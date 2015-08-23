@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <WinInet.h>
 
+#include "entry.h"
 #include "macros.h"
 #include "utf.h"
 
