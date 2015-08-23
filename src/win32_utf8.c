@@ -47,13 +47,12 @@ void w32u8_set_fallback_codepage(UINT codepage)
 	fallback_codepage = codepage;
 }
 
-void InitDll(HMODULE hMod)
+void win32_utf8_init(void)
 {
-	kernel32_init(hMod);
 	version_init();
 }
 
-void ExitDll(HMODULE hMod)
+void win32_utf8_exit(void)
 {
 	kernel32_exit();
 }
@@ -65,10 +64,10 @@ BOOL APIENTRY DllMain(HMODULE hDll, DWORD ulReasonForCall, LPVOID lpReserved)
 {
 	switch(ulReasonForCall) {
 		case DLL_PROCESS_ATTACH:
-			InitDll(hDll);
+			win32_utf8_init();
 			break;
 		case DLL_PROCESS_DETACH:
-			ExitDll(hDll);
+			win32_utf8_exit();
 			break;
 	}
 	return TRUE;

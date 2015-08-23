@@ -219,6 +219,5 @@ BOOL WINAPI WritePrivateProfileStringU(
 #undef WritePrivateProfileString
 #define WritePrivateProfileString WritePrivateProfileStringU
 
-// Patchers
-int kernel32_init(HMODULE hMod);
+// Cleanup
 void kernel32_exit(void);

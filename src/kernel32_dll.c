@@ -750,13 +750,7 @@ BOOL WINAPI WritePrivateProfileStringU(
 	return ret;
 }
 
-// Patcher functions
-// -----------------
-int kernel32_init(HMODULE hMod)
-{
-	return 0;
-}
-
+// Cleanup
 void kernel32_exit(void)
 {
 	SAFE_FREE(startupinfo_desktop);
