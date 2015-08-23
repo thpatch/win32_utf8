@@ -51,7 +51,11 @@ typedef struct {
 // categorized by the DLL of the original function.
 // Both the function pair lists per DLL and the DLL list itself are terminated
 // by a zero-filled entry.
+#ifndef WIN32_UTF8_NO_API
 const w32u8_dll_t* w32u8_get_wrapped_functions();
+#else
+#define w32u8_get_wrapped_functions ERROR_win32_utf8_was_configured_without_API!
+#endif
 
 // Sets a custom codepage for wide char conversion, which is used if the input
 // to a *U function is not valid UTF-8.

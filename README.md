@@ -50,5 +50,7 @@ For static linking into your existing native Win32 code, simply replace all incl
 
 For dynamic linking or other more special use cases, a project file for Visual C++ is provided. The default configuration requires the Visual Studio 2013 platform toolset with Windows XP targeting support, but the project should generally build under every version since Visual C++ 2010 Express after changing the platform toolset (*Project → Properties → General → Platform Toolset*) to a supported option.
 
+If you want to statically link win32_utf8 into an existing codebase that doesn't necessarily need to use all of the wrapped functions (which is probably the case for most programs), you may additionally `#define WIN32_UTF8_NO_API`. This macro removes the `w32u8_get_wrapped_functions()` function, which references all wrapped functions that are part of win32_utf8, from your build. This aids the elimination of unused wrapper functions (and their DLL references) with some compilers, particularly Visual C++.
+
 #### Compiler support ####
 **Visual C++** and **MinGW** compile the code just fine. Cygwin is not supported, as [it lacks Unicode versions of certain C runtime functions because they're not part of the POSIX standard](https://www.cygwin.com/ml/cygwin/2006-03/msg00539.html). (Of course, using MinGW's `gcc` through Cygwin works just fine.)
