@@ -20,11 +20,16 @@ int __cdecl win32_utf8_main(int argc, const char *argv[]);
 
 int __cdecl main(int argc, const char *argv[])
 {
+	extern void win32_utf8_init(void);
+	extern void win32_utf8_exit(void);
+
 	int ret;
 	int argc_w = 0;
 	char **argv_u = CommandLineToArgvU(GetCommandLineW(), &argc_w);
 	if(argv_u) {
+		win32_utf8_init();
 		ret = win32_utf8_main(argc_w, (const char**)argv_u);
+		win32_utf8_exit();
 		LocalFree(argv_u);
 	} else {
 		ret = GetLastError();
