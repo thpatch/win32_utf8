@@ -89,8 +89,8 @@ const char* printf_format_parse(printf_format_t *fmt, const char *p)
 	fmt->type = *(p++);
 	if(strchr("aeEfgG", fmt->type)) {
 		// Two surprises here:
-		// • Yes, floats are always coerced to doubles.
-		// • Yes, flag_double is ignored here because Microsoft has no support
+		// â€¢ Yes, floats are always coerced to doubles.
+		// â€¢ Yes, flag_double is ignored here because Microsoft has no support
 		//   for printing long doubles in either of their printf implementations.
 		fmt->type_size_in_ints = sizeof(double) / sizeof(int);
 	} else if(strchr("sScCpndiouxX", fmt->type)) {
