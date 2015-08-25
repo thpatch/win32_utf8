@@ -10,6 +10,7 @@
 
 #include <Windows.h>
 #include <CommDlg.h>
+#include <MMSystem.h>
 #include <dsound.h>
 #include <psapi.h>
 #include <ShellAPI.h>
