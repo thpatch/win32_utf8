@@ -3,7 +3,7 @@ Win32 UTF-8 wrapper
 
 ### Why a wrapper? ###
 
-This library evolved from the need of the [Touhou Community Reliant Automatic Patcher] (https://github.com/thpatch/thcrap) to hack Unicode functionality for the Win32 API into games using the ANSI functions.
+This library evolved from the need of the [Touhou Community Reliant Automatic Patcher](https://github.com/thpatch/thcrap) to hack Unicode functionality for the Win32 API into games using the ANSI functions.
 
 By simply including `win32_utf8.h` and linking to this library, you automatically have Unicode compatibility in applications using the native Win32 APIs, usually without requiring changes to existing code using char strings.
 
@@ -28,7 +28,7 @@ In addition, this library also adds new useful functionality to some original Wi
 
 * `LPSTR* WINAPI CommandLineToArgvU(LPCWSTR lpCmdLine, int* pNumArgs)`
 
-	Splits a UTF-16 command-line string (returned by e.g.`GetCommandLineW()`) into an UTF-8 `argv` array, and returns the number of arguments (`argc`) in `pNumArgs`. The caller has to free the returned array using LocalFree()`.
+	Splits a UTF-16 command-line string (returned by e.g.`GetCommandLineW()`) into an UTF-8 `argv` array, and returns the number of arguments (`argc`) in `pNumArgs`. The caller has to free the returned array using `LocalFree()`.
 
 ### OS compatibility
 win32_utf8 it meant to require at least Windows XP - that is, it statically references only Windows functions that were available on XP. Wrappers for functions that were introduced in later Windows versions load their original functions dynamically using GetProcAddress().
