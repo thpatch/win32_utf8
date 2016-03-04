@@ -132,17 +132,17 @@ HWND WINAPI CreateWindowExU(
 )
 {
 	HWND ret;
-	WCHAR_T_DEC(lpClassName);
+	RESID_DEC(lpClassName);
 	WCHAR_T_DEC(lpWindowName);
-	WCHAR_T_CONV_VLA(lpClassName);
+	RESID_CONV(lpClassName, lpClassName);
 	WCHAR_T_CONV_VLA(lpWindowName);
 
 	ret = CreateWindowExW(
 		dwExStyle, lpClassName_w, lpWindowName_w, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu,
 		hInstance, lpParam
 	);
-	VLA_FREE(lpClassName_w);
-	VLA_FREE(lpWindowName_w);
+	RESID_FREE(lpClassName, lpClassName);
+	WCHAR_T_FREE(lpWindowName);
 	return ret;
 }
 
@@ -202,15 +202,15 @@ BOOL WINAPI GetClassInfoExU(
 {
 	BOOL ret;
 	WNDCLASSEXW wcex_w = {sizeof(WNDCLASSEXW), 0};
-	WCHAR_T_DEC(lpClassName);
-	WCHAR_T_CONV_VLA(lpClassName);
+	RESID_DEC(lpClassName);
+	RESID_CONV(lpClassName, lpClassName);
 	ret = GetClassInfoExW(hInstance, lpClassName_w, &wcex_w);
 	if(ret) {
 		WndclassCopyBase(wcex_a, &wcex_w);
 		WndclassExCopyBase(wcex_a, &wcex_w);
 		wcex_a->lpszClassName = lpClassName;
 	}
-	WCHAR_T_FREE(lpClassName);
+	RESID_FREE(lpClassName, lpClassName);
 	return ret;
 }
 
@@ -369,9 +369,9 @@ BOOL WINAPI UnregisterClassU(
 )
 {
 	BOOL ret;
-	WCHAR_T_DEC(lpClassName);
-	WCHAR_T_CONV_VLA(lpClassName);
+	RESID_DEC(lpClassName);
+	RESID_CONV(lpClassName, lpClassName);
 	ret = UnregisterClassW(lpClassName_w, hInstance);
-	WCHAR_T_FREE(lpClassName);
+	RESID_FREE(lpClassName, lpClassName);
 	return ret;
 }

@@ -182,8 +182,8 @@ size_t zzstrlen(const char *str);
 	StringToUTF16(str_in##_w, str_in, str_len);
 
 // Now, if Microsoft just had used integer identifiers for resources instead
-// of names plus the MAKEINTRESOURCE hack, we could just re-point all these
-// calls to their wide versions and be done with it.
+// of names plus the MAKEINTRESOURCE / MAKEINTATOM hacks, we could just
+// point all these calls to their wide versions and be done with it.
 // Instead, there is some maintenance to do...
 #define RESID_DEC(local) \
 	LPWSTR local##_w = NULL;
