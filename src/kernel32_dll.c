@@ -7,6 +7,8 @@
   */
 
 const w32u8_pair_t kernel32_pairs[] = {
+	{"CopyFileA", CopyFileU},
+	{"CopyFileExA", CopyFileExU},
 	{"CreateDirectoryA", CreateDirectoryU},
 	{"CreateFileA", CreateFileU},
 	{"CreateProcessA", CreateProcessU},
@@ -115,6 +117,41 @@ end:
 	return ret;
 }
 // --------------
+
+BOOL WINAPI CopyFileU(
+	LPCSTR lpExistingFileName,
+	LPCSTR lpNewFileName,
+	BOOL bFailIfExists
+)
+{
+	return CopyFileExU(
+		lpExistingFileName, lpNewFileName, NULL, NULL, NULL,
+		bFailIfExists ? COPY_FILE_FAIL_IF_EXISTS : 0
+	);
+}
+
+BOOL WINAPI CopyFileExU(
+	LPCSTR lpExistingFileName,
+	LPCSTR lpNewFileName,
+	LPPROGRESS_ROUTINE lpProgressRoutine,
+	LPVOID lpData,
+	LPBOOL pbCancel,
+	DWORD dwCopyFlags
+)
+{
+	BOOL ret;
+	WCHAR_T_DEC(lpExistingFileName);
+	WCHAR_T_DEC(lpNewFileName);
+	WCHAR_T_CONV_VLA(lpExistingFileName);
+	WCHAR_T_CONV_VLA(lpNewFileName);
+	ret = CopyFileExW(
+		lpExistingFileName_w, lpNewFileName_w,
+		lpProgressRoutine, lpData, pbCancel, dwCopyFlags
+	);
+	WCHAR_T_FREE(lpExistingFileName);
+	WCHAR_T_FREE(lpNewFileName);
+	return ret;
+}
 
 BOOL WINAPI CreateDirectoryU(
 	LPCSTR lpPathName,

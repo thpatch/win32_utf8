@@ -40,6 +40,8 @@ EXPORTS
 
 	; kernel32.dll
 	; ------------
+	CopyFileU
+	CopyFileExU
 	CreateDirectoryU
 	CreateFileU
 	CreateProcessU

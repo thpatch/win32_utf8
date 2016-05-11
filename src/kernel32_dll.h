@@ -8,6 +8,25 @@
 
 #pragma once
 
+BOOL WINAPI CopyFileU(
+	LPCSTR lpExistingFileName,
+	LPCSTR lpNewFileName,
+	BOOL bFailIfExists
+);
+#undef CopyFile
+#define CopyFile CopyFileU
+
+BOOL WINAPI CopyFileExU(
+	LPCSTR lpExistingFileName,
+	LPCSTR lpNewFileName,
+	LPPROGRESS_ROUTINE lpProgressRoutine,
+	LPVOID lpData,
+	LPBOOL pbCancel,
+	DWORD dwCopyFlags
+);
+#undef CopyFileEx
+#define CopyFileEx CopyFileExU
+
 BOOL WINAPI CreateDirectoryU(
 	LPCSTR lpPathName,
 	LPSECURITY_ATTRIBUTES lpSecurityAttributes
