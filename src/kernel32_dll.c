@@ -540,23 +540,27 @@ DWORD WINAPI GetModuleFileNameU(
 	  * is or this becomes more frequent some day, the code is here.
 	  */
 
+	DWORD err;
 	DWORD ret = nSize ? nSize : MAX_PATH;
 	VLA(wchar_t, lpFilename_w, ret);
 
 	if(lpFilename && nSize) {
-		GetModuleFileNameW(hModule, lpFilename_w, nSize);
+		err = GetModuleFileNameW(hModule, lpFilename_w, nSize);
 	} else {
-		BOOL error = 1;
-		while(error) {
-			GetModuleFileNameW(hModule, lpFilename_w, ret);
-			error = GetLastError() == ERROR_INSUFFICIENT_BUFFER;
-			if(error) {
+		BOOL insufficient = 1;
+		while(insufficient) {
+			err = GetModuleFileNameW(hModule, lpFilename_w, ret);
+			insufficient = GetLastError() == ERROR_INSUFFICIENT_BUFFER;
+			if(insufficient) {
 				VLA(wchar_t, lpFilename_VLA, ret += MAX_PATH);
 				VLA_FREE(lpFilename_w);
 				lpFilename_w = lpFilename_VLA;
 			}
 		}
 		nSize = 0;
+	}
+	if(err == 0) {
+		return err;
 	}
 	ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
 	VLA_FREE(lpFilename_w);
