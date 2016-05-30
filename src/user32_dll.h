@@ -65,23 +65,6 @@ int WINAPI DrawTextU(
 #undef DrawText
 #define DrawText DrawTextU
 
-BOOL WINAPI InsertMenuItemU(
-	HMENU hmenu,
-	UINT item,
-	BOOL fByPosition,
-	LPCMENUITEMINFOA lpmi
-);
-#undef InsertMenuItem
-#define InsertMenuItem InsertMenuItemU
-
-// These (and SetWindowLong(Ptr) below) are necessary because Windows otherwise
-//  silently converts certain text parameters for window procedures to ANSI.
-// (see http://blogs.msdn.com/b/oldnewthing/archive/2003/12/01/55900.aspx)
-#undef GetWindowLong
-#undef GetWindowLongPtr
-#define GetWindowLong GetWindowLongW
-#define GetWindowLongPtr GetWindowLongPtrW
-
 BOOL WINAPI GetClassInfoU(
 	HINSTANCE hInstance,
 	LPCSTR lpClassName,
@@ -97,6 +80,23 @@ BOOL WINAPI GetClassInfoExU(
 );
 #undef GetClassInfoEx
 #define GetClassInfoEx GetClassInfoExU
+
+// These (and SetWindowLong(Ptr) below) are necessary because Windows otherwise
+//  silently converts certain text parameters for window procedures to ANSI.
+// (see http://blogs.msdn.com/b/oldnewthing/archive/2003/12/01/55900.aspx)
+#undef GetWindowLong
+#undef GetWindowLongPtr
+#define GetWindowLong GetWindowLongW
+#define GetWindowLongPtr GetWindowLongPtrW
+
+BOOL WINAPI InsertMenuItemU(
+	HMENU hmenu,
+	UINT item,
+	BOOL fByPosition,
+	LPCMENUITEMINFOA lpmi
+);
+#undef InsertMenuItem
+#define InsertMenuItem InsertMenuItemU
 
 int WINAPI LoadStringU(
 	HINSTANCE hInstance,

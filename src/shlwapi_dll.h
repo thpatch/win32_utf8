@@ -8,18 +8,18 @@
 
 #pragma once
 
+BOOL STDAPICALLTYPE PathFileExistsU(
+	LPCSTR pszPath
+);
+#undef PathFileExists
+#define PathFileExists PathFileExistsU
+
 BOOL STDAPICALLTYPE PathMatchSpecU(
 	LPCSTR pszFile,
 	LPCSTR pszSpec
 );
 #undef PathMatchSpec
 #define PathMatchSpec PathMatchSpecU
-
-BOOL STDAPICALLTYPE PathFileExistsU(
-	LPCSTR pszPath
-);
-#undef PathFileExists
-#define PathFileExists PathFileExistsU
 
 BOOL STDAPICALLTYPE PathRemoveFileSpecU(
 	LPSTR pszPath
