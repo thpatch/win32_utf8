@@ -10,6 +10,8 @@ const w32u8_pair_t gdi32_pairs[] = {
 	{"CreateFontA", CreateFontU},
 	{"CreateFontIndirectA", CreateFontIndirectU},
 	{"CreateFontIndirectExA", CreateFontIndirectExU},
+	{"EnumFontsA", EnumFontFamiliesU},
+	{"EnumFontFamiliesA", EnumFontFamiliesU},
 	{"EnumFontFamiliesExA", EnumFontFamiliesExU},
 	{"ExtTextOutA", ExtTextOutU},
 	{"GetGlyphOutlineA", GetGlyphOutlineU},
@@ -159,6 +161,29 @@ HFONT WINAPI lower_CreateFontIndirectA(
 	ZeroMemory(&elfedv_a.elfEnumLogfontEx.elfFullName, elfedv_lf_diff);
 	return down_func(&elfedv_a);
 }
+
+int WINAPI lower_EnumFontFamiliesA(
+	EnumFontFamiliesExA_type *down_func,
+	HDC hdc,
+	LPCSTR pszFaceName,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam
+)
+{
+	LOGFONTA lf;
+	LOGFONTA *plf = NULL;
+
+	if(pszFaceName) {
+		if(!pszFaceName[0]) {
+			return 1;
+		}
+		strncpy(lf.lfFaceName, pszFaceName, sizeof(lf.lfFaceName));
+		lf.lfCharSet = DEFAULT_CHARSET;
+		lf.lfPitchAndFamily = 0;
+		plf = &lf;
+	}
+	return down_func(hdc, plf, lpProc, lParam, 0);
+}
 /// ------------------
 
 HFONT WINAPI CreateFontU(
@@ -222,6 +247,18 @@ static int CALLBACK EnumFontFamExProcWrap(
 		);
 	}
 	return 0;
+}
+
+int WINAPI EnumFontFamiliesU(
+	HDC hdc,
+	LPCSTR pszFaceName,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam
+)
+{
+	return lower_EnumFontFamiliesA(EnumFontFamiliesExU,
+		hdc, pszFaceName, lpProc, lParam
+	);
 }
 
 int WINAPI EnumFontFamiliesExU(

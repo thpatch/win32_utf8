@@ -12,6 +12,7 @@
 /// ------------------
 typedef HFONT WINAPI CreateFontIndirectA_type(CONST LOGFONTA*);
 typedef HFONT WINAPI CreateFontIndirectExA_type(CONST ENUMLOGFONTEXDVA*);
+typedef int (WINAPI EnumFontFamiliesExA_type)(HDC, LPLOGFONTA, FONTENUMPROCA, LPARAM, DWORD);
 
 HFONT WINAPI lower_CreateFontA(
 	CreateFontIndirectA_type *down_func,
@@ -34,6 +35,14 @@ HFONT WINAPI lower_CreateFontA(
 HFONT WINAPI lower_CreateFontIndirectA(
 	CreateFontIndirectExA_type *down_func,
 	CONST LOGFONTA *lplf
+);
+
+int WINAPI lower_EnumFontFamiliesA(
+	EnumFontFamiliesExA_type *down_func,
+	HDC hdc,
+	LPCSTR lpLogfont,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam
 );
 /// ------------------
 
@@ -67,6 +76,18 @@ HFONT WINAPI CreateFontIndirectExU(
 );
 #undef CreateFontIndirectEx
 #define CreateFontIndirectEx CreateFontIndirectExU
+
+#undef EnumFonts
+#define EnumFonts EnumFontFamiliesU
+
+int WINAPI EnumFontFamiliesU(
+	HDC hdc,
+	LPCSTR pszFaceName,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam
+);
+#undef EnumFontFamilies
+#define EnumFontFamilies EnumFontFamiliesU
 
 int WINAPI EnumFontFamiliesExU(
 	HDC hdc,

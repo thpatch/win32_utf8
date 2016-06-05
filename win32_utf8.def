@@ -28,10 +28,12 @@ EXPORTS
 	; ---------
 	lower_CreateFontA
 	lower_CreateFontIndirectA
+	lower_EnumFontFamiliesA
 
 	CreateFontU
 	CreateFontIndirectU
 	CreateFontIndirectExU
+	EnumFontFamiliesU
 	EnumFontFamiliesExU
 	ExtTextOutU
 	GetGlyphOutlineU
