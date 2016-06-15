@@ -271,7 +271,7 @@ BOOL WINAPI DeleteFileU(
 	LPCSTR lpFileName
 )
 {
-	return Wrap1P((Wrap1PFunc_t)DeleteFileW, lpFileName);
+	return Wrap1P((Wrap1PFunc_t*)DeleteFileW, lpFileName);
 }
 
 static void CopyFindDataWToA(
@@ -538,7 +538,7 @@ DWORD WINAPI GetFileAttributesU(
 	LPCSTR lpFileName
 )
 {
-	return Wrap1P((Wrap1PFunc_t)GetFileAttributesW, lpFileName);
+	return Wrap1P((Wrap1PFunc_t*)GetFileAttributesW, lpFileName);
 }
 
 BOOL WINAPI GetFileAttributesExU(
@@ -669,7 +669,7 @@ HMODULE WINAPI LoadLibraryU(
 	LPCSTR lpLibFileName
 )
 {
-	return (HMODULE)Wrap1P((Wrap1PFunc_t)LoadLibraryW, lpLibFileName);
+	return (HMODULE)Wrap1P((Wrap1PFunc_t*)LoadLibraryW, lpLibFileName);
 }
 
 BOOL WINAPI MoveFileU(
@@ -743,14 +743,14 @@ BOOL WINAPI RemoveDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return Wrap1P((Wrap1PFunc_t)RemoveDirectoryW, lpPathName);
+	return Wrap1P((Wrap1PFunc_t*)RemoveDirectoryW, lpPathName);
 }
 
 BOOL WINAPI SetCurrentDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return Wrap1P((Wrap1PFunc_t)SetCurrentDirectoryW, lpPathName);
+	return Wrap1P((Wrap1PFunc_t*)SetCurrentDirectoryW, lpPathName);
 }
 
 int WINAPI WideCharToMultiByteU(

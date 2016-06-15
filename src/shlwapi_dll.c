@@ -17,7 +17,7 @@ BOOL STDAPICALLTYPE PathFileExistsU(
 	LPCSTR pszPath
 )
 {
-	return Wrap1P((Wrap1PFunc_t)PathFileExistsW, pszPath);
+	return Wrap1P((Wrap1PFunc_t*)PathFileExistsW, pszPath);
 }
 
 BOOL STDAPICALLTYPE PathMatchSpecU(

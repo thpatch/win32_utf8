@@ -10,11 +10,11 @@
 
 /// Promotion wrappers
 /// ------------------
-typedef HFONT (WINAPI *CreateFontIndirectA_type)(CONST LOGFONTA*);
-typedef HFONT (WINAPI *CreateFontIndirectExA_type)(CONST ENUMLOGFONTEXDVA*);
+typedef HFONT WINAPI CreateFontIndirectA_type(CONST LOGFONTA*);
+typedef HFONT WINAPI CreateFontIndirectExA_type(CONST ENUMLOGFONTEXDVA*);
 
 HFONT WINAPI lower_CreateFontA(
-	CreateFontIndirectA_type down_func,
+	CreateFontIndirectA_type *down_func,
 	int cHeight,
 	int cWidth,
 	int cEscapement,
@@ -32,7 +32,7 @@ HFONT WINAPI lower_CreateFontA(
 );
 
 HFONT WINAPI lower_CreateFontIndirectA(
-	CreateFontIndirectExA_type down_func,
+	CreateFontIndirectExA_type *down_func,
 	CONST LOGFONTA *lplf
 );
 /// ------------------

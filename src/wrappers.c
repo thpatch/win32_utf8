@@ -7,7 +7,7 @@
   */
 
 size_t WINAPI Wrap1P(
-	Wrap1PFunc_t func,
+	Wrap1PFunc_t *func,
 	LPCSTR lpsz
 )
 {
@@ -20,7 +20,7 @@ size_t WINAPI Wrap1P(
 }
 
 DWORD WINAPI WrapGetString(
-	WrapGetStringFunc_t func,
+	WrapGetStringFunc_t *func,
 	DWORD nBufferLength,
 	LPSTR lpBuffer
 )
