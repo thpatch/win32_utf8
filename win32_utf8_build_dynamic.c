@@ -7,6 +7,9 @@
   * for static builds.).
   */
 
+// We're targeting older C runtime versions, too.
+#define _CRT_SECURE_NO_WARNINGS
+
 #define PSAPI_VERSION 1
 #define CINTERFACE
 #define COBJMACROS
