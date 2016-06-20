@@ -7,6 +7,8 @@
   * for static builds.).
   */
 
+#pragma warning(error: 4028)
+
 // We're targeting older C runtime versions, too.
 #define _CRT_SECURE_NO_WARNINGS
 
