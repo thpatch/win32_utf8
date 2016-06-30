@@ -93,6 +93,7 @@
     <ClInclude Include="src\gdi32_dll.h" />
     <ClInclude Include="src\kernel32_dll.h" />
     <ClInclude Include="src\macros.h" />
+    <ClInclude Include="src\message_enum.h" />
     <ClInclude Include="src\msvcrt_dll.h" />
     <ClInclude Include="src\psapi_dll.h" />
     <ClInclude Include="src\shell32_dll.h" />

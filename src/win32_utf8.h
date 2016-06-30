@@ -21,6 +21,7 @@
 
 #include "entry.h"
 #include "macros.h"
+#include "message_enum.h"
 #include "utf.h"
 
 #include "comdlg32_dll.h"
