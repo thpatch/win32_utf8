@@ -52,6 +52,16 @@ PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 #define PBROWSEINFO PBROWSEINFOA
 #define LPBROWSEINFO LPBROWSEINFOA
 
+HRESULT WINAPI SHGetFolderPathU(
+	HWND hWnd,
+	int csidl,
+	HANDLE hToken,
+	DWORD dwFlags,
+	LPSTR pszPath
+);
+#undef SHGetFolderPath
+#define SHGetFolderPath SHGetFolderPathU
+
 BOOL WINAPI SHGetPathFromIDListU(
 	PCIDLIST_ABSOLUTE pidl,
 	LPSTR pszPath

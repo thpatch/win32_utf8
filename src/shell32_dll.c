@@ -11,6 +11,7 @@ const w32u8_pair_t shell32_pairs[] = {
 	{"ExtractIconA", ExtractIconU},
 	{"ExtractIconExA", ExtractIconExU},
 	{"SHBrowseForFolderA", SHBrowseForFolderU},
+	{"SHGetFolderPathA", SHGetFolderPathU},
 	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
 	NULL
 };
@@ -191,6 +192,28 @@ PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 	ret = SHBrowseForFolderW(&lpbi_w);
 	StringToUTF8(lpbi->pszDisplayName, pszDisplayName_w, MAX_PATH);
 	WCHAR_T_FREE(lpszTitle);
+	return ret;
+}
+
+HRESULT WINAPI SHGetFolderPathU(
+	HWND hWnd,
+	int csidl,
+	HANDLE hToken,
+	DWORD dwFlags,
+	LPSTR pszPath
+)
+{
+	wchar_t pszPath_w[MAX_PATH];
+	HRESULT ret;
+
+	if(pszPath) {
+		pszPath[0] = '\0';
+	}
+	
+	ret = SHGetFolderPathW(hWnd, csidl, hToken, dwFlags, pszPath_w);
+	if(ret == S_OK && pszPath) {
+		StringToUTF8(pszPath, pszPath_w, MAX_PATH);
+	}
 	return ret;
 }
 
