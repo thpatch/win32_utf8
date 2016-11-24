@@ -8,6 +8,10 @@
 
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <Windows.h>
 #include <CommDlg.h>
 #include <MMSystem.h>
@@ -65,3 +69,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions();
 // Useful for console applications (which use CP_OEMCP by default) or patching
 // applications where the application's native codepage isn't ASCII.
 void w32u8_set_fallback_codepage(UINT codepage);
+
+#ifdef __cplusplus
+}
+#endif
