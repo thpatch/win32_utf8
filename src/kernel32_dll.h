@@ -8,7 +8,7 @@
 
 #pragma once
 
-BOOL WINAPI CopyFileU(
+WRAPPER_DEC(BOOL WINAPI, CopyFile,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName,
 	BOOL bFailIfExists
@@ -16,7 +16,7 @@ BOOL WINAPI CopyFileU(
 #undef CopyFile
 #define CopyFile CopyFileU
 
-BOOL WINAPI CopyFileExU(
+WRAPPER_DEC(BOOL WINAPI, CopyFileEx,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName,
 	LPPROGRESS_ROUTINE lpProgressRoutine,
@@ -27,14 +27,14 @@ BOOL WINAPI CopyFileExU(
 #undef CopyFileEx
 #define CopyFileEx CopyFileExU
 
-BOOL WINAPI CreateDirectoryU(
+WRAPPER_DEC(BOOL WINAPI, CreateDirectory,
 	LPCSTR lpPathName,
 	LPSECURITY_ATTRIBUTES lpSecurityAttributes
 );
 #undef CreateDirectory
 #define CreateDirectory CreateDirectoryU
 
-HANDLE WINAPI CreateFileU(
+WRAPPER_DEC(HANDLE WINAPI, CreateFile,
 	LPCSTR lpFileName,
 	DWORD dwDesiredAccess,
 	DWORD dwShareMode,
@@ -46,7 +46,7 @@ HANDLE WINAPI CreateFileU(
 #undef CreateFile
 #define CreateFile CreateFileU
 
-BOOL WINAPI CreateProcessU(
+WRAPPER_DEC(BOOL WINAPI, CreateProcess,
 	LPCSTR lpApplicationName,
 	LPSTR lpCommandLine,
 	PSECURITY_ATTRIBUTES lpProcessAttributes,
@@ -61,27 +61,27 @@ BOOL WINAPI CreateProcessU(
 #undef CreateProcess
 #define CreateProcess CreateProcessU
 
-BOOL WINAPI DeleteFileU(
+WRAPPER_DEC(BOOL WINAPI, DeleteFile,
 	LPCSTR lpFileName
 );
 #undef DeleteFile
 #define DeleteFile DeleteFileU
 
-HANDLE WINAPI FindFirstFileU(
+WRAPPER_DEC(HANDLE WINAPI, FindFirstFile,
 	LPCSTR lpFileName,
 	LPWIN32_FIND_DATAA lpFindFileData
 );
 #undef FindFirstFile
 #define FindFirstFile FindFirstFileU
 
-BOOL WINAPI FindNextFileU(
+WRAPPER_DEC(BOOL WINAPI, FindNextFile,
 	HANDLE hFindFile,
 	LPWIN32_FIND_DATAA lpFindFileData
 );
 #undef FindNextFile
 #define FindNextFile FindNextFileU
 
-DWORD WINAPI FormatMessageU(
+WRAPPER_DEC(DWORD WINAPI, FormatMessage,
 	DWORD dwFlags,
 	LPCVOID lpSource,
 	DWORD dwMessageId,
@@ -93,20 +93,20 @@ DWORD WINAPI FormatMessageU(
 #undef FormatMessage
 #define FormatMessage FormatMessageU
 
-LPSTR WINAPI GetCommandLineU(
+WRAPPER_DEC(LPSTR WINAPI, GetCommandLine,
 	VOID
 );
 #undef GetCommandLine
 #define GetCommandLine GetCommandLineU
 
-DWORD WINAPI GetCurrentDirectoryU(
+WRAPPER_DEC(DWORD WINAPI, GetCurrentDirectory,
 	DWORD nBufferLength,
 	LPSTR lpBuffer
 );
 #undef GetCurrentDirectory
 #define GetCurrentDirectory GetCurrentDirectoryU
 
-DWORD WINAPI GetEnvironmentVariableU(
+WRAPPER_DEC(DWORD WINAPI, GetEnvironmentVariable,
 	LPCSTR lpName,
 	LPSTR lpBuffer,
 	DWORD nSize
@@ -114,13 +114,13 @@ DWORD WINAPI GetEnvironmentVariableU(
 #undef GetEnvironmentVariable
 #define GetEnvironmentVariable GetEnvironmentVariableU
 
-DWORD WINAPI GetFileAttributesU(
+WRAPPER_DEC(DWORD WINAPI, GetFileAttributes,
 	LPCSTR lpFileName
 );
 #undef GetFileAttributes
 #define GetFileAttributes GetFileAttributesU
 
-BOOL WINAPI GetFileAttributesExU(
+WRAPPER_DEC(BOOL WINAPI, GetFileAttributesEx,
 	LPCSTR lpFileName,
 	GET_FILEEX_INFO_LEVELS fInfoLevelId,
 	LPVOID lpFileInformation
@@ -128,7 +128,7 @@ BOOL WINAPI GetFileAttributesExU(
 #undef GetFileAttributesEx
 #define GetFileAttributesEx GetFileAttributesExU
 
-DWORD WINAPI GetModuleFileNameU(
+WRAPPER_DEC(DWORD WINAPI, GetModuleFileName,
 	HMODULE hModule,
 	LPSTR lpFilename,
 	DWORD nSize
@@ -136,7 +136,7 @@ DWORD WINAPI GetModuleFileNameU(
 #undef GetModuleFileName
 #define GetModuleFileName GetModuleFileNameU
 
-UINT WINAPI GetPrivateProfileIntU(
+WRAPPER_DEC(UINT WINAPI, GetPrivateProfileInt,
 	LPCSTR lpAppName,
 	LPCSTR lpKeyName,
 	INT nDefault,
@@ -145,13 +145,13 @@ UINT WINAPI GetPrivateProfileIntU(
 #undef GetPrivateProfileInt
 #define GetPrivateProfileInt GetPrivateProfileIntU
 
-VOID WINAPI GetStartupInfoU(
+WRAPPER_DEC(VOID WINAPI, GetStartupInfo,
 	LPSTARTUPINFOA lpStartupInfo
 );
 #undef GetStartupInfo
 #define GetStartupInfo GetStartupInfoU
 
-DWORD WINAPI GetTempPathU(
+WRAPPER_DEC(DWORD WINAPI, GetTempPath,
 	DWORD nBufferLength,
 	LPSTR lpBuffer
 );
@@ -166,20 +166,20 @@ BOOL WINAPI IsDBCSLeadByteFB(
 #undef IsDBCSLeadByte
 #define IsDBCSLeadByte IsDBCSLeadByteFB
 
-HMODULE WINAPI LoadLibraryU(
+WRAPPER_DEC(HMODULE WINAPI, LoadLibrary,
 	LPCSTR lpLibFileName
 );
 #undef LoadLibrary
 #define LoadLibrary LoadLibraryU
 
-BOOL WINAPI MoveFileU(
+WRAPPER_DEC(BOOL WINAPI, MoveFile,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName
 );
 #undef MoveFile
 #define MoveFile MoveFileU
 
-BOOL WINAPI MoveFileExU(
+WRAPPER_DEC(BOOL WINAPI, MoveFileEx,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName,
 	DWORD dwFlags
@@ -187,7 +187,7 @@ BOOL WINAPI MoveFileExU(
 #undef MoveFileEx
 #define MoveFileEx MoveFileExU
 
-BOOL WINAPI MoveFileWithProgressU(
+WRAPPER_DEC(BOOL WINAPI, MoveFileWithProgress,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName,
 	LPPROGRESS_ROUTINE lpProgressRoutine,
@@ -197,7 +197,7 @@ BOOL WINAPI MoveFileWithProgressU(
 #undef MoveFileWithProgress
 #define MoveFileWithProgress MoveFileWithProgressU
 
-int WINAPI MultiByteToWideCharU(
+WRAPPER_DEC(int WINAPI, MultiByteToWideChar,
 	UINT CodePage,
 	DWORD dwFlags,
 	LPCSTR lpMultiByteStr,
@@ -206,19 +206,19 @@ int WINAPI MultiByteToWideCharU(
 	int cchWideChar
 );
 
-BOOL WINAPI RemoveDirectoryU(
+WRAPPER_DEC(BOOL WINAPI, RemoveDirectory,
 	LPCSTR lpPathName
 );
 #undef RemoveDirectory
 #define RemoveDirectory RemoveDirectoryU
 
-BOOL WINAPI SetCurrentDirectoryU(
+WRAPPER_DEC(BOOL WINAPI, SetCurrentDirectory,
 	LPCSTR lpPathName
 );
 #undef SetCurrentDirectory
 #define SetCurrentDirectory SetCurrentDirectoryU
 
-int WINAPI WideCharToMultiByteU(
+WRAPPER_DEC(int WINAPI, WideCharToMultiByte,
 	UINT CodePage,
 	DWORD dwFlags,
 	LPCWSTR lpWideCharStr,
@@ -229,7 +229,7 @@ int WINAPI WideCharToMultiByteU(
 	LPBOOL lpUsedDefaultChar
 );
 
-BOOL WINAPI WritePrivateProfileStringU(
+WRAPPER_DEC(BOOL WINAPI, WritePrivateProfileString,
 	LPCSTR lpAppName,
 	LPCSTR lpKeyName,
 	LPCSTR lpString,

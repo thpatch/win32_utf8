@@ -8,7 +8,7 @@
 
 #pragma once
 
-DWORD WINAPI GetModuleFileNameExU(
+WRAPPER_DEC(DWORD WINAPI, GetModuleFileNameEx,
 	HANDLE hProcess,
 	HMODULE hModule,
 	LPSTR lpFilename,

@@ -8,7 +8,7 @@
 
 #pragma once
 
-BOOL WINAPI InternetCombineUrlU(
+WRAPPER_DEC(BOOL WINAPI, InternetCombineUrl,
 	LPCSTR lpszBaseUrl,
 	LPCSTR lpszRelativeUrl,
 	LPSTR lpszBuffer,
@@ -18,7 +18,7 @@ BOOL WINAPI InternetCombineUrlU(
 #undef InternetCombineUrl
 #define InternetCombineUrl InternetCombineUrlU
 
-BOOL WINAPI InternetCrackUrlU(
+WRAPPER_DEC(BOOL WINAPI, InternetCrackUrl,
 	LPCSTR lpszUrl,
 	DWORD dwUrlLength,
 	DWORD dwFlags,
@@ -27,7 +27,7 @@ BOOL WINAPI InternetCrackUrlU(
 #undef InternetCrackUrl
 #define InternetCrackUrl InternetCrackUrlU
 
-HINTERNET WINAPI InternetOpenUrlU(
+WRAPPER_DEC(HINTERNET WINAPI, InternetOpenUrl,
 	HINTERNET hInternet,
 	LPCSTR lpszUrl,
 	LPCSTR lpszHeaders,

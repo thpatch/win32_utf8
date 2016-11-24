@@ -8,13 +8,13 @@
 
 #pragma once
 
-BOOL WINAPI GetOpenFileNameU(
+WRAPPER_DEC(BOOL WINAPI, GetOpenFileName,
 	LPOPENFILENAMEA ofn_a
 );
 #undef GetOpenFileName
 #define GetOpenFileName GetOpenFileNameU
 
-BOOL WINAPI GetSaveFileNameU(
+WRAPPER_DEC(BOOL WINAPI, GetSaveFileName,
 	LPOPENFILENAMEA ofn_a
 );
 #undef GetSaveFileName

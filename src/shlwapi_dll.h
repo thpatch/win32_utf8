@@ -8,20 +8,20 @@
 
 #pragma once
 
-BOOL STDAPICALLTYPE PathFileExistsU(
+WRAPPER_DEC(BOOL STDAPICALLTYPE, PathFileExists,
 	LPCSTR pszPath
 );
 #undef PathFileExists
 #define PathFileExists PathFileExistsU
 
-BOOL STDAPICALLTYPE PathMatchSpecU(
+WRAPPER_DEC(BOOL STDAPICALLTYPE, PathMatchSpec,
 	LPCSTR pszFile,
 	LPCSTR pszSpec
 );
 #undef PathMatchSpec
 #define PathMatchSpec PathMatchSpecU
 
-BOOL STDAPICALLTYPE PathRemoveFileSpecU(
+WRAPPER_DEC(BOOL STDAPICALLTYPE, PathRemoveFileSpec,
 	LPSTR pszPath
 );
 #undef PathRemoveFileSpec

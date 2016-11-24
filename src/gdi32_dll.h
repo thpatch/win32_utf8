@@ -46,7 +46,7 @@ int WINAPI lower_EnumFontFamiliesA(
 );
 /// ------------------
 
-HFONT WINAPI CreateFontU(
+WRAPPER_DEC(HFONT WINAPI, CreateFont,
 	int cHeight,
 	int cWidth,
 	int cEscapement,
@@ -65,13 +65,13 @@ HFONT WINAPI CreateFontU(
 #undef CreateFont
 #define CreateFont CreateFontU
 
-HFONT WINAPI CreateFontIndirectU(
+WRAPPER_DEC(HFONT WINAPI, CreateFontIndirect,
 	CONST LOGFONTA *lplf
 );
 #undef CreateFontIndirect
 #define CreateFontIndirect CreateFontIndirectU
 
-HFONT WINAPI CreateFontIndirectExU(
+WRAPPER_DEC(HFONT WINAPI, CreateFontIndirectEx,
 	CONST ENUMLOGFONTEXDVA *lpelfe
 );
 #undef CreateFontIndirectEx
@@ -80,7 +80,7 @@ HFONT WINAPI CreateFontIndirectExU(
 #undef EnumFonts
 #define EnumFonts EnumFontFamiliesU
 
-int WINAPI EnumFontFamiliesU(
+WRAPPER_DEC(int WINAPI, EnumFontFamilies,
 	HDC hdc,
 	LPCSTR pszFaceName,
 	FONTENUMPROCA lpProc,
@@ -89,7 +89,7 @@ int WINAPI EnumFontFamiliesU(
 #undef EnumFontFamilies
 #define EnumFontFamilies EnumFontFamiliesU
 
-int WINAPI EnumFontFamiliesExU(
+WRAPPER_DEC(int WINAPI, EnumFontFamiliesEx,
 	HDC hdc,
 	LPLOGFONTA lpLogfont,
 	FONTENUMPROCA lpProc,
@@ -99,7 +99,7 @@ int WINAPI EnumFontFamiliesExU(
 #undef EnumFontFamiliesEx
 #define EnumFontFamiliesEx EnumFontFamiliesExU
 
-BOOL WINAPI ExtTextOutU(
+WRAPPER_DEC(BOOL WINAPI, ExtTextOut,
 	HDC hdc,
 	int x,
 	int y,
@@ -112,7 +112,7 @@ BOOL WINAPI ExtTextOutU(
 #undef ExtTextOut
 #define ExtTextOut ExtTextOutU
 
-DWORD WINAPI GetGlyphOutlineU(
+WRAPPER_DEC(DWORD WINAPI, GetGlyphOutline,
 	HDC hdc,
 	UINT uChar,
 	UINT fuFormat,
@@ -133,7 +133,7 @@ BOOL APIENTRY GetTextExtentPoint32U(
 #undef GetTextExtentPoint32
 #define GetTextExtentPoint32 GetTextExtentPoint32U
 
-BOOL WINAPI TextOutU(
+WRAPPER_DEC(BOOL WINAPI, TextOut,
 	HDC hdc,
 	int x,
 	int y,

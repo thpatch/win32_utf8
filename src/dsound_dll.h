@@ -8,14 +8,14 @@
 
 #pragma once
 
-HRESULT WINAPI DirectSoundCaptureEnumerateU(
+WRAPPER_DEC(HRESULT WINAPI, DirectSoundCaptureEnumerate,
 	LPDSENUMCALLBACKA pDSEnumCallback,
 	LPVOID pContext
 );
 #undef DirectSoundCaptureEnumerate
 #define DirectSoundCaptureEnumerate DirectSoundCaptureEnumerateU
 
-HRESULT WINAPI DirectSoundEnumerateU(
+WRAPPER_DEC(HRESULT WINAPI, DirectSoundEnumerate,
 	LPDSENUMCALLBACKA pDSEnumCallback,
 	LPVOID pContext
 );

@@ -8,12 +8,12 @@
 
 #pragma once
 
-LPSTR* WINAPI CommandLineToArgvU(
+WRAPPER_DEC(LPSTR* WINAPI, CommandLineToArgv,
 	LPCWSTR lpCmdLine,
 	int* pNumArgs
 );
 
-UINT WINAPI DragQueryFileU(
+WRAPPER_DEC(UINT WINAPI, DragQueryFile,
 	HANDLE hDrop,
 	UINT iFile,
 	LPSTR lpszFile,
@@ -22,7 +22,7 @@ UINT WINAPI DragQueryFileU(
 #undef DragQueryFile
 #define DragQueryFile DragQueryFileU
 
-HICON WINAPI ExtractIconU(
+WRAPPER_DEC(HICON WINAPI, ExtractIcon,
 	HINSTANCE hInst,
 	LPCSTR lpszExeFileName,
 	UINT nIconIndex
@@ -30,7 +30,7 @@ HICON WINAPI ExtractIconU(
 #undef ExtractIcon
 #define ExtractIcon ExtractIconU
 
-UINT WINAPI ExtractIconExU(
+WRAPPER_DEC(UINT WINAPI, ExtractIconEx,
 	LPCSTR lpszFile,
 	int nIconIndex,
 	HICON *phiconLarge,
@@ -40,7 +40,7 @@ UINT WINAPI ExtractIconExU(
 #undef ExtractIconEx
 #define ExtractIconEx ExtractIconExU
 
-PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
+WRAPPER_DEC(PIDLIST_ABSOLUTE WINAPI, SHBrowseForFolder,
 	LPBROWSEINFOA lpbi
 );
 #undef SHBrowseForFolder
@@ -52,7 +52,7 @@ PIDLIST_ABSOLUTE WINAPI SHBrowseForFolderU(
 #define PBROWSEINFO PBROWSEINFOA
 #define LPBROWSEINFO LPBROWSEINFOA
 
-HRESULT WINAPI SHGetFolderPathU(
+WRAPPER_DEC(HRESULT WINAPI, SHGetFolderPath,
 	HWND hWnd,
 	int csidl,
 	HANDLE hToken,
@@ -62,7 +62,7 @@ HRESULT WINAPI SHGetFolderPathU(
 #undef SHGetFolderPath
 #define SHGetFolderPath SHGetFolderPathU
 
-BOOL WINAPI SHGetPathFromIDListU(
+WRAPPER_DEC(BOOL WINAPI, SHGetPathFromIDList,
 	PCIDLIST_ABSOLUTE pidl,
 	LPSTR pszPath
 );

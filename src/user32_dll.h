@@ -8,13 +8,13 @@
 
 #pragma once
 
-LPSTR WINAPI CharNextU(
+WRAPPER_DEC(LPSTR WINAPI, CharNext,
 	LPSTR lpsz
 );
 #undef CharNext
 #define CharNext CharNextU
 
-HWND WINAPI CreateDialogParamU(
+WRAPPER_DEC(HWND WINAPI, CreateDialogParam,
 	HINSTANCE hInstance,
 	RESID lpTemplateRes,
 	HWND hWndParent,
@@ -24,7 +24,7 @@ HWND WINAPI CreateDialogParamU(
 #undef CreateDialogParam
 #define CreateDialogParam CreateDialogParamU
 
-HWND WINAPI CreateWindowExU(
+WRAPPER_DEC(HWND WINAPI, CreateWindowEx,
 	DWORD dwExStyle,
 	LPCSTR lpClassName,
 	LPCSTR lpWindowName,
@@ -45,7 +45,7 @@ HWND WINAPI CreateWindowExU(
 #undef DefWindowProc
 #define DefWindowProc DefWindowProcW
 
-INT_PTR WINAPI DialogBoxParamU(
+WRAPPER_DEC(INT_PTR WINAPI, DialogBoxParam,
 	HINSTANCE hInstance,
 	RESID lpTemplateRes,
 	HWND hWndParent,
@@ -55,7 +55,7 @@ INT_PTR WINAPI DialogBoxParamU(
 #undef DialogBoxParam
 #define DialogBoxParam DialogBoxParamU
 
-int WINAPI DrawTextU(
+WRAPPER_DEC(int WINAPI, DrawText,
 	HDC hdc,
 	LPCSTR lpchText,
 	int cchText,
@@ -65,7 +65,7 @@ int WINAPI DrawTextU(
 #undef DrawText
 #define DrawText DrawTextU
 
-BOOL WINAPI GetClassInfoU(
+WRAPPER_DEC(BOOL WINAPI, GetClassInfo,
 	HINSTANCE hInstance,
 	LPCSTR lpClassName,
 	LPWNDCLASSA lpWndClass
@@ -73,7 +73,7 @@ BOOL WINAPI GetClassInfoU(
 #undef GetClassInfo
 #define GetClassInfo GetClassInfoU
 
-BOOL WINAPI GetClassInfoExU(
+WRAPPER_DEC(BOOL WINAPI, GetClassInfoEx,
 	HINSTANCE hInstance,
 	LPCSTR lpszClass,
 	LPWNDCLASSEXA lpwcx
@@ -89,7 +89,7 @@ BOOL WINAPI GetClassInfoExU(
 #define GetWindowLong GetWindowLongW
 #define GetWindowLongPtr GetWindowLongPtrW
 
-BOOL WINAPI InsertMenuItemU(
+WRAPPER_DEC(BOOL WINAPI, InsertMenuItem,
 	HMENU hmenu,
 	UINT item,
 	BOOL fByPosition,
@@ -98,7 +98,7 @@ BOOL WINAPI InsertMenuItemU(
 #undef InsertMenuItem
 #define InsertMenuItem InsertMenuItemU
 
-int WINAPI LoadStringU(
+WRAPPER_DEC(int WINAPI, LoadString,
 	HINSTANCE hInstance,
 	UINT uID,
 	LPSTR lpBuffer,
@@ -107,7 +107,7 @@ int WINAPI LoadStringU(
 #undef LoadString
 #define LoadString LoadStringU
 
-int WINAPI MessageBoxU(
+WRAPPER_DEC(int WINAPI, MessageBox,
 	HWND hWnd,
 	LPCSTR lpText,
 	LPCSTR lpCaption,
@@ -116,19 +116,19 @@ int WINAPI MessageBoxU(
 #undef MessageBox
 #define MessageBox MessageBoxU
 
-ATOM WINAPI RegisterClassU(
+WRAPPER_DEC(ATOM WINAPI, RegisterClass,
 	CONST WNDCLASSA *lpWndClass
 );
 #undef RegisterClass
 #define RegisterClass RegisterClassU
 
-ATOM WINAPI RegisterClassExU(
+WRAPPER_DEC(ATOM WINAPI, RegisterClassEx,
 	CONST WNDCLASSEXA *lpWndClass
 );
 #undef RegisterClassEx
 #define RegisterClassEx RegisterClassExU
 
-BOOL WINAPI SetDlgItemTextU(
+WRAPPER_DEC(BOOL WINAPI, SetDlgItemText,
 	HWND hDlg,
 	int nIDDlgItem,
 	LPCSTR lpString
@@ -141,14 +141,14 @@ BOOL WINAPI SetDlgItemTextU(
 #define SetWindowLong SetWindowLongW
 #define SetWindowLongPtr SetWindowLongPtrW
 
-BOOL WINAPI SetWindowTextU(
+WRAPPER_DEC(BOOL WINAPI, SetWindowText,
 	HWND hWnd,
 	LPCSTR lpString
 );
 #undef SetWindowText
 #define SetWindowText SetWindowTextU
 
-LONG WINAPI TabbedTextOutU(
+WRAPPER_DEC(LONG WINAPI, TabbedTextOut,
 	HDC hdc,
 	int x,
 	int y,
@@ -161,7 +161,7 @@ LONG WINAPI TabbedTextOutU(
 #undef TabbedTextOut
 #define TabbedTextOut TabbedTextOutU
 
-BOOL WINAPI UnregisterClassU(
+WRAPPER_DEC(BOOL WINAPI, UnregisterClass,
 	LPCSTR lpClassName,
 	HINSTANCE hInstance
 );

@@ -8,7 +8,7 @@
 
 #pragma once
 
-BOOL WINAPI GetFileVersionInfoU(
+WRAPPER_DEC(BOOL WINAPI, GetFileVersionInfo,
 	LPCSTR lpstrFilename,
 	DWORD dwHandle,
 	DWORD dwLen,
@@ -17,7 +17,7 @@ BOOL WINAPI GetFileVersionInfoU(
 #undef GetFileVersionInfo
 #define GetFileVersionInfo GetFileVersionInfoU
 
-BOOL WINAPI GetFileVersionInfoExU(
+WRAPPER_DEC(BOOL WINAPI, GetFileVersionInfoEx,
 	DWORD dwFlags,
 	LPCSTR lpstrFilename,
 	DWORD dwHandle,
@@ -27,14 +27,14 @@ BOOL WINAPI GetFileVersionInfoExU(
 #undef GetFileVersionInfoEx
 #define GetFileVersionInfoEx GetFileVersionInfoExU
 
-DWORD WINAPI GetFileVersionInfoSizeU(
+WRAPPER_DEC(DWORD WINAPI, GetFileVersionInfoSize,
 	LPCSTR lpstrFilename,
 	LPDWORD lpdwHandle
 );
 #undef GetFileVersionInfoSize
 #define GetFileVersionInfoSize GetFileVersionInfoSizeU
 
-DWORD WINAPI GetFileVersionInfoSizeExU(
+WRAPPER_DEC(DWORD WINAPI, GetFileVersionInfoSizeEx,
 	DWORD dwFlags,
 	LPCSTR lpstrFilename,
 	LPDWORD lpdwHandle

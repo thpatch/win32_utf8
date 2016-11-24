@@ -131,6 +131,11 @@ size_t zzstrlen(const char *str);
 	VLA_FREE(src_wchar##_utf8)
 /// ------------------------------------
 
+// Declare a wrapping function together with a corresponding typedef
+#define WRAPPER_DEC(rettype, name, ...) \
+	typedef rettype name##A_type(__VA_ARGS__); \
+	rettype name##U(__VA_ARGS__);
+
 /// Convenient dynamic binding for functions not available before Vista
 /// -------------------------------------------------------------------
 #define DLL_FUNC(dll, func) \
