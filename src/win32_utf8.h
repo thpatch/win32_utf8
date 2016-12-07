@@ -20,6 +20,7 @@ extern "C" {
 #include <ShellAPI.h>
 #include <Shlwapi.h>
 #include <ShlObj.h>
+#include <assert.h>
 #include <stdio.h>
 #include <WinInet.h>
 
