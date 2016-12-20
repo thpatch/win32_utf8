@@ -12,17 +12,18 @@
 extern "C" {
 #endif
 
-#include <Windows.h>
-#include <CommDlg.h>
-#include <MMSystem.h>
+// These must be lowercase to work with MinGW on case-sensitive systems.
+#include <windows.h>
+#include <commdlg.h>
+#include <mmsystem.h>
 #include <dsound.h>
 #include <psapi.h>
-#include <ShellAPI.h>
-#include <Shlwapi.h>
-#include <ShlObj.h>
+#include <shellapi.h>
+#include <shlwapi.h>
+#include <shlobj.h>
 #include <assert.h>
 #include <stdio.h>
-#include <WinInet.h>
+#include <wininet.h>
 
 #include "entry.h"
 #include "macros.h"
