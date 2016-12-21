@@ -90,12 +90,12 @@ typedef const wchar_t* WRESID;
 #endif
 
 // Our strlen has error-checking!
-__inline size_t w32u8_strlen(const char *str)
+static __inline size_t w32u8_strlen(const char *str)
 {
 	return str ? strlen(str) : 0;
 }
 
-__inline size_t w32u8_wcslen(const wchar_t *str)
+static __inline size_t w32u8_wcslen(const wchar_t *str)
 {
 	return str ? wcslen(str) : 0;
 }
