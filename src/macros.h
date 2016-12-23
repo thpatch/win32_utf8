@@ -73,6 +73,8 @@ typedef const wchar_t* WRESID;
 		x = NULL; \
 	}
 
+#define elementsof(x) (sizeof(x) / sizeof(x[0]))
+
 // Variable length arrays
 #if defined(C99)
 # define VLA(type, name, size) \
