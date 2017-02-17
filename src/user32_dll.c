@@ -78,6 +78,15 @@ LPSTR WINAPI CharNextU(
 	if(lpsz == NULL || *lpsz == '\0') {
 		ret = lpsz;
 	}
+	if ((lpsz[0] & 0xe0) == 0xc0 && (lpsz[1] & 0xc0) == 0x80) {
+		ret = lpsz + 2;
+	}
+	else if ((lpsz[0] & 0xf0) == 0xe0 && (lpsz[1] & 0xc0) == 0x80 && (lpsz[2] & 0xc0) == 0x80) {
+		ret = lpsz + 3;
+	}
+	else if ((lpsz[0] & 0xf8) == 0xf0 && (lpsz[1] & 0xc0) == 0x80 && (lpsz[2] & 0xc0) == 0x80 && (lpsz[3] & 0xc0) == 0x80) {
+		ret = lpsz + 4;
+	}
 	else if(IsDBCSLeadByteEx(fallback_codepage, lpsz[0])) {
 		int lpsz_len = strlen(lpsz);
 		if(lpsz_len < 2) {
@@ -88,12 +97,6 @@ LPSTR WINAPI CharNextU(
 	}
 	else {
 		ret = lpsz + 1;
-		if(!IsDBCSLeadByteEx(fallback_codepage, ret[0])) {
-			// Get next UTF-8 char
-			while((*ret & 0xc0) == 0x80) {
-				++ret;
-			}
-		}
 	}
 	return ret;
 }
