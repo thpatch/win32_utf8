@@ -89,7 +89,7 @@ typedef const wchar_t* WRESID;
 	}
 #endif
 
-// Our strlen has error-checking!
+// String functions with NULL pointer checking
 static __inline size_t w32u8_strlen(const char *str)
 {
 	return str ? strlen(str) : 0;
@@ -100,8 +100,14 @@ static __inline size_t w32u8_wcslen(const wchar_t *str)
 	return str ? wcslen(str) : 0;
 }
 
+static __inline int w32u8_strcmp(const char *str1, const char *str2)
+{
+	return (str1 && str2) ? strcmp(str1, str2) : 0;
+}
+
 #define strlen w32u8_strlen
 #define wcslen w32u8_wcslen
+#define strcmp w32u8_strcmp
 
 // Returns the length of a double-null-terminated string, not including the
 // terminating two 0 bytes.
