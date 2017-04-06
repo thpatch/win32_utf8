@@ -20,6 +20,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetEnvironmentVariableA", GetEnvironmentVariableU},
 	{"GetFileAttributesA", GetFileAttributesU},
 	{"GetFileAttributesExA", GetFileAttributesExU},
+	{"GetFullPathNameA", GetFullPathNameU},
 	{"GetCommandLineA", GetCommandLineU},
 	{"GetModuleFileNameA", GetModuleFileNameU},
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
@@ -552,6 +553,48 @@ BOOL WINAPI GetFileAttributesExU(
 	WCHAR_T_CONV_VLA(lpFileName);
 	ret = GetFileAttributesExW(lpFileName_w, fInfoLevelId, lpFileInformation);
 	WCHAR_T_FREE(lpFileName);
+	return ret;
+}
+
+DWORD WINAPI GetFullPathNameU(
+	LPCSTR lpFileName,
+	DWORD nBufferLength,
+	LPSTR lpBuffer,
+	LPSTR *lpFilePart
+)
+{
+	LPWSTR lpwFilePart;
+	DWORD ret;
+	VLA(wchar_t, lpBuffer_w, nBufferLength);
+	WCHAR_T_DEC(lpFileName);
+	WCHAR_T_CONV_VLA(lpFileName);
+
+	if (lpFilePart) {
+		*lpFilePart = NULL;
+	}
+	if (!lpBuffer) {
+		VLA_FREE(lpBuffer_w);
+	}
+	ret = GetFullPathNameW(lpFileName_w, nBufferLength, lpBuffer_w, &lpwFilePart);
+	if (lpBuffer) {
+		StringToUTF8(lpBuffer, lpBuffer_w, nBufferLength);
+		if (lpFilePart && lpwFilePart) {
+			*lpFilePart = lpBuffer + strlen(lpBuffer) - 1;
+			while (*lpFilePart >= lpBuffer && **lpFilePart != '\\' && **lpFilePart != '/') {
+				(*lpFilePart)--;
+			}
+			(*lpFilePart)++;
+		}
+	}
+	else {
+		// Hey, let's be nice and return the _actual_ length.
+		VLA(wchar_t, lpBufferReal_w, ret);
+		GetFullPathNameW(lpFileName_w, ret, lpBufferReal_w, NULL);
+		ret = StringToUTF8(NULL, lpBufferReal_w, 0) + 1;
+		VLA_FREE(lpBufferReal_w);
+	}
+	WCHAR_T_FREE(lpFileName);
+	VLA_FREE(lpBuffer_w);
 	return ret;
 }
 

@@ -128,6 +128,15 @@ WRAPPER_DEC(BOOL WINAPI, GetFileAttributesEx,
 #undef GetFileAttributesEx
 #define GetFileAttributesEx GetFileAttributesExU
 
+WRAPPER_DEC(DWORD WINAPI, GetFullPathName,
+	LPCSTR lpFileName,
+	DWORD nBufferLength,
+	LPSTR lpBuffer,
+	LPSTR *lpFilePart
+);
+#undef GetFullPathName
+#define GetFullPathName GetFullPathNameU
+
 WRAPPER_DEC(DWORD WINAPI, GetModuleFileName,
 	HMODULE hModule,
 	LPSTR lpFilename,
