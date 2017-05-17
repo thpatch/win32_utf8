@@ -102,7 +102,9 @@ static __inline size_t w32u8_wcslen(const wchar_t *str)
 
 static __inline int w32u8_strcmp(const char *str1, const char *str2)
 {
-	return (str1 && str2) ? strcmp(str1, str2) : 0;
+	assert(str1);
+	assert(str2);
+	return strcmp(str1, str2);
 }
 
 #define strlen w32u8_strlen
