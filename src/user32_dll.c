@@ -32,7 +32,7 @@ const w32u8_pair_t user32_pairs[] = {
 	{"SetWindowTextA", SetWindowTextU},
 	{"TabbedTextOutA", TabbedTextOutU},
 	{"UnregisterClassA", UnregisterClassU},
-	NULL
+	{ NULL }
 };
 
 /// Structure conversions

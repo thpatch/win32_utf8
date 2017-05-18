@@ -34,7 +34,7 @@ const w32u8_dll_t* w32u8_get_wrapped_functions()
 		{"user32.dll", user32_pairs},
 		{"version.dll", version_pairs},
 		{"wininet.dll", wininet_pairs},
-		NULL
+		{ NULL }
 	};
 	return dlls;
 }

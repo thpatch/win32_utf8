@@ -36,7 +36,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
 	{"WideCharToMultiByte", WideCharToMultiByteU},
 	{"WritePrivateProfileStringA", WritePrivateProfileStringU},
-	NULL
+	{ NULL }
 };
 
 // GetStartupInfo

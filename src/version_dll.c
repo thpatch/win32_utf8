@@ -31,7 +31,7 @@ const w32u8_pair_t version_pairs[] = {
 	{"GetFileVersionInfoExA", GetFileVersionInfoExU},
 	{"GetFileVersionInfoSizeA", GetFileVersionInfoSizeU},
 	{"GetFileVersionInfoSizeExA", GetFileVersionInfoSizeExU},
-	NULL
+	{ NULL }
 };
 
 BOOL WINAPI GetFileVersionInfoU(

@@ -8,7 +8,7 @@
 
 const w32u8_pair_t psapi_pairs[] = {
 	{"GetModuleFileNameExA", GetModuleFileNameExU},
-	NULL
+	{ NULL }
 };
 
 DWORD WINAPI GetModuleFileNameExU(

@@ -9,7 +9,7 @@
 const w32u8_pair_t comdlg32_pairs[] = {
 	{"GetOpenFileNameA", GetOpenFileNameU},
 	{"GetSaveFileNameA", GetSaveFileNameU},
-	NULL
+	{ NULL }
 };
 
 /// Wrappers

@@ -13,7 +13,7 @@ const w32u8_pair_t shell32_pairs[] = {
 	{"SHBrowseForFolderA", SHBrowseForFolderU},
 	{"SHGetFolderPathA", SHGetFolderPathU},
 	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
-	NULL
+	{ NULL }
 };
 
 LPSTR* WINAPI CommandLineToArgvU(
@@ -128,7 +128,7 @@ static HRESULT CoGetApartmentTypeCompat(
 		// Since adding -luuid causes MinGW to link in *all* GUIDs, we define
 		// this manually, and therefore save ~17.5 KB in the compiled binary.
 		const IID IID_IComThreadingInfo = {
-			0x000001ce,0x0000,0x0000,0xc0,0x00,0x00,0x00,0x00,0x00,0x00,0x46
+			0x000001ce,0x0000,0x0000, { 0xc0,0x00,0x00,0x00,0x00,0x00,0x00,0x46 }
 		};
 	#endif
 

@@ -9,7 +9,7 @@
 const w32u8_pair_t dsound_pairs[] = {
 	{"DirectSoundCaptureEnumerateA", DirectSoundCaptureEnumerateU},
 	{"DirectSoundEnumerateA", DirectSoundEnumerateU},
-	NULL
+	{ NULL }
 };
 
 typedef struct {

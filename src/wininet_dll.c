@@ -10,7 +10,7 @@ const w32u8_pair_t wininet_pairs[] = {
 	{"InternetCombineUrlA", InternetCombineUrlU},
 	{"InternetCrackUrlA", InternetCrackUrlU},
 	{"InternetOpenUrlA", InternetOpenUrlU},
-	NULL
+	{ NULL }
 };
 
 BOOL WINAPI InternetCombineUrlU(

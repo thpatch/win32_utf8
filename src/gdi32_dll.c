@@ -17,7 +17,7 @@ const w32u8_pair_t gdi32_pairs[] = {
 	{"GetGlyphOutlineA", GetGlyphOutlineU},
 	{"GetTextExtentPoint32A", GetTextExtentPoint32U},
 	{"TextOutA", TextOutU},
-	NULL
+	{ NULL }
 };
 
 /// Font conversion helpers

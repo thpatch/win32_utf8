@@ -10,7 +10,7 @@ const w32u8_pair_t shlwapi_pairs[] = {
 	{"PathFileExistsA", PathFileExistsU},
 	{"PathMatchSpecA", PathMatchSpecU},
 	{"PathRemoveFileSpecA", PathRemoveFileSpecU},
-	NULL
+	{ NULL }
 };
 
 BOOL STDAPICALLTYPE PathFileExistsU(

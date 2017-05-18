@@ -8,7 +8,7 @@
 
 const w32u8_pair_t msvcrt_pairs[] = {
 	{"fopen", fopen_u},
-	NULL
+	{ NULL }
 };
 
 // Yes, this should better be implemented as a wrapper around fopen_s() (and
