@@ -8,44 +8,6 @@
 
 #pragma once
 
-/// Promotion wrappers
-/// ------------------
-typedef HFONT WINAPI CreateFontIndirectA_type(CONST LOGFONTA*);
-typedef HFONT WINAPI CreateFontIndirectExA_type(CONST ENUMLOGFONTEXDVA*);
-typedef int (WINAPI EnumFontFamiliesExA_type)(HDC, LPLOGFONTA, FONTENUMPROCA, LPARAM, DWORD);
-
-HFONT WINAPI lower_CreateFontA(
-	CreateFontIndirectA_type *down_func,
-	int cHeight,
-	int cWidth,
-	int cEscapement,
-	int cOrientation,
-	int cWeight,
-	DWORD bItalic,
-	DWORD bUnderline,
-	DWORD bStrikeOut,
-	DWORD iCharSet,
-	DWORD iOutPrecision,
-	DWORD iClipPrecision,
-	DWORD iQuality,
-	DWORD iPitchAndFamily,
-	LPCSTR pszFaceName
-);
-
-HFONT WINAPI lower_CreateFontIndirectA(
-	CreateFontIndirectExA_type *down_func,
-	CONST LOGFONTA *lplf
-);
-
-int WINAPI lower_EnumFontFamiliesA(
-	EnumFontFamiliesExA_type *down_func,
-	HDC hdc,
-	LPCSTR lpLogfont,
-	FONTENUMPROCA lpProc,
-	LPARAM lParam
-);
-/// ------------------
-
 WRAPPER_DEC(HFONT WINAPI, CreateFont,
 	int cHeight,
 	int cWidth,
@@ -142,3 +104,37 @@ WRAPPER_DEC(BOOL WINAPI, TextOut,
 );
 #undef TextOut
 #define TextOut TextOutU
+
+/// Promotion wrappers
+/// ------------------
+HFONT WINAPI lower_CreateFontA(
+	CreateFontIndirectA_type *down_func,
+	int cHeight,
+	int cWidth,
+	int cEscapement,
+	int cOrientation,
+	int cWeight,
+	DWORD bItalic,
+	DWORD bUnderline,
+	DWORD bStrikeOut,
+	DWORD iCharSet,
+	DWORD iOutPrecision,
+	DWORD iClipPrecision,
+	DWORD iQuality,
+	DWORD iPitchAndFamily,
+	LPCSTR pszFaceName
+);
+
+HFONT WINAPI lower_CreateFontIndirectA(
+	CreateFontIndirectExA_type *down_func,
+	CONST LOGFONTA *lplf
+);
+
+int WINAPI lower_EnumFontFamiliesA(
+	EnumFontFamiliesExA_type *down_func,
+	HDC hdc,
+	LPCSTR lpLogfont,
+	FONTENUMPROCA lpProc,
+	LPARAM lParam
+);
+/// ------------------
