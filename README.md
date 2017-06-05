@@ -30,6 +30,10 @@ In addition, this library also adds new useful functionality to some original Wi
 
 	Splits a UTF-16 command-line string (returned by e.g.`GetCommandLineW()`) into an UTF-8 `argv` array, and returns the number of arguments (`argc`) in `pNumArgs`. The caller has to free the returned array using `LocalFree()`.
 
+* `HRESULT WINAPI SHParseDisplayNameU(LPCSTR pszName, IBindCtx *pbc, LPITEMIDLIST *ppidl, SFGAOF sfgaoIn, SFGAOF *psfgaoOut)`
+
+	Converts a path (`pszName`) to a `ITEMLIST` pointer (`ppidl`), required for a number of shell functions. Unlike the original function, this wrapper also works as expected for paths containing forward slashes.
+
 ### OS compatibility
 win32_utf8 it meant to require at least Windows XP - that is, it statically references only Windows functions that were available on XP. Wrappers for functions that were introduced in later Windows versions load their original functions dynamically using GetProcAddress().
 

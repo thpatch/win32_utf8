@@ -230,3 +230,28 @@ BOOL WINAPI SHGetPathFromIDListU(
 	}
 	return 0;
 }
+
+HRESULT WINAPI SHParseDisplayNameU(
+	LPCSTR pszName,
+	IBindCtx *pbc,
+	LPITEMIDLIST *ppidl,
+	SFGAOF sfgaoIn,
+	SFGAOF *psfgaoOut
+)
+{
+	HRESULT ret;
+	WCHAR_T_DEC(pszName);
+	WCHAR_T_CONV_VLA(pszName);
+	if(pszName_w) {
+		wchar_t *p = pszName_w;
+		while(*p) {
+			if(*p == L'/') {
+				*p = L'\\';
+			}
+			p++;
+		}
+	}
+	ret = SHParseDisplayName(pszName_w, pbc, ppidl, sfgaoIn, psfgaoOut);
+	WCHAR_T_FREE(pszName);
+	return ret;
+}

@@ -89,6 +89,7 @@ EXPORTS
 	SHBrowseForFolderU
 	SHGetFolderPathU
 	SHGetPathFromIDListU
+	SHParseDisplayNameU
 
 	; shlwapi.dll
 	; -----------

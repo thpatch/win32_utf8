@@ -68,3 +68,11 @@ WRAPPER_DEC(BOOL WINAPI, SHGetPathFromIDList,
 );
 #undef SHGetPathFromIDList
 #define SHGetPathFromIDList SHGetPathFromIDListU
+
+WRAPPER_DEC(HRESULT WINAPI, SHParseDisplayName,
+	LPCSTR pszName,
+	IBindCtx *pbc,
+	LPITEMIDLIST *ppidl,
+	SFGAOF sfgaoIn,
+	SFGAOF *psfgaoOut
+);
