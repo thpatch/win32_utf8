@@ -798,6 +798,102 @@ typedef enum MESSAGEID {
 #undef WM_GETTITLEBARINFOEX
        WM_GETTITLEBARINFOEX = 0x033F,
 
+       // Multimedia window messages
+       // joystick
+#undef MM_JOY1MOVE
+       MM_JOY1MOVE = 0x3A0,
+#undef MM_JOY2MOVE
+       MM_JOY2MOVE = 0x3A1,
+#undef MM_JOY1ZMOVE
+       MM_JOY1ZMOVE = 0x3A2,
+#undef MM_JOY2ZMOVE
+       MM_JOY2ZMOVE = 0x3A3,
+#undef MM_JOY1BUTTONDOWN
+       MM_JOY1BUTTONDOWN = 0x3B5,
+#undef MM_JOY2BUTTONDOWN
+       MM_JOY2BUTTONDOWN = 0x3B6,
+#undef MM_JOY1BUTTONUP
+       MM_JOY1BUTTONUP = 0x3B7,
+#undef MM_JOY2BUTTONUP
+       MM_JOY2BUTTONUP = 0x3B8,
+
+       // MCI
+#undef MM_MCINOTIFY
+       MM_MCINOTIFY = 0x3B9,
+
+       // waveform output
+#undef MM_WOM_OPEN
+       MM_WOM_OPEN = 0x3BB,
+#undef MM_WOM_CLOSE
+       MM_WOM_CLOSE = 0x3BC,
+#undef MM_WOM_DONE
+       MM_WOM_DONE = 0x3BD,
+
+       // waveform input
+#undef MM_WIM_OPEN
+       MM_WIM_OPEN = 0x3BE,
+#undef MM_WIM_CLOSE
+       MM_WIM_CLOSE = 0x3BF,
+#undef MM_WIM_DATA
+       MM_WIM_DATA = 0x3C0,
+
+       // MIDI input
+#undef MM_MIM_OPEN
+       MM_MIM_OPEN = 0x3C1,
+#undef MM_MIM_CLOSE
+       MM_MIM_CLOSE = 0x3C2,
+#undef MM_MIM_DATA
+       MM_MIM_DATA = 0x3C3,
+#undef MM_MIM_LONGDATA
+       MM_MIM_LONGDATA = 0x3C4,
+#undef MM_MIM_ERROR
+       MM_MIM_ERROR = 0x3C5,
+#undef MM_MIM_LONGERROR
+       MM_MIM_LONGERROR = 0x3C6,
+
+       // MIDI output
+#undef MM_MOM_OPEN
+       MM_MOM_OPEN = 0x3C7,
+#undef MM_MOM_CLOSE
+       MM_MOM_CLOSE = 0x3C8,
+#undef MM_MOM_DONE
+       MM_MOM_DONE = 0x3C9,
+
+       // installable drivers
+#undef MM_DRVM_OPEN
+       MM_DRVM_OPEN = 0x3D0,
+#undef MM_DRVM_CLOSE
+       MM_DRVM_CLOSE = 0x3D1,
+#undef MM_DRVM_DATA
+       MM_DRVM_DATA = 0x3D2,
+#undef MM_DRVM_ERROR
+       MM_DRVM_ERROR = 0x3D3,
+
+#undef MM_STREAM_OPEN
+       MM_STREAM_OPEN = 0x3D4,
+#undef MM_STREAM_CLOSE
+       MM_STREAM_CLOSE = 0x3D5,
+#undef MM_STREAM_DONE
+       MM_STREAM_DONE = 0x3D6,
+#undef MM_STREAM_ERROR
+       MM_STREAM_ERROR = 0x3D7,
+
+       // Callback for MEVT_POSITIONCB
+#undef MM_MOM_POSITIONCB
+       MM_MOM_POSITIONCB = 0x3CA,
+
+#undef MM_MCISIGNAL
+       MM_MCISIGNAL = 0x3CB,
+
+       // MIM_DONE w/ pending events
+#undef MM_MIM_MOREDATA
+       MM_MIM_MOREDATA = 0x3CC,
+
+#undef MM_MIXM_LINE_CHANGE
+       MM_MIXM_LINE_CHANGE = 0x3D0, // mixer line change notify
+#undef MM_MIXM_CONTROL_CHANGE
+       MM_MIXM_CONTROL_CHANGE = 0x3D1, // mixer control change notify
+
        // DDE window messages (WM_DDE_FIRST = 0x03e0)
 
        // ... which we might not have if WIN32_LEAN_AND_MEAN is defined.
