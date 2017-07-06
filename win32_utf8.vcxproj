@@ -110,6 +110,7 @@
     <ClCompile Include="win32_utf8_build_static.c">
       <ExcludedFromBuild Condition="'$(ConfigurationType)'=='DynamicLibrary'">true</ExcludedFromBuild>
     </ClCompile>
+    <None Include="src\build.c" />
     <None Include="src\entry.c" />
     <None Include="src\comdlg32_dll.c" />
     <None Include="src\dsound_dll.c" />

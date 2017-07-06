@@ -6,5 +6,5 @@
   * Main compilation unit for static builds.
   */
 
-#include "win32_utf8_build_dynamic.c"
+#include "src/build.c"
 #include "src/entry.c"
