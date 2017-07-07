@@ -3,7 +3,7 @@
   *
   * ----
   *
-  * Main include file.
+  * Main public header.
   */
 
 #pragma once
@@ -25,22 +25,22 @@ extern "C" {
 #include <stdio.h>
 #include <wininet.h>
 
-#include "entry.h"
-#include "macros.h"
-#include "message_enum.h"
-#include "utf.h"
+#include "src/entry.h"
+#include "src/macros.h"
+#include "src/message_enum.h"
+#include "src/utf.h"
 
-#include "comdlg32_dll.h"
-#include "dsound_dll.h"
-#include "gdi32_dll.h"
-#include "kernel32_dll.h"
-#include "msvcrt_dll.h"
-#include "psapi_dll.h"
-#include "shell32_dll.h"
-#include "shlwapi_dll.h"
-#include "user32_dll.h"
-#include "version_dll.h"
-#include "wininet_dll.h"
+#include "src/comdlg32_dll.h"
+#include "src/dsound_dll.h"
+#include "src/gdi32_dll.h"
+#include "src/kernel32_dll.h"
+#include "src/msvcrt_dll.h"
+#include "src/psapi_dll.h"
+#include "src/shell32_dll.h"
+#include "src/shlwapi_dll.h"
+#include "src/user32_dll.h"
+#include "src/version_dll.h"
+#include "src/wininet_dll.h"
 
 typedef struct {
 	// Name of the original ANSI function (e.g. "CreateFileA")

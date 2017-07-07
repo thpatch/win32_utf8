@@ -101,9 +101,9 @@
     <ClInclude Include="src\user32_dll.h" />
     <ClInclude Include="src\utf.h" />
     <ClInclude Include="src\version_dll.h" />
-    <ClInclude Include="src\win32_utf8.h" />
     <ClInclude Include="src\wininet_dll.h" />
     <ClInclude Include="src\wrappers.h" />
+    <ClInclude Include="win32_utf8.h" />
     <ClCompile Include="win32_utf8_build_dynamic.c">
       <ExcludedFromBuild Condition="'$(ConfigurationType)'!='DynamicLibrary'">true</ExcludedFromBuild>
     </ClCompile>

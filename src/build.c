@@ -29,7 +29,7 @@
 #pragma comment(lib, "wininet.lib")
 
 // Headers
-#include "win32_utf8.h"
+#include "../win32_utf8.h"
 #include "wrappers.h"
 #include <stddef.h>
 
