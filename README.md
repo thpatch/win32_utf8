@@ -50,7 +50,10 @@ The following functions are wrapped in this way:
 	 * GetFileVersionInfoEx()
 
 ### Building ###
-Replace all inclusions of `windows.h` or `stdio.h` with `win32_utf8.h` in your existing native Win32 code. The rest differs between static and dynamic linking:
+* Replace all inclusions of `windows.h` or `stdio.h` with `win32_utf8.h` in your existing native Win32 code.
+* If your program is a standalone executable and not a (static or dynamic) library, see the [Custom `main()` function](#custom-main-function) section for details on how to get UTF-8 command-line parameters in `argv`.
+
+The rest differs between static and dynamic linking:
 
 #### Static linking ####
 Make sure that `win32_utf8_build_static.c` is compiled as part of your sources.
@@ -63,9 +66,18 @@ For dynamic linking or other more special use cases, a project file for Visual C
 To generate a DLL in a different compiler, simply compile `win32_utf8_build_dynamic.c`.
 
 #### Custom `main()` function ####
-When including `win32_utf8.h` (or the smaller `src/entry.h`), a later definition of `main()` is renamed to `win32_utf8_main()`. That function will in turn be called by win32_utf8's own `main()` function, defined in `src/entry.c`, which retrieves the Unicode command line, converts it to UTF-8, and transparently passes that to your actual `main()` function using the classic `argc` / `argv` scheme.
+Together with win32_utf8's entry point wrappers, changing the name and parameter list of your `main()` function to
 
-When linking win32_utf8 statically as described above, `src/entry.c` is automatically compiled in as part of `win32_utf8_build_static.c`, so this should cause no further problems. For dynamic linking, however, `src/entry.c` has to be added to every target project's own sources as well.
+```c
+int __cdecl win32_utf8_main(int argc, const char *argv[])
+```
+
+guarantees that all strings in `argv` will be in UTF-8. `src/entry.h`, which is included as part of `win32_utf8.h`, redefines `main` as `win32_utf8_main` and thereby eliminates the need for another preprocessor conditional block around `main()` in cross-platform console applications.
+
+You then need to provide the *actual* entry point by compiling the correct `entry_*.c` file from this repository as part of your sources:
+* `entry_main.c` if your program runs in the console subsystem.
+
+It can either be a separate translation unit, or `#include`d into an existing one. Also, make sure that your compiler's subsystem settings match the entry point file.
 
 #### Compiler support ####
 **Visual C++** and **MinGW** compile the code just fine. Cygwin is not supported, as [it lacks Unicode versions of certain C runtime functions because they're not part of the POSIX standard](https://www.cygwin.com/ml/cygwin/2006-03/msg00539.html). (Of course, using MinGW's `gcc` through Cygwin works just fine.)

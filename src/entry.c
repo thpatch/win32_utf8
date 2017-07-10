@@ -3,32 +3,19 @@
   *
   * ----
   *
-  * Wrappers for certain entry points.
+  * Entry point wrapper, converting the command-line parameters to UTF-8.
   */
 
-#ifndef WIN32_UTF8_MAIN_UNIT
-#include "win32_utf8.h"
-#endif
-
-#define main win32_utf8_main
-
-#undef main
-
-// This reference is also why we can't just compile this file for dynamic
-// builds as well, as those can't possibly resolve it.
-int __cdecl win32_utf8_main(int argc, const char *argv[]);
-
-int __cdecl main(int argc, const char *argv[])
+int win32_utf8_entry(main_t *user_main)
 {
-	extern void win32_utf8_init(void);
-	extern void win32_utf8_exit(void);
-
 	int ret;
 	int argc_w = 0;
 	char **argv_u = CommandLineToArgvU(GetCommandLineW(), &argc_w);
 	if(argv_u) {
+		assert(user_main);
+
 		win32_utf8_init();
-		ret = win32_utf8_main(argc_w, (const char**)argv_u);
+		ret = user_main(argc_w, (const char**)argv_u);
 		win32_utf8_exit();
 		LocalFree(argv_u);
 	} else {

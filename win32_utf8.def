@@ -1,6 +1,7 @@
 EXPORTS
 	w32u8_set_fallback_codepage @1
 	w32u8_get_wrapped_functions
+	win32_utf8_entry
 
 	; Macros
 	; ------
