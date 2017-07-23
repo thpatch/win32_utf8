@@ -111,6 +111,7 @@
       <ExcludedFromBuild Condition="'$(ConfigurationType)'=='DynamicLibrary'">true</ExcludedFromBuild>
     </ClCompile>
     <None Include="entry_main.c" />
+    <None Include="entry_winmain.c" />
     <None Include="src\build.c" />
     <None Include="src\entry.c" />
     <None Include="src\comdlg32_dll.c" />

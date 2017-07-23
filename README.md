@@ -66,7 +66,7 @@ For dynamic linking or other more special use cases, a project file for Visual C
 To generate a DLL in a different compiler, simply compile `win32_utf8_build_dynamic.c`.
 
 #### Custom `main()` function ####
-Together with win32_utf8's entry point wrappers, changing the name and parameter list of your `main()` function to
+Together with win32_utf8's entry point wrappers, changing the name and parameter list of your `main()` or `WinMain()` function to
 
 ```c
 int __cdecl win32_utf8_main(int argc, const char *argv[])
@@ -76,6 +76,7 @@ guarantees that all strings in `argv` will be in UTF-8. `src/entry.h`, which is 
 
 You then need to provide the *actual* entry point by compiling the correct `entry_*.c` file from this repository as part of your sources:
 * `entry_main.c` if your program runs in the console subsystem.
+* `entry_winmain.c` if your program runs in the graphical Windows subsystem and should not open a console window. Requires `-﻿mwindows` on GCC.
 
 It can either be a separate translation unit, or `#include`d into an existing one. Also, make sure that your compiler's subsystem settings match the entry point file.
 
