@@ -242,3 +242,7 @@ typedef struct {
 // Based on Wine's implementation for msvcrt.dll (dlls/msvcrt/printf.h).
 const char* printf_format_parse(printf_format_t *fmt, const char *p);
 /// -------------------------------
+
+// Returns a diagnostic (!) string describing the currently running Windows or
+// Wine version, regardless of any manifests.
+const char* windows_version(void);

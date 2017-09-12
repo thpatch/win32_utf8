@@ -5,6 +5,7 @@ EXPORTS
 	; Macros
 	; ------
 	printf_format_parse
+	windows_version
 
 	; Unicode
 	; -------
