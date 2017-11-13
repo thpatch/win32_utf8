@@ -34,6 +34,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"MultiByteToWideChar", MultiByteToWideCharU},
 	{"RemoveDirectoryA", RemoveDirectoryU},
 	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
+	{"SetEnvironmentVariableA", SetEnvironmentVariableU},
 	{"WideCharToMultiByte", WideCharToMultiByteU},
 	{"WritePrivateProfileStringA", WritePrivateProfileStringU},
 	{ NULL }
@@ -794,6 +795,22 @@ BOOL WINAPI SetCurrentDirectoryU(
 )
 {
 	return Wrap1P((Wrap1PFunc_t*)SetCurrentDirectoryW, lpPathName);
+}
+
+BOOL WINAPI SetEnvironmentVariableU(
+	LPCSTR lpName,
+	LPCSTR lpValue
+)
+{
+	BOOL ret;
+	WCHAR_T_DEC(lpName);
+	WCHAR_T_DEC(lpValue);
+	WCHAR_T_CONV(lpName);
+	WCHAR_T_CONV(lpValue);
+	ret = SetEnvironmentVariableW(lpName_w, lpValue_w);
+	WCHAR_T_FREE(lpName);
+	WCHAR_T_FREE(lpValue);
+	return ret;
 }
 
 int WINAPI WideCharToMultiByteU(

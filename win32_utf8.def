@@ -70,6 +70,7 @@ EXPORTS
 	MultiByteToWideCharU
 	RemoveDirectoryU
 	SetCurrentDirectoryU
+	SetEnvironmentVariableU
 	WideCharToMultiByteU
 	WritePrivateProfileStringU
 

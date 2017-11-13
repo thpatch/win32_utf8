@@ -227,6 +227,13 @@ WRAPPER_DEC(BOOL WINAPI, SetCurrentDirectory,
 #undef SetCurrentDirectory
 #define SetCurrentDirectory SetCurrentDirectoryU
 
+WRAPPER_DEC(BOOL WINAPI, SetEnvironmentVariable,
+	LPCSTR lpName,
+	LPCSTR lpValue
+);
+#undef SetEnvironmentVariable
+#define SetEnvironmentVariable SetEnvironmentVariableU
+
 WRAPPER_DEC(int WINAPI, WideCharToMultiByte,
 	UINT CodePage,
 	DWORD dwFlags,
