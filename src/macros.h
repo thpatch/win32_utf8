@@ -201,10 +201,11 @@ size_t zzstrlen(const char *str);
 
 // Convenience macro to convert one fixed-length string to UTF-16.
 #define FixedLengthStringConvert(str_in, str_len) \
-	size_t str_in##_len = (str_len != -1 ? str_len : strlen(str_in)) + 1; \
-	VLA(wchar_t, str_in##_w, str_in##_len); \
-	ZeroMemory(str_in##_w, str_in##_len * sizeof(wchar_t)); \
-	StringToUTF16(str_in##_w, str_in, str_len);
+	size_t str_in##_len = (str_len != -1 ? str_len : strlen(str_in)); \
+	int str_in##_w_len; \
+	VLA(wchar_t, str_in##_w, str_in##_len + 1); \
+	str_in##_w_len = StringToUTF16(str_in##_w, str_in, str_in##_len); \
+	str_in##_w[str_in##_w_len] = L'\0';
 
 // Now, if Microsoft just had used integer identifiers for resources instead
 // of names plus the MAKEINTRESOURCE / MAKEINTATOM hacks, we could just

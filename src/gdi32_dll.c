@@ -290,7 +290,7 @@ BOOL WINAPI ExtTextOutU(
 {
 	BOOL ret;
 	FixedLengthStringConvert(lpString, c);
-	ret = ExtTextOutW(hdc, x, y, options, lprect, lpString_w, wcslen(lpString_w), lpDx);
+	ret = ExtTextOutW(hdc, x, y, options, lprect, lpString_w, lpString_w_len, lpDx);
 	WCHAR_T_FREE(lpString);
 	return ret;
 }
@@ -364,7 +364,7 @@ BOOL APIENTRY GetTextExtentPoint32U(
 {
 	BOOL ret;
 	FixedLengthStringConvert(lpString, c);
-	ret = GetTextExtentPoint32W(hdc, lpString_w, wcslen(lpString_w), psizl);
+	ret = GetTextExtentPoint32W(hdc, lpString_w, lpString_w_len, psizl);
 	WCHAR_T_FREE(lpString);
 	return ret;
 }

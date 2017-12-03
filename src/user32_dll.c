@@ -177,7 +177,7 @@ int WINAPI DrawTextU(
 {
 	int ret;
 	FixedLengthStringConvert(lpchText, cchText);
-	ret = DrawTextW(hdc, lpchText_w, wcslen(lpchText_w) + 1, lprc, format);
+	ret = DrawTextW(hdc, lpchText_w, lpchText_w_len + 1, lprc, format);
 	VLA_FREE(lpchText_w);
 	return ret;
 }
@@ -359,7 +359,7 @@ LONG WINAPI TabbedTextOutU(
 	BOOL ret;
 	FixedLengthStringConvert(lpString, chCount);
 	ret = TabbedTextOutW(
-		hdc, x, y, lpString_w, wcslen(lpString_w),
+		hdc, x, y, lpString_w, lpString_w_len,
 		nTabPositions, lpnTabStopPositions, nTabOrigin
 	);
 	WCHAR_T_FREE(lpString);
