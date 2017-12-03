@@ -177,7 +177,7 @@ int WINAPI DrawTextU(
 {
 	int ret;
 	FixedLengthStringConvert(lpchText, cchText);
-	ret = DrawTextW(hdc, lpchText_w, lpchText_w_len + 1, lprc, format);
+	ret = DrawTextW(hdc, lpchText_w, lpchText_w_len, lprc, format);
 	VLA_FREE(lpchText_w);
 	return ret;
 }
