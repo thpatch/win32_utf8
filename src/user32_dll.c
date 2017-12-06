@@ -68,11 +68,11 @@ const w32u8_pair_t user32_pairs[] = {
 	RESID_FREE(lpszMenuName, (a)->lpszMenuName);
 /// ---------------------
 
-LPSTR WINAPI CharNextU(
-	LPSTR lpsz
+LPCSTR WINAPI CharNextU(
+	LPCSTR lpsz
 )
 {
-	LPSTR ret;
+	LPCSTR ret;
 	extern UINT fallback_codepage;
 
 	if(lpsz == NULL || *lpsz == '\0') {

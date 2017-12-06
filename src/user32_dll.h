@@ -8,8 +8,8 @@
 
 #pragma once
 
-WRAPPER_DEC(LPSTR WINAPI, CharNext,
-	LPSTR lpsz
+WRAPPER_DEC(LPCSTR WINAPI, CharNext,
+	LPCSTR lpsz
 );
 #undef CharNext
 #define CharNext CharNextU
