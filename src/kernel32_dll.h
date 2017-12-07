@@ -154,6 +154,17 @@ WRAPPER_DEC(UINT WINAPI, GetPrivateProfileInt,
 #undef GetPrivateProfileInt
 #define GetPrivateProfileInt GetPrivateProfileIntU
 
+WRAPPER_DEC(UINT WINAPI, GetPrivateProfileString,
+	LPCSTR lpAppName,
+	LPCSTR lpKeyName,
+	LPCSTR lpDefault,
+	LPSTR lpReturnedString,
+	DWORD nSize,
+	LPCSTR lpFileName
+);
+#undef GetPrivateProfileString
+#define GetPrivateProfileString GetPrivateProfileStringU
+
 WRAPPER_DEC(VOID WINAPI, GetStartupInfo,
 	LPSTARTUPINFOA lpStartupInfo
 );

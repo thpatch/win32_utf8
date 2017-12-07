@@ -24,6 +24,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetCommandLineA", GetCommandLineU},
 	{"GetModuleFileNameA", GetModuleFileNameU},
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
+	{"GetPrivateProfileStringA", GetPrivateProfileStringU},
 	{"GetStartupInfoA", GetStartupInfoU},
 	{"GetTempPathA", GetTempPathU},
 	{"IsDBCSLeadByte", IsDBCSLeadByteFB},
@@ -665,6 +666,59 @@ UINT WINAPI GetPrivateProfileIntU(
 	INI_MACRO_EXPAND(WCHAR_T_CONV);
 	ret = GetPrivateProfileIntW(lpAppName_w, lpKeyName_w, nDefault, lpFileName_w);
 	INI_MACRO_EXPAND(WCHAR_T_FREE);
+	return ret;
+}
+
+UINT WINAPI GetPrivateProfileStringU(
+	LPCSTR lpAppName,
+	LPCSTR lpKeyName,
+	LPCSTR lpDefault,
+	LPSTR lpReturnedString,
+	DWORD nSize,
+	LPCSTR lpFileName
+)
+{
+	UINT ret = 0;
+	VLA(wchar_t, lpReturnedString_w, nSize);
+	INI_MACRO_EXPAND(WCHAR_T_DEC);
+	// Yes, we can't just ignore it, pass NULL for [lpDefault] to the function
+	// and memcpy() it ourselves if necessary. If [lpDefault] is NULL,
+	// GetPrivateProfileString() just uses the empty string instead, and
+	// there's no way of telling when it *did* use the default string.
+	WCHAR_T_DEC(lpDefault);
+
+	WCHAR_T_KEEP_NULL(lpAppName);
+	WCHAR_T_KEEP_NULL(lpKeyName);
+	WCHAR_T_KEEP_NULL(lpDefault);
+
+	// Windows crashes in this case as well. Just like GetModuleFileName(),
+	// this function can't retrieve the full length of the string anyway,
+	// since it always null-terminates any truncated version of it. That only
+	// leaves repeated checks with growing buffers... or a full-on custom
+	// implementation of the functionality.
+	assert(lpReturnedString);
+
+	INI_MACRO_EXPAND(WCHAR_T_CONV);
+	WCHAR_T_CONV(lpDefault);
+
+	EnsurePrivateProfileUTF16(lpFileName_w);
+	DWORD ret_w = GetPrivateProfileStringW(
+		lpAppName_w, lpKeyName_w, lpDefault_w,
+		lpReturnedString_w, nSize, lpFileName_w
+	);
+
+	if(nSize) {
+		ret = StringToMBFixed(
+			lpReturnedString, lpReturnedString_w, nSize - 1, ret_w
+		);
+		lpReturnedString[ret] = 0;
+		if((!lpAppName || !lpKeyName) && (ret + 1) == (nSize - 1)) {
+			lpReturnedString[ret + 1] = 0;
+		}
+	}
+
+	INI_MACRO_EXPAND(WCHAR_T_FREE);
+	WCHAR_T_FREE(lpDefault);
 	return ret;
 }
 

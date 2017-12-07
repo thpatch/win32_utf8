@@ -60,6 +60,7 @@ EXPORTS
 	GetFullPathNameU
 	GetModuleFileNameU
 	GetPrivateProfileIntU
+	GetPrivateProfileStringU
 	GetStartupInfoU
 	GetTempPathU
 	IsDBCSLeadByteFB
