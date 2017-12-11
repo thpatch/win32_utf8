@@ -41,6 +41,12 @@ int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len);
 // in the application's native encoding.
 int StringToMBFixed(char *str_mb, const wchar_t *str_w, int str_mb_len, int str_w_len);
 
+// Converts the "narrow" character [c_mb] to UTF-16.
+// The input and output characters are in the format expected by GetGlyphOutline.
+// Input can either be in UTF-8 or the fallback codepage specified by a call
+// to w32u8_set_fallback_codepage().
+UINT CharToUTF16(UINT c_mb);
+
 // Returns [str] in UTF-8.
 // Return value has to be free()d by the caller!
 char* EnsureUTF8(const char *str, int str_len);
