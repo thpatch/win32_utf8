@@ -175,12 +175,12 @@ BOOL WINAPI CreateDirectoryU(
 			wchar_t old_c = lpPathName_w[i + 1];
 			lpPathName_w[i + 1] = L'\0';
 			lpPathName_w[i] = L'/';
-			ret = CreateDirectoryW(lpPathName_w, NULL);
+			ret = CreateDirectoryW(lpPathName_w, lpSecurityAttributes);
 			lpPathName_w[i + 1] = old_c;
 		}
 	}
 	// Final directory
-	ret = CreateDirectoryW(lpPathName_w, NULL);
+	ret = CreateDirectoryW(lpPathName_w, lpSecurityAttributes);
 	WCHAR_T_FREE(lpPathName);
 	return ret;
 }
