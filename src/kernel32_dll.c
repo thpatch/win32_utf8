@@ -388,13 +388,13 @@ DWORD WINAPI FormatMessageU(
 			  * meant to return "  Bi    Bob Bill" with the argument list
 			  * [4, 2, "Bill", "Bob", 6, "Bill"] would have to be
 			  *
-			  *		"%1!*.*s! %3!*s! %4"
+			  *		"%1!*.*s! %3 %4!*s!"
 			  *
 			  * for a va_list and
 			  *
-			  *		"%1!*.*s! %4!*s! %6"
+			  *		"%1!*.*s! %4 %5!*s!"
 			  *
-			  *	for a FORMAT_MESSAGE_ARGUMENT_ARRAY. Therefore, we need to add
+			  * for a FORMAT_MESSAGE_ARGUMENT_ARRAY. Therefore, we need to add
 			  * that drift value to the insert number ourselves in the former
 			  * case.
 			  */
