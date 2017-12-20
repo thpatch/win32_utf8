@@ -130,19 +130,13 @@ size_t zzstrlen(const char *str);
 	STRLEN_DEC(src_char); \
 	VLA(wchar_t, src_char##_w, src_char##_len)
 
-// Needs to be a separate macro, since any conditionally created C99 VLA would
-// be local to a conditional branch, and any outside access to it would result
-// in undefined behavior.
-#define WCHAR_T_KEEP_NULL(src_char) \
-	if(src_char == NULL) { \
-		WCHAR_T_FREE(src_char); \
-	}
-
 #define WCHAR_T_CONV(src_char) \
-	StringToUTF16(src_char##_w, src_char, src_char##_len)
-
-#define WCHAR_T_CONV_VLA(src_char) \
-	src_char##_w = StringToUTF16_VLA(src_char##_w, src_char, src_char##_len)
+	if(src_char == NULL) { \
+		/* A string of length 0 can't have possibly been on the heap. */ \
+		src_char##_w = NULL; \
+	} else { \
+		StringToUTF16(src_char##_w, src_char, src_char##_len) ; \
+	}
 
 #define WCHAR_T_FREE(src_char) \
 	VLA_FREE(src_char##_w)

@@ -145,8 +145,8 @@ BOOL WINAPI CopyFileExU(
 	BOOL ret;
 	WCHAR_T_DEC(lpExistingFileName);
 	WCHAR_T_DEC(lpNewFileName);
-	WCHAR_T_CONV_VLA(lpExistingFileName);
-	WCHAR_T_CONV_VLA(lpNewFileName);
+	WCHAR_T_CONV(lpExistingFileName);
+	WCHAR_T_CONV(lpNewFileName);
 	ret = CopyFileExW(
 		lpExistingFileName_w, lpNewFileName_w,
 		lpProgressRoutine, lpData, pbCancel, dwCopyFlags
@@ -166,10 +166,10 @@ BOOL WINAPI CreateDirectoryU(
 	size_t i;
 	size_t lpPathName_w_len;
 	WCHAR_T_DEC(lpPathName);
-	WCHAR_T_CONV_VLA(lpPathName);
+	WCHAR_T_CONV(lpPathName);
 
 	// no, this isn't optimized away
-	lpPathName_w_len = wcslen(lpPathName_w);
+	lpPathName_w_len = w32u8_wcslen(lpPathName_w);
 	for(i = 0; i < lpPathName_w_len; i++) {
 		if(lpPathName_w[i] == L'\\' || lpPathName_w[i] == L'/') {
 			wchar_t old_c = lpPathName_w[i + 1];
@@ -197,7 +197,7 @@ HANDLE WINAPI CreateFileU(
 {
 	HANDLE ret;
 	WCHAR_T_DEC(lpFileName);
-	WCHAR_T_CONV_VLA(lpFileName);
+	WCHAR_T_CONV(lpFileName);
 	ret = CreateFileW(
 		lpFileName_w, dwDesiredAccess, dwShareMode | FILE_SHARE_READ, lpSecurityAttributes,
 		dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile
@@ -225,9 +225,9 @@ BOOL WINAPI CreateProcessU(
 	WCHAR_T_DEC(lpCmdLine);
 	WCHAR_T_DEC(lpCurrentDirectory);
 
-	WCHAR_T_CONV_VLA(lpAppName);
-	WCHAR_T_CONV_VLA(lpCmdLine);
-	WCHAR_T_CONV_VLA(lpCurrentDirectory);
+	WCHAR_T_CONV(lpAppName);
+	WCHAR_T_CONV(lpCmdLine);
+	WCHAR_T_CONV(lpCurrentDirectory);
 
 	if(lpSI) {
 		// At least the structure sizes are identical here
@@ -309,7 +309,7 @@ HANDLE WINAPI FindFirstFileU(
 	WIN32_FIND_DATAW lpFindFileDataW;
 
 	WCHAR_T_DEC(lpFileName);
-	WCHAR_T_CONV_VLA(lpFileName);
+	WCHAR_T_CONV(lpFileName);
 	ret = FindFirstFileW(lpFileName_w, &lpFindFileDataW);
 	last_error = GetLastError();
 	CopyFindDataWToA(lpFindFileData, &lpFindFileDataW);
@@ -441,7 +441,7 @@ DWORD WINAPI FormatMessageU(
 						void **argptr = voa_arg(Arguments, insert, voa);
 						const char *src = *argptr;
 						WCHAR_T_DEC(src);
-						WCHAR_T_CONV_VLA(src);
+						WCHAR_T_CONV(src);
 						inserts_w[insert] = src_w;
 						inserts_used = max(insert + 1, inserts_used);
 						*argptr = inserts_w[insert];
@@ -527,7 +527,7 @@ DWORD WINAPI GetEnvironmentVariableU(
 	DWORD ret;
 	WCHAR_T_DEC(lpName);
 	VLA(wchar_t, lpBuffer_w, nSize);
-	WCHAR_T_CONV_VLA(lpName);
+	WCHAR_T_CONV(lpName);
 
 	GetEnvironmentVariableW(lpName_w, lpBuffer_w, nSize);
 	// Return the converted size (!)
@@ -552,7 +552,7 @@ BOOL WINAPI GetFileAttributesExU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpFileName);
-	WCHAR_T_CONV_VLA(lpFileName);
+	WCHAR_T_CONV(lpFileName);
 	ret = GetFileAttributesExW(lpFileName_w, fInfoLevelId, lpFileInformation);
 	WCHAR_T_FREE(lpFileName);
 	return ret;
@@ -569,7 +569,7 @@ DWORD WINAPI GetFullPathNameU(
 	DWORD ret;
 	VLA(wchar_t, lpBuffer_w, nBufferLength);
 	WCHAR_T_DEC(lpFileName);
-	WCHAR_T_CONV_VLA(lpFileName);
+	WCHAR_T_CONV(lpFileName);
 
 	if (lpFilePart) {
 		*lpFilePart = NULL;
@@ -687,10 +687,6 @@ UINT WINAPI GetPrivateProfileStringU(
 	// there's no way of telling when it *did* use the default string.
 	WCHAR_T_DEC(lpDefault);
 
-	WCHAR_T_KEEP_NULL(lpAppName);
-	WCHAR_T_KEEP_NULL(lpKeyName);
-	WCHAR_T_KEEP_NULL(lpDefault);
-
 	// Windows crashes in this case as well. Just like GetModuleFileName(),
 	// this function can't retrieve the full length of the string anyway,
 	// since it always null-terminates any truncated version of it. That only
@@ -800,8 +796,8 @@ BOOL WINAPI MoveFileWithProgressU(
 	BOOL ret;
 	WCHAR_T_DEC(lpExistingFileName);
 	WCHAR_T_DEC(lpNewFileName);
-	WCHAR_T_CONV_VLA(lpExistingFileName);
-	WCHAR_T_CONV_VLA(lpNewFileName);
+	WCHAR_T_CONV(lpExistingFileName);
+	WCHAR_T_CONV(lpNewFileName);
 	ret = MoveFileWithProgressW(
 		lpExistingFileName_w, lpNewFileName_w, lpProgressRoutine, lpData, dwFlags
 	);

@@ -43,7 +43,7 @@ BOOL WINAPI GetFileVersionInfoU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpstrFilename);
-	WCHAR_T_CONV_VLA(lpstrFilename);
+	WCHAR_T_CONV(lpstrFilename);
 	ret = GetFileVersionInfoW(lpstrFilename_w, dwHandle, dwLen, lpData);
 	WCHAR_T_FREE(lpstrFilename);
 	return ret;
@@ -59,7 +59,7 @@ BOOL WINAPI GetFileVersionInfoExU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpstrFilename);
-	WCHAR_T_CONV_VLA(lpstrFilename);
+	WCHAR_T_CONV(lpstrFilename);
 	DLL_FUNC_CALL(version, GetFileVersionInfoExW,
 		dwFlags, lpstrFilename_w, dwHandle, dwLen, lpData
 	);
@@ -74,7 +74,7 @@ DWORD WINAPI GetFileVersionInfoSizeU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpstrFilename);
-	WCHAR_T_CONV_VLA(lpstrFilename);
+	WCHAR_T_CONV(lpstrFilename);
 	ret = GetFileVersionInfoSizeW(lpstrFilename_w, lpdwHandle);
 	WCHAR_T_FREE(lpstrFilename);
 	return ret;
@@ -88,7 +88,7 @@ DWORD WINAPI GetFileVersionInfoSizeExU(
 {
 	DWORD ret;
 	WCHAR_T_DEC(lpstrFilename);
-	WCHAR_T_CONV_VLA(lpstrFilename);
+	WCHAR_T_CONV(lpstrFilename);
 	DLL_FUNC_CALL(version, GetFileVersionInfoSizeExW,
 		dwFlags, lpstrFilename_w, lpdwHandle
 	);

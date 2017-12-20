@@ -13,7 +13,7 @@ size_t WINAPI Wrap1P(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpsz);
-	WCHAR_T_CONV_VLA(lpsz);
+	WCHAR_T_CONV(lpsz);
 	ret = func(lpsz_w);
 	WCHAR_T_FREE(lpsz);
 	return ret;

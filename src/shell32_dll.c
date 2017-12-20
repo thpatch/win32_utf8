@@ -90,7 +90,7 @@ HICON WINAPI ExtractIconU(
 {
 	HICON ret;
 	WCHAR_T_DEC(lpszExeFileName);
-	WCHAR_T_CONV_VLA(lpszExeFileName);
+	WCHAR_T_CONV(lpszExeFileName);
 	ret = ExtractIconW(hInst, lpszExeFileName_w, nIconIndex);
 	WCHAR_T_FREE(lpszExeFileName);
 	return ret;
@@ -106,7 +106,7 @@ UINT WINAPI ExtractIconExU(
 {
 	UINT ret;
 	WCHAR_T_DEC(lpszFile);
-	WCHAR_T_CONV_VLA(lpszFile);
+	WCHAR_T_CONV(lpszFile);
 	ret = ExtractIconExW(
 		lpszFile_w, nIconIndex, phiconLarge, phiconSmall, nIcons
 	);
@@ -241,7 +241,7 @@ HRESULT WINAPI SHParseDisplayNameU(
 {
 	HRESULT ret;
 	WCHAR_T_DEC(pszName);
-	WCHAR_T_CONV_VLA(pszName);
+	WCHAR_T_CONV(pszName);
 	if(pszName_w) {
 		wchar_t *p = pszName_w;
 		while(*p) {

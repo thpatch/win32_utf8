@@ -138,7 +138,7 @@ HWND WINAPI CreateWindowExU(
 	RESID_DEC(lpClassName);
 	WCHAR_T_DEC(lpWindowName);
 	RESID_CONV(lpClassName, lpClassName);
-	WCHAR_T_CONV_VLA(lpWindowName);
+	WCHAR_T_CONV(lpWindowName);
 
 	ret = CreateWindowExW(
 		dwExStyle, lpClassName_w, lpWindowName_w, dwStyle, X, Y, nWidth, nHeight, hWndParent, hMenu,
@@ -285,8 +285,8 @@ int WINAPI MessageBoxU(
 	int ret;
 	WCHAR_T_DEC(lpText);
 	WCHAR_T_DEC(lpCaption);
-	WCHAR_T_CONV_VLA(lpText);
-	WCHAR_T_CONV_VLA(lpCaption);
+	WCHAR_T_CONV(lpText);
+	WCHAR_T_CONV(lpCaption);
 	ret = MessageBoxW(hWnd, lpText_w, lpCaption_w, uType);
 	VLA_FREE(lpText_w);
 	VLA_FREE(lpCaption_w);
@@ -326,7 +326,7 @@ BOOL WINAPI SetDlgItemTextU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpString);
-	WCHAR_T_CONV_VLA(lpString);
+	WCHAR_T_CONV(lpString);
 	ret = SetDlgItemTextW(hDlg, nIDDlgItem, lpString_w);
 	WCHAR_T_FREE(lpString);
 	return ret;
@@ -339,7 +339,7 @@ BOOL WINAPI SetWindowTextU(
 {
 	BOOL ret;
 	WCHAR_T_DEC(lpString);
-	WCHAR_T_CONV_VLA(lpString);
+	WCHAR_T_CONV(lpString);
 	ret = SetWindowTextW(hWnd, lpString_w);
 	VLA_FREE(lpString_w);
 	return ret;
