@@ -14,6 +14,7 @@ In addition, this library also adds new useful functionality to some original Wi
 ###### kernel32.dll ######
 
 * `CreateDirectoryU()` works recursively - the function creates all necessary directories to form the given path.
+* `LoadLibraryExU()` can be safely and unconditionally used with the search path flags introduced in [KB2533623](https://support.microsoft.com/help/2533623/). If this update is not installed on a user's system, these flags are cleared out automatically.
 * `GetModuleFileNameU()` returns the necessary length of a buffer to hold the module file name if NULL is passed for `nSize` or `lpFilename`, similar to what `GetCurrentDirectory()` can do by default.
 
 ###### shell32.dll ######

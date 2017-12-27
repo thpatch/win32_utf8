@@ -68,6 +68,7 @@ EXPORTS
 	GetTempPathU
 	IsDBCSLeadByteFB
 	LoadLibraryU
+	LoadLibraryExU
 	MoveFileU
 	MoveFileExU
 	MoveFileWithProgressU

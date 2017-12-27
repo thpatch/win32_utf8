@@ -785,7 +785,39 @@ HMODULE WINAPI LoadLibraryU(
 	LPCSTR lpLibFileName
 )
 {
-	return (HMODULE)Wrap1P((Wrap1PFunc_t*)LoadLibraryW, lpLibFileName);
+	return LoadLibraryExU(lpLibFileName, NULL, 0);
+}
+
+HMODULE WINAPI LoadLibraryExU(
+	LPCSTR lpLibFileName,
+	HANDLE hFile,
+	DWORD dwFlags
+)
+{
+	static int have_kb2533623 = -1;
+	HMODULE ret;
+	WCHAR_T_DEC(lpLibFileName);
+	WCHAR_T_CONV(lpLibFileName);
+
+	// Remove the flags that aren't supported without KB2533623.
+	if(have_kb2533623 == -1) {
+		have_kb2533623 = GetProcAddress(
+			GetModuleHandleA("kernel32.dll"), "SetDefaultDllDirectories"
+		) != 0;
+	}
+	if(!have_kb2533623) {
+		dwFlags &= ~(
+			LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR |
+			LOAD_LIBRARY_SEARCH_APPLICATION_DIR |
+			LOAD_LIBRARY_SEARCH_USER_DIRS |
+			LOAD_LIBRARY_SEARCH_SYSTEM32 |
+			LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
+		);
+	}
+
+	ret = LoadLibraryExW(lpLibFileName_w, hFile, dwFlags);
+	WCHAR_T_FREE(lpLibFileName);
+	return ret;
 }
 
 BOOL WINAPI MoveFileU(

@@ -203,6 +203,40 @@ WRAPPER_DEC(HMODULE WINAPI, LoadLibrary,
 #undef LoadLibrary
 #define LoadLibrary LoadLibraryU
 
+// These will not be defined on any Visual Studio toolset that targets Windows
+// XP; after all, if KB2533623 is not installed, LoadLibraryEx() with any of
+// the search path flags would return NULL with GetLastError() == 87
+// (ERROR_INVALID_PARAMETER). Therefore, LoadLibraryExU() clears them out
+// automatically if KB2533623 isn't installed.
+#undef  LOAD_WITH_ALTERED_SEARCH_PATH
+#define LOAD_WITH_ALTERED_SEARCH_PATH       0x00000008
+#undef  LOAD_IGNORE_CODE_AUTHZ_LEVEL
+#define LOAD_IGNORE_CODE_AUTHZ_LEVEL        0x00000010
+#undef  LOAD_LIBRARY_AS_IMAGE_RESOURCE
+#define LOAD_LIBRARY_AS_IMAGE_RESOURCE      0x00000020
+#undef  LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE
+#define LOAD_LIBRARY_AS_DATAFILE_EXCLUSIVE  0x00000040
+#undef  LOAD_LIBRARY_REQUIRE_SIGNED_TARGET
+#define LOAD_LIBRARY_REQUIRE_SIGNED_TARGET  0x00000080
+#undef  LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR
+#define LOAD_LIBRARY_SEARCH_DLL_LOAD_DIR    0x00000100
+#undef  LOAD_LIBRARY_SEARCH_APPLICATION_DIR
+#define LOAD_LIBRARY_SEARCH_APPLICATION_DIR 0x00000200
+#undef  LOAD_LIBRARY_SEARCH_USER_DIRS
+#define LOAD_LIBRARY_SEARCH_USER_DIRS       0x00000400
+#undef  LOAD_LIBRARY_SEARCH_SYSTEM32
+#define LOAD_LIBRARY_SEARCH_SYSTEM32        0x00000800
+#undef  LOAD_LIBRARY_SEARCH_DEFAULT_DIRS
+#define LOAD_LIBRARY_SEARCH_DEFAULT_DIRS    0x00001000
+
+WRAPPER_DEC(HMODULE WINAPI, LoadLibraryEx,
+	LPCSTR lpLibFileName,
+	HANDLE hFile,
+	DWORD dwFlags
+);
+#undef LoadLibraryEx
+#define LoadLibraryEx LoadLibraryExU
+
 WRAPPER_DEC(BOOL WINAPI, MoveFile,
 	LPCSTR lpExistingFileName,
 	LPCSTR lpNewFileName
