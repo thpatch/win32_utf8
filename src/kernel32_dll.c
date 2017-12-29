@@ -11,6 +11,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"CopyFileExA", CopyFileExU},
 	{"CreateDirectoryA", CreateDirectoryU},
 	{"CreateFileA", CreateFileU},
+	{"CreateFileMappingA", CreateFileMappingU},
 	{"CreateProcessA", CreateProcessU},
 	{"DeleteFileA", DeleteFileU},
 	{"FindFirstFileA", FindFirstFileU},
@@ -33,6 +34,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"MoveFileExA", MoveFileExU},
 	{"MoveFileWithProgressA", MoveFileWithProgressU},
 	{"MultiByteToWideChar", MultiByteToWideCharU},
+	{"OpenFileMappingA", OpenFileMappingU},
 	{"RemoveDirectoryA", RemoveDirectoryU},
 	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
 	{"SetEnvironmentVariableA", SetEnvironmentVariableU},
@@ -203,6 +205,26 @@ HANDLE WINAPI CreateFileU(
 		dwCreationDisposition, dwFlagsAndAttributes, hTemplateFile
 	);
 	WCHAR_T_FREE(lpFileName);
+	return ret;
+}
+
+HANDLE WINAPI CreateFileMappingU(
+	HANDLE hFile,
+	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCSTR lpName
+)
+{
+	HANDLE ret;
+	WCHAR_T_DEC(lpName);
+	WCHAR_T_CONV(lpName);
+	ret = CreateFileMappingW(
+		hFile, lpFileMappingAttributes, flProtect,
+		dwMaximumSizeHigh, dwMaximumSizeLow, lpName_w
+	);
+	WCHAR_T_FREE(lpName);
 	return ret;
 }
 
@@ -830,6 +852,20 @@ int WINAPI MultiByteToWideCharU(
 			lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
 		);
 	}
+	return ret;
+}
+
+HANDLE WINAPI OpenFileMappingU(
+	DWORD dwDesiredAccess,
+	BOOL bInheritHandle,
+	LPCSTR lpName
+)
+{
+	HANDLE ret;
+	WCHAR_T_DEC(lpName);
+	WCHAR_T_CONV(lpName);
+	ret = OpenFileMappingW(dwDesiredAccess, bInheritHandle, lpName_w);
+	WCHAR_T_FREE(lpName);
 	return ret;
 }
 

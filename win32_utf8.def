@@ -49,6 +49,7 @@ EXPORTS
 	CopyFileExU
 	CreateDirectoryU
 	CreateFileU
+	CreateFileMappingU
 	CreateProcessU
 	DeleteFileU
 	FindFirstFileU
@@ -71,6 +72,7 @@ EXPORTS
 	MoveFileExU
 	MoveFileWithProgressU
 	MultiByteToWideCharU
+	OpenFileMappingU
 	RemoveDirectoryU
 	SetCurrentDirectoryU
 	SetEnvironmentVariableU

@@ -46,6 +46,17 @@ WRAPPER_DEC(HANDLE WINAPI, CreateFile,
 #undef CreateFile
 #define CreateFile CreateFileU
 
+WRAPPER_DEC(HANDLE WINAPI, CreateFileMapping,
+	HANDLE hFile,
+	LPSECURITY_ATTRIBUTES lpFileMappingAttributes,
+	DWORD flProtect,
+	DWORD dwMaximumSizeHigh,
+	DWORD dwMaximumSizeLow,
+	LPCSTR lpName
+);
+#undef CreateFileMapping
+#define CreateFileMapping CreateFileMappingU
+
 WRAPPER_DEC(BOOL WINAPI, CreateProcess,
 	LPCSTR lpApplicationName,
 	LPSTR lpCommandLine,
@@ -225,6 +236,14 @@ WRAPPER_DEC(int WINAPI, MultiByteToWideChar,
 	LPWSTR lpWideCharStr,
 	int cchWideChar
 );
+
+WRAPPER_DEC(HANDLE WINAPI, OpenFileMapping,
+	DWORD dwDesiredAccess,
+	BOOL bInheritHandle,
+	LPCSTR lpName
+);
+#undef OpenFileMapping
+#define OpenFileMapping OpenFileMappingU
 
 WRAPPER_DEC(BOOL WINAPI, RemoveDirectory,
 	LPCSTR lpPathName
