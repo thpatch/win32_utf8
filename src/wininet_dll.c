@@ -26,6 +26,7 @@ BOOL WINAPI InternetCombineUrlU(
 		DWORD last_error;
 		WCHAR_T_DEC(lpszBaseUrl);
 		WCHAR_T_DEC(lpszRelativeUrl);
+		DWORD len_w = *lpdwBufferLength;
 		VLA(wchar_t, lpszBuffer_w, *lpdwBufferLength);
 
 		if(!lpszBuffer) {
@@ -34,7 +35,7 @@ BOOL WINAPI InternetCombineUrlU(
 		WCHAR_T_CONV(lpszBaseUrl);
 		WCHAR_T_CONV(lpszRelativeUrl);
 		ret = InternetCombineUrlW(
-			lpszBaseUrl_w, lpszRelativeUrl_w, lpszBuffer_w, lpdwBufferLength, dwFlags
+			lpszBaseUrl_w, lpszRelativeUrl_w, lpszBuffer_w, &len_w, dwFlags
 		);
 		/**
 		  * "If the function succeeds, this parameter receives the size of the
@@ -44,16 +45,16 @@ BOOL WINAPI InternetCombineUrlU(
 		  * (http://msdn.microsoft.com/en-us/library/windows/desktop/aa384355%28v=vs.85%29.aspx)
 		  */
 		if(ret) {
-			(*lpdwBufferLength)++;
+			len_w++;
 		}
 		last_error = GetLastError();
 		if(lpszBuffer) {
 			*lpdwBufferLength = StringToUTF8(lpszBuffer, lpszBuffer_w, *lpdwBufferLength);
 		} else {
 			// Hey, let's be nice and return the _actual_ length.
-			VLA(wchar_t, lpszBufferReal_w, *lpdwBufferLength);
+			VLA(wchar_t, lpszBufferReal_w, len_w);
 			InternetCombineUrlW(
-				lpszBaseUrl_w, lpszRelativeUrl_w, lpszBuffer_w, lpdwBufferLength, dwFlags
+				lpszBaseUrl_w, lpszRelativeUrl_w, lpszBuffer_w, &len_w, dwFlags
 			);
 			ret = StringToUTF8(NULL, lpszBufferReal_w, 0);
 			VLA_FREE(lpszBufferReal_w);
