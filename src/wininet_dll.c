@@ -56,7 +56,8 @@ BOOL WINAPI InternetCombineUrlU(
 			InternetCombineUrlW(
 				lpszBaseUrl_w, lpszRelativeUrl_w, lpszBufferReal_w, &len_w, dwFlags
 			);
-			ret = StringToUTF8(NULL, lpszBufferReal_w, 0);
+			// + 1 for the reason explained above.
+			ret = StringToUTF8(NULL, lpszBufferReal_w, 0) + 1;
 			VLA_FREE(lpszBufferReal_w);
 		}
 		WCHAR_T_FREE(lpszBaseUrl);
