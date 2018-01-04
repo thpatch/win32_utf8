@@ -54,7 +54,7 @@ BOOL WINAPI InternetCombineUrlU(
 			// Hey, let's be nice and return the _actual_ length.
 			VLA(wchar_t, lpszBufferReal_w, len_w);
 			InternetCombineUrlW(
-				lpszBaseUrl_w, lpszRelativeUrl_w, lpszBuffer_w, &len_w, dwFlags
+				lpszBaseUrl_w, lpszRelativeUrl_w, lpszBufferReal_w, &len_w, dwFlags
 			);
 			ret = StringToUTF8(NULL, lpszBufferReal_w, 0);
 			VLA_FREE(lpszBufferReal_w);
