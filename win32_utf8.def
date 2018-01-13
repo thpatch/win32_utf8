@@ -134,4 +134,5 @@ EXPORTS
 	; -----------
 	InternetCombineUrlU
 	InternetCrackUrlU
+	InternetOpenU
 	InternetOpenUrlU

@@ -9,6 +9,7 @@
 const w32u8_pair_t wininet_pairs[] = {
 	{"InternetCombineUrlA", InternetCombineUrlU},
 	{"InternetCrackUrlA", InternetCrackUrlU},
+	{"InternetOpenA", InternetOpenU},
 	{"InternetOpenUrlA", InternetOpenUrlU},
 	{ NULL }
 };
@@ -118,6 +119,30 @@ BOOL WINAPI InternetCrackUrlU(
 		WCHAR_T_FREE(lpszUrl);
 		SetLastError(last_error);
 	}
+	return ret;
+}
+
+HINTERNET WINAPI InternetOpenU(
+	LPCSTR lpszAgent,
+	DWORD dwAccessType,
+	LPCSTR lpszProxy,
+	LPCSTR lpszProxyBypass,
+	DWORD dwFlags
+)
+{
+	HINTERNET ret;
+	WCHAR_T_DEC(lpszAgent);
+	WCHAR_T_DEC(lpszProxy);
+	WCHAR_T_DEC(lpszProxyBypass);
+	WCHAR_T_CONV(lpszAgent);
+	WCHAR_T_CONV(lpszProxy);
+	WCHAR_T_CONV(lpszProxyBypass);
+	ret = InternetOpenW(
+		lpszAgent_w, dwAccessType, lpszProxy_w, lpszProxyBypass_w, dwFlags
+	);
+	WCHAR_T_FREE(lpszAgent);
+	WCHAR_T_FREE(lpszProxy);
+	WCHAR_T_FREE(lpszProxyBypass);
 	return ret;
 }
 
