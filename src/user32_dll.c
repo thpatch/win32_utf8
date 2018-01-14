@@ -178,7 +178,7 @@ int WINAPI DrawTextU(
 	int ret;
 	FixedLengthStringConvert(lpchText, cchText);
 	ret = DrawTextW(hdc, lpchText_w, lpchText_w_len, lprc, format);
-	VLA_FREE(lpchText_w);
+	WCHAR_T_FREE(lpchText);
 	return ret;
 }
 
@@ -288,8 +288,8 @@ int WINAPI MessageBoxU(
 	WCHAR_T_CONV(lpText);
 	WCHAR_T_CONV(lpCaption);
 	ret = MessageBoxW(hWnd, lpText_w, lpCaption_w, uType);
-	VLA_FREE(lpText_w);
-	VLA_FREE(lpCaption_w);
+	WCHAR_T_FREE(lpText);
+	WCHAR_T_FREE(lpCaption);
 	return ret;
 }
 
@@ -341,7 +341,7 @@ BOOL WINAPI SetWindowTextU(
 	WCHAR_T_DEC(lpString);
 	WCHAR_T_CONV(lpString);
 	ret = SetWindowTextW(hWnd, lpString_w);
-	VLA_FREE(lpString_w);
+	WCHAR_T_FREE(lpString);
 	return ret;
 }
 
