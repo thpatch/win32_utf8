@@ -209,7 +209,7 @@ HRESULT WINAPI SHGetFolderPathU(
 	if(pszPath) {
 		pszPath[0] = '\0';
 	}
-	
+
 	ret = SHGetFolderPathW(hWnd, csidl, hToken, dwFlags, pszPath_w);
 	if(ret == S_OK && pszPath) {
 		StringToUTF8(pszPath, pszPath_w, MAX_PATH);

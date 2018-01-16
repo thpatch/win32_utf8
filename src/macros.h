@@ -80,7 +80,7 @@ typedef const wchar_t* WRESID;
 # define VLA(type, name, size) \
 	type name##_vla[size]; \
 	type *name = name##_vla /* to ensure that [name] is a modifiable lvalue */
-# define VLA_FREE(name) 
+# define VLA_FREE(name)
 #else
 # define VLA(type, name, size) \
 	type *name = (type*)_malloca((size) * sizeof(type))

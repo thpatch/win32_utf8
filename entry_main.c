@@ -17,10 +17,10 @@ int __cdecl wmain(void)
 }
 
 // If both main() and wmain() are defined...
-// • Visual Studio (or more specifically, LINK.EXE) defaults to main()
-// • Pelles C defaults to wmain(), without even printing a "ambiguous entry
+// â€¢ Visual Studio (or more specifically, LINK.EXE) defaults to main()
+// â€¢ Pelles C defaults to wmain(), without even printing a "ambiguous entry
 //   point" warning
-// • MinGW/GCC doesn't care, and expects wmain() if you specify -municode,
+// â€¢ MinGW/GCC doesn't care, and expects wmain() if you specify -municode,
 //   and main() by default.
 // Thus, we keep main() as a convenience fallback for GCC.
 

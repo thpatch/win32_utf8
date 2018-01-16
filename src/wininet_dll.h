@@ -30,7 +30,7 @@ WRAPPER_DEC(BOOL WINAPI, InternetCrackUrl,
 // You might think this is not necessary if your [lpszAgent] only contains
 // ASCII characters anyway. However, in contrast to every other Windows API,
 // wininet actually uses narrow strings internally, with the encoding being
-// determined by this function – InternetOpenA() sets it to the ANSI codepage,
+// determined by this function â€“ InternetOpenA() sets it to the ANSI codepage,
 // InternetOpenW() sets it to UTF-8.
 // Despite that, InternetOpenUrlW() *always* converts the URL to UTF-8 for
 // InternetOpenUrlA(), which then assumes the ANSI codepage for further

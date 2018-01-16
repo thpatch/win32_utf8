@@ -79,7 +79,7 @@ UINT CharToUTF16(UINT c_mb)
 	* The nondescript "character" parameter of GetGlyphOutlineW() could
 	* either be interpreted as an UTF-32 code point or as UTF-16,
 	* using... well, *some* kind of byte order for surrogate pairs?
-	* As of now, it doesn't actually matter – the function does not
+	* As of now, it doesn't actually matter â€“ the function does not
 	* support code points above U+FFFF, both interpretations are
 	* identical for code points below that, and nobody on the Internet
 	* seems to have any idea on how to use the W function for anything

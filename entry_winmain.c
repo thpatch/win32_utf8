@@ -29,10 +29,10 @@ int __stdcall wWinMain(
 }
 
 // If both WinMain() and wWinMain() are defined...
-// • Visual Studio (or more specifically, LINK.EXE) defaults to WinMain()
-// • Pelles C defaults to wWinMain(), without even printing a "ambiguous
+// â€¢ Visual Studio (or more specifically, LINK.EXE) defaults to WinMain()
+// â€¢ Pelles C defaults to wWinMain(), without even printing a "ambiguous
 //   entry point" warning
-// • MinGW/GCC doesn't care, and expects wWinMain() if you specify -municode
+// â€¢ MinGW/GCC doesn't care, and expects wWinMain() if you specify -municode
 //   and -mwindows, and WinMain() if you only specify -mwindows.
 // Thus, we keep WinMain() as a convenience fallback for GCC.
 

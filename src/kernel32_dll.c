@@ -400,7 +400,7 @@ DWORD WINAPI FormatMessageU(
 	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
 		WCHAR_T_DEC(lpSource);
 		WCHAR_T_CONV(lpSource);
-		
+
 		if(dwFlags & ~FORMAT_MESSAGE_IGNORE_INSERTS && Arguments) {
 			const char *p = lpSource;
 			/** Whenever a width and/or precision format specifications are
@@ -424,7 +424,7 @@ DWORD WINAPI FormatMessageU(
 			while(*p) {
 				printf_format_t fmt;
 				int insert;
-				
+
 				// Skip characters before '%'
 				for(; *p && *p != '%'; p++);
 				if(!*p) {

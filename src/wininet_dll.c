@@ -69,7 +69,6 @@ BOOL WINAPI InternetCombineUrlU(
 	return ret;
 }
 
-// Xtreme Token Pasting™ 
 #define UC_SET_W(elm) \
 	if(lpUC->lpsz##elm) { \
 		VLA(wchar_t, lpsz##elm##_w, lpUC->dw##elm##Length + 1); \

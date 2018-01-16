@@ -37,7 +37,7 @@ static int printf_num_parse(const char **p)
 const char* printf_format_parse(printf_format_t *fmt, const char *p)
 {
 	int flag_double = 0;
-	
+
 	assert(fmt);
 	assert(p && (*(p - 1) == '%' || *(p - 1) == '!'));
 
