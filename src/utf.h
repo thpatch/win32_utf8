@@ -19,7 +19,7 @@
   * [str_len] can be -1 - this assumes that [str_mb] is null-terminated and
   * calculates the length automatically.
   *
-  * If [str_w] and [str_len] are NULL/0, the function returns the required
+  * If [str_w] is NULL, the function returns the required
   * length, in wide characters, for a buffer that fits [str_mb].
   */
 int StringToUTF16(wchar_t *str_w, const char *str_mb, int str_len);
