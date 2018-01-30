@@ -840,7 +840,7 @@ int WINAPI MultiByteToWideCharU(
 	int ret = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS,
 		lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
 	);
-	if(!ret) {
+	if(!ret && GetLastError() == ERROR_NO_UNICODE_TRANSLATION) {
 		extern UINT fallback_codepage;
 		if(lpMultiByteStr[cbMultiByte - 1] != 0) {
 			// The previous conversion attempt still lingers in [lpMultiByteStr].
