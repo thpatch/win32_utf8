@@ -187,6 +187,55 @@ size_t zzstrlen(const char *str);
 	}
 /// -------------------------------------------------------------------
 
+/// IUnknown implementation for COM proxy classes
+/// ---------------------------------------------
+// Also comes with its own reference counting, in case someone needs to wrap
+// a NULL instance.
+#define IUNKNOWN_DEC(prefix, x) \
+protected: \
+	x *pOrig; \
+	ULONG fallback_ref; \
+\
+public: \
+	prefix##_##x(x *_pOrig) : pOrig(_pOrig), fallback_ref(1) {} \
+\
+	HRESULT __stdcall QueryInterface(REFIID riid, LPVOID * ppvObj); \
+	ULONG __stdcall AddRef(); \
+	ULONG __stdcall Release();
+
+#define IUNKNOWN_DEF(x, QueryInterface_ReplaceCondition) \
+	HRESULT x::QueryInterface(REFIID riid, void** ppvObj) \
+	{ \
+		if(!ppvObj) { \
+			return E_POINTER; \
+		} \
+		if(!pOrig) { \
+			return E_NOINTERFACE; \
+		} \
+		*ppvObj = NULL; \
+		\
+		HRESULT hRes = pOrig->QueryInterface(riid, ppvObj); \
+		if(hRes == NOERROR && (QueryInterface_ReplaceCondition)) { \
+			*ppvObj = this; \
+		} \
+		return hRes; \
+	} \
+	\
+	ULONG x::AddRef() \
+	{ \
+		return !pOrig ? ++fallback_ref : pOrig->AddRef(); \
+	} \
+	\
+	ULONG x::Release() \
+	{ \
+		ULONG count = !pOrig ? --fallback_ref : pOrig->Release(); \
+		if(count == 0) { \
+			delete this; \
+		} \
+		return count; \
+	}
+/// ---------------------------------------------
+
 // Define Visual C++ warnings away
 #if (_MSC_VER >= 1600)
 # define itoa _itoa
