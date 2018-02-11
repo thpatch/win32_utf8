@@ -101,6 +101,7 @@ EXPORTS
 	; shlwapi.dll
 	; -----------
 	PathFileExistsU
+	PathFindFileNameU
 	PathMatchSpecU
 	PathRemoveFileSpecU
 

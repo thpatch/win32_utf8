@@ -14,6 +14,12 @@ WRAPPER_DEC(BOOL STDAPICALLTYPE, PathFileExists,
 #undef PathFileExists
 #define PathFileExists PathFileExistsU
 
+WRAPPER_DEC(LPSTR STDAPICALLTYPE, PathFindFileName,
+	LPCSTR pszPath
+);
+#undef PathFindFileName
+#define PathFindFileName PathFindFileNameU
+
 WRAPPER_DEC(BOOL STDAPICALLTYPE, PathMatchSpec,
 	LPCSTR pszFile,
 	LPCSTR pszSpec
