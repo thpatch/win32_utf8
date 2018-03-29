@@ -129,8 +129,9 @@ typedef enum MESSAGEID {
 #undef WM_CANCELJOURNAL
        WM_CANCELJOURNAL = 0x004B,
 
-#undef WM_NOTIFY
-       WM_NOTIFY = 0x004E,
+// If WM_NOTIFY isn't defined, Richedit.h redefines the NMHDR structure.
+//#undef WM_NOTIFY
+//       WM_NOTIFY = 0x004E,
 #undef WM_INPUTLANGCHANGEREQUEST
        WM_INPUTLANGCHANGEREQUEST = 0x0050,
 #undef WM_INPUTLANGCHANGE
