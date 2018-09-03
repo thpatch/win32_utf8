@@ -67,11 +67,13 @@ typedef const wchar_t* WRESID;
 #define W32_ERR_WRAP(x) \
 	x ? 0 : GetLastError()
 
-#define SAFE_FREE(x) \
+// Freeing
+#define SAFE_CLEANUP(func, x) \
 	if(x) { \
-		free(x); \
+		func(x); \
 		x = NULL; \
 	}
+#define SAFE_FREE(x) SAFE_CLEANUP(free, x)
 
 #define elementsof(x) (sizeof(x) / sizeof(x[0]))
 
