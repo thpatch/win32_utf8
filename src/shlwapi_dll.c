@@ -11,6 +11,12 @@ const w32u8_pair_t shlwapi_pairs[] = {
 	{"PathFindFileNameA", PathFindFileNameU},
 	{"PathMatchSpecA", PathMatchSpecU},
 	{"PathRemoveFileSpecA", PathRemoveFileSpecU},
+	{"PathAddBackslashA", PathAddBackslashU},
+	{"PathIsDirectoryA", PathIsDirectoryU},
+	{"PathIsRelativeA", PathIsRelativeU},
+	{"PathCanonicalizeA", PathCanonicalizeU},
+	{"PathCombineA", PathCombineU},
+	{"PathAppendA", PathAppendU},
 	{ NULL }
 };
 
@@ -68,4 +74,104 @@ BOOL STDAPICALLTYPE PathRemoveFileSpecU(
 		return 1;
 	}
 	return 0;
+}
+
+LPSTR STDAPICALLTYPE PathAddBackslashU(
+	LPSTR pszPath
+)
+{
+	if (pszPath == 0 || *pszPath == (char)0) {
+		return NULL;
+	}
+	size_t pszPathLen = strlen(pszPath);
+	if (*(pszPath + pszPathLen - 1)  != (CHAR)'\\') {
+		*(pszPath + pszPathLen) = (CHAR)'\\';
+		*(pszPath + pszPathLen + 1) = (CHAR)0;
+		return (pszPath + pszPathLen + 1);
+	} else {
+		return (pszPath + pszPathLen);
+	}
+}
+
+BOOL STDAPICALLTYPE PathIsDirectoryU(
+	LPCSTR pszPath
+)
+{
+	return Wrap1P((Wrap1PFunc_t*)PathIsDirectoryW, pszPath);
+}
+
+BOOL STDAPICALLTYPE PathIsRelativeU(
+	LPCSTR pszPath
+)
+{
+	return (*pszPath != (CHAR)'\\' && *pszPath != (CHAR)'/') && (*(pszPath + 1) != (CHAR)':');
+}
+
+BOOL STDAPICALLTYPE PathCanonicalizeU(
+	LPSTR pszBuf,
+	LPCSTR pszPath
+)
+{	// This function may get reimplemented https://doxygen.reactos.org/de/dff/dll_2win32_2shlwapi_2path_8c.html#aa31be5d2410fbd8564ec0da929354a0f 
+	VLA(wchar_t, pszBuf_w, MAX_PATH);
+	WCHAR_T_DEC(pszPath);
+	WCHAR_T_CONV(pszPath);
+	BOOL ret = PathCanonicalizeW(pszBuf_w, pszPath_w);
+
+	WCHAR_T_FREE(pszPath);
+
+	if (!ret) {
+		goto failed;
+	}
+
+	SetLastError(0);
+	StringToUTF8(pszBuf, pszBuf_w, MAX_PATH);
+	if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+		goto failed;
+	}
+
+	VLA_FREE(pszBuf_w);
+	return TRUE;
+
+failed:
+	VLA_FREE(pszBuf_w);
+	return FALSE;
+
+}
+
+LPSTR STDAPICALLTYPE PathCombineU(
+	LPSTR pszDest,
+	LPCSTR pszDir,
+	LPCSTR pszFile
+)
+{
+	strcpy(pszDest, pszDir);
+	if (PathIsRelativeU(pszFile)) {
+		
+		LPSTR AppendPointer = PathAddBackslashU(pszDir);
+		strcpy(AppendPointer, pszFile);
+	}
+	else {
+		strcpy(pszDest, pszFile);
+	}
+	LPSTR final_buffer = (LPSTR)malloc(MAX_PATH);
+	BOOL ret = PathCanonicalizeU(final_buffer, pszDest);
+	if (!ret) {
+		free(final_buffer);
+		return NULL;
+	}
+	strcpy(pszDest, final_buffer);
+	free(final_buffer);
+	return pszDest;
+}
+
+BOOL STDAPICALLTYPE PathAppendU(
+	LPSTR pszPath,
+	LPCSTR pszMore
+)
+{
+	LPSTR ret = PathCombineU(pszPath, pszPath, pszMore);
+	if (!ret) {
+		return FALSE;
+	}
+	return TRUE;
 }
