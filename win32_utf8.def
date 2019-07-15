@@ -105,6 +105,12 @@ EXPORTS
 	PathFindFileNameU
 	PathMatchSpecU
 	PathRemoveFileSpecU
+	PathAddBackslashU
+	PathIsDirectoryU
+	PathIsRelativeU
+	PathCanonicalizeU
+	PathCombineU
+	PathAppendU
 
 	; user32.dll
 	; ----------
