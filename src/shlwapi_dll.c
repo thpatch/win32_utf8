@@ -150,7 +150,6 @@ LPSTR STDAPICALLTYPE PathCombineU(
 	char final_buffer[MAX_PATH];
 	BOOL ret = PathCanonicalizeU(final_buffer, pszDest);
 	if (!ret) {
-		free(final_buffer);
 		return NULL;
 	}
 	strcpy(pszDest, final_buffer);
