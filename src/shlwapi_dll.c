@@ -80,13 +80,13 @@ LPSTR STDAPICALLTYPE PathAddBackslashU(
 	LPSTR pszPath
 )
 {
-	if (pszPath == 0 || *pszPath == (char)0) {
+	if (pszPath == 0 || *pszPath == '\x00') {
 		return NULL;
 	}
 	size_t pszPathLen = strlen(pszPath);
-	if (*(pszPath + pszPathLen - 1)  != (CHAR)'\\') {
-		*(pszPath + pszPathLen) = (CHAR)'\\';
-		*(pszPath + pszPathLen + 1) = (CHAR)0;
+	if (pszPath[pszPathLen - 1]  != '\\') {
+		pszPath[pszPathLen] = '\\';
+		pszPath[pszPathLen + 1] = '\x00';
 		return (pszPath + pszPathLen + 1);
 	} else {
 		return (pszPath + pszPathLen);
@@ -104,7 +104,7 @@ BOOL STDAPICALLTYPE PathIsRelativeU(
 	LPCSTR pszPath
 )
 {
-	return (*pszPath != (CHAR)'\\' && *pszPath != (CHAR)'/') && (*(pszPath + 1) != (CHAR)':');
+	return (*pszPath != '\\' && *pszPath != '/') && (*(pszPath + 1) != ':');
 }
 
 BOOL STDAPICALLTYPE PathCanonicalizeU(
@@ -112,7 +112,7 @@ BOOL STDAPICALLTYPE PathCanonicalizeU(
 	LPCSTR pszPath
 )
 {	// This function may get reimplemented https://doxygen.reactos.org/de/dff/dll_2win32_2shlwapi_2path_8c.html#aa31be5d2410fbd8564ec0da929354a0f 
-	VLA(wchar_t, pszBuf_w, MAX_PATH);
+	wchar_t pszBuf_w[MAX_PATH];
 	WCHAR_T_DEC(pszPath);
 	WCHAR_T_CONV(pszPath);
 	BOOL ret = PathCanonicalizeW(pszBuf_w, pszPath_w);
@@ -120,22 +120,16 @@ BOOL STDAPICALLTYPE PathCanonicalizeU(
 	WCHAR_T_FREE(pszPath);
 
 	if (!ret) {
-		goto failed;
+		return FALSE;
 	}
 
 	SetLastError(0);
 	StringToUTF8(pszBuf, pszBuf_w, MAX_PATH);
 	if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
-		goto failed;
+		return FALSE;
 	}
 
-	VLA_FREE(pszBuf_w);
 	return TRUE;
-
-failed:
-	VLA_FREE(pszBuf_w);
-	return FALSE;
-
 }
 
 LPSTR STDAPICALLTYPE PathCombineU(
@@ -153,14 +147,13 @@ LPSTR STDAPICALLTYPE PathCombineU(
 	else {
 		strcpy(pszDest, pszFile);
 	}
-	LPSTR final_buffer = (LPSTR)malloc(MAX_PATH);
+	char final_buffer[MAX_PATH];
 	BOOL ret = PathCanonicalizeU(final_buffer, pszDest);
 	if (!ret) {
 		free(final_buffer);
 		return NULL;
 	}
 	strcpy(pszDest, final_buffer);
-	free(final_buffer);
 	return pszDest;
 }
 
