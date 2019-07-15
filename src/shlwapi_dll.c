@@ -169,8 +169,7 @@ BOOL STDAPICALLTYPE PathAppendU(
 	LPCSTR pszMore
 )
 {
-	LPSTR ret = PathCombineU(pszPath, pszPath, pszMore);
-	if (!ret) {
+	if (!PathCombineU(pszPath, pszPath, pszMore)) {
 		return FALSE;
 	}
 	return TRUE;
