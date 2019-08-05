@@ -172,7 +172,10 @@ BOOL WINAPI CreateDirectoryU(
 
 	// no, this isn't optimized away
 	lpPathName_w_len = w32u8_wcslen(lpPathName_w);
-	for(i = 0; i < lpPathName_w_len; i++) {
+	// If the last character is a \\ or a /, the directory will be created
+	// by the final CreateDirectory, and we don't want to create it here.
+	// So we don't check for the last character.
+	for(i = 0; i < lpPathName_w_len - 1; i++) {
 		if(lpPathName_w[i] == L'\\' || lpPathName_w[i] == L'/') {
 			wchar_t old_c = lpPathName_w[i + 1];
 			lpPathName_w[i + 1] = L'\0';
