@@ -74,10 +74,12 @@ EXPORTS
 	MoveFileWithProgressU
 	MultiByteToWideCharU
 	OpenFileMappingU
+	ReadFileU
 	RemoveDirectoryU
 	SetCurrentDirectoryU
 	SetEnvironmentVariableU
 	WideCharToMultiByteU
+	WriteFileU
 	WritePrivateProfileStringU
 
 	; msvcrt.dll

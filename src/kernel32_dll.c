@@ -35,10 +35,12 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"MoveFileWithProgressA", MoveFileWithProgressU},
 	{"MultiByteToWideChar", MultiByteToWideCharU},
 	{"OpenFileMappingA", OpenFileMappingU},
+	{"ReadFile", ReadFileU},
 	{"RemoveDirectoryA", RemoveDirectoryU},
 	{"SetCurrentDirectoryA", SetCurrentDirectoryU},
 	{"SetEnvironmentVariableA", SetEnvironmentVariableU},
 	{"WideCharToMultiByte", WideCharToMultiByteU},
+	{"WriteFile", WriteFileU},
 	{"WritePrivateProfileStringA", WritePrivateProfileStringU},
 	{ NULL }
 };
@@ -970,6 +972,38 @@ BOOL WINAPI WritePrivateProfileStringU(
 	INI_MACRO_EXPAND(WCHAR_T_FREE);
 	WCHAR_T_CONV(lpString);
 	return ret;
+}
+
+BOOL WINAPI ReadFileU(
+	HANDLE hFile,
+	LPVOID lpBuffer,
+	DWORD nNumberOfBytesToRead,
+	LPDWORD lpNumberOfBytesRead,
+	LPOVERLAPPED lpOverlapped
+)
+{
+	DWORD temp;
+	if (!lpNumberOfBytesRead && !lpOverlapped) {
+		lpNumberOfBytesRead = &temp;
+	}
+	return ReadFile(hFile, lpBuffer, nNumberOfBytesToRead,
+		lpNumberOfBytesRead, lpOverlapped);
+}
+
+BOOL WINAPI WriteFileU(
+	HANDLE hFile,
+	LPCVOID lpBuffer,
+	DWORD nNumberOfBytesToWrite,
+	LPDWORD lpNumberOfBytesWritten,
+	LPOVERLAPPED lpOverlapped
+)
+{
+	DWORD temp;
+	if (!lpNumberOfBytesWritten && !lpOverlapped) {
+		lpNumberOfBytesWritten = &temp;
+	}
+	return WriteFile(hFile, lpBuffer, nNumberOfBytesToWrite,
+		lpNumberOfBytesWritten, lpOverlapped);
 }
 
 // Cleanup

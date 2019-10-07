@@ -279,6 +279,14 @@ WRAPPER_DEC(HANDLE WINAPI, OpenFileMapping,
 #undef OpenFileMapping
 #define OpenFileMapping OpenFileMappingU
 
+WRAPPER_DEC(BOOL WINAPI, ReadFile,
+	HANDLE hFile,
+	LPVOID lpBuffer,
+	DWORD nNumberOfBytesToRead,
+	LPDWORD lpNumberOfBytesRead,
+	LPOVERLAPPED lpOverlapped
+);
+
 WRAPPER_DEC(BOOL WINAPI, RemoveDirectory,
 	LPCSTR lpPathName
 );
@@ -307,6 +315,14 @@ WRAPPER_DEC(int WINAPI, WideCharToMultiByte,
 	int cbMultiByte,
 	LPCSTR lpDefaultChar,
 	LPBOOL lpUsedDefaultChar
+);
+
+WRAPPER_DEC(BOOL WINAPI, WriteFile,
+	HANDLE hFile,
+	LPCVOID lpBuffer,
+	DWORD nNumberOfBytesToWrite,
+	LPDWORD lpNumberOfBytesWritten,
+	LPOVERLAPPED lpOverlapped
 );
 
 WRAPPER_DEC(BOOL WINAPI, WritePrivateProfileString,

@@ -16,6 +16,7 @@ In addition, this library also adds new useful functionality to some original Wi
 * `CreateDirectoryU()` works recursively - the function creates all necessary directories to form the given path.
 * `LoadLibraryExU()` can be safely and unconditionally used with the search path flags introduced in [KB2533623](https://support.microsoft.com/help/2533623/). If this update is not installed on a user's system, these flags are cleared out automatically.
 * `GetModuleFileNameU()` returns the necessary length of a buffer to hold the module file name if NULL is passed for `nSize` or `lpFilename`, similar to what `GetCurrentDirectory()` can do by default.
+* `ReadFileU()/WriteFileU()` does not crash when `lpNumberOfBytesRead/Written` and `lpOverlapped` are both NULL. Windows 8+ already has this fix. This can be used to add Windows 7 compatibility to applications which rely on this fix.
 
 ###### shell32.dll ######
 
