@@ -9,7 +9,9 @@
 #pragma warning(error: 4028)
 
 // We're targeting older C runtime versions, too.
-#define _CRT_SECURE_NO_WARNINGS
+#ifndef _CRT_SECURE_NO_WARNINGS
+# define _CRT_SECURE_NO_WARNINGS
+#endif
 
 #define PSAPI_VERSION 1
 #define CINTERFACE
