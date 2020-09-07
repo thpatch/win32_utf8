@@ -84,7 +84,7 @@ LPSTR STDAPICALLTYPE PathAddBackslashU(
 		return NULL;
 	}
 	size_t pszPathLen = strlen(pszPath);
-	if (pszPath[pszPathLen - 1]  != '\\') {
+	if (pszPath[pszPathLen - 1] != '\\' && pszPath[pszPathLen - 1] != '/') {
 		pszPath[pszPathLen] = '\\';
 		pszPath[pszPathLen + 1] = '\x00';
 		return (pszPath + pszPathLen + 1);
