@@ -874,6 +874,9 @@ int WINAPI MultiByteToWideCharU(
 	int cchWideChar
 )
 {
+	(void)CodePage;
+	(void)dwFlags;
+
 	int ret = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS,
 		lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
 	);
@@ -947,6 +950,11 @@ int WINAPI WideCharToMultiByteU(
 	LPBOOL lpUsedDefaultChar
 )
 {
+	(void)CodePage;
+	(void)dwFlags;
+	(void)lpDefaultChar;
+	(void)lpUsedDefaultChar;
+
 	return WideCharToMultiByte(
 		CP_UTF8, 0, lpWideCharStr, cchWideChar,
 		lpMultiByteStr, cbMultiByte, NULL, NULL

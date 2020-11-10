@@ -62,6 +62,9 @@ void win32_utf8_exit(void)
 // and just defaults to msvcrt's one in this case.
 BOOL APIENTRY DllMain(HMODULE hDll, DWORD ulReasonForCall, LPVOID lpReserved)
 {
+	(void)hDll;
+	(void)lpReserved;
+
 	switch(ulReasonForCall) {
 		case DLL_PROCESS_ATTACH:
 			win32_utf8_init();
