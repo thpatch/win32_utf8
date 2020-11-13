@@ -204,7 +204,8 @@ BOOL WINAPI GetClassInfoExU(
 )
 {
 	BOOL ret;
-	WNDCLASSEXW wcex_w = {sizeof(WNDCLASSEXW), 0};
+	WNDCLASSEXW wcex_w = {0};
+	wcex_w.cbSize = sizeof(WNDCLASSEXW);
 	RESID_DEC(lpClassName);
 	RESID_CONV(lpClassName, lpClassName);
 	ret = GetClassInfoExW(hInstance, lpClassName_w, &wcex_w);

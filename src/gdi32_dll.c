@@ -135,7 +135,7 @@ HFONT WINAPI lower_CreateFontA(
 	LOGFONTA lf_a = {
 		cHeight, cWidth, cEscapement, cOrientation, cWeight, (BYTE)bItalic,
 		(BYTE)bUnderline, (BYTE)bStrikeOut, (BYTE)iCharSet, (BYTE)iOutPrecision,
-		(BYTE)iClipPrecision, (BYTE)iQuality, (BYTE)iPitchAndFamily
+		(BYTE)iClipPrecision, (BYTE)iQuality, (BYTE)iPitchAndFamily, ""
 	};
 	// Yes, Windows does the same internally. CreateFont() is *not* a way
 	// to pass a face name longer than 32 characters.

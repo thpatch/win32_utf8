@@ -162,7 +162,8 @@ const char* windows_version(void)
 	// ----
 
 	RtlGetVersion = (RtlGetVersion_type*)GetProcAddress(hNTDLL, "RtlGetVersion");
-	RTL_OSVERSIONINFOEXW ver_info = { sizeof(ver_info) };
+	RTL_OSVERSIONINFOEXW ver_info = {0};
+	ver_info.dwOSVersionInfoSize = sizeof(ver_info);
 	RtlGetVersion(&ver_info);
 
 	const char *winver = NULL;
