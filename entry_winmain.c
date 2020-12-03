@@ -25,6 +25,10 @@ int __stdcall wWinMain(
 	int nCmdShow
 )
 {
+	(void)hInstance;
+	(void)hNull;
+	(void)lpCmdLine;
+	(void)nCmdShow;
 	return win32_utf8_entry(win32_utf8_main);
 }
 
@@ -53,6 +57,10 @@ int __stdcall WinMain(
 	int nCmdShow
 )
 {
+	(void)hInstance;
+	(void)hNull;
+	(void)lpCmdLine;
+	(void)nCmdShow;
 	return win32_utf8_entry(win32_utf8_main);
 }
 
