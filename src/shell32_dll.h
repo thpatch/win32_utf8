@@ -8,6 +8,17 @@
 
 #pragma once
 
+WRAPPER_DEC(HINSTANCE WINAPI, ShellExecute,
+    HWND hwnd, 
+    LPCSTR lpOperation, 
+    LPCSTR lpFile, 
+    LPCSTR lpParameters,
+    LPCSTR lpDirectory,
+    INT nShowCmd
+);
+#undef ShellExecute
+#define ShellExecute ShellExecuteU
+
 WRAPPER_DEC(LPSTR* WINAPI, CommandLineToArgv,
 	LPCWSTR lpCmdLine,
 	int* pNumArgs

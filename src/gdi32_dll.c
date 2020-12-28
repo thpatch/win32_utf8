@@ -10,7 +10,9 @@ const w32u8_pair_t gdi32_pairs[] = {
 	{"CreateFontA", CreateFontU},
 	{"CreateFontIndirectA", CreateFontIndirectU},
 	{"CreateFontIndirectExA", CreateFontIndirectExU},
-	{"EnumFontsA", EnumFontFamiliesU},
+    {"AddFontResourceExA", AddFontResourceExU},
+    {"RemoveFontResourceExA", RemoveFontResourceExU},
+    {"EnumFontsA", EnumFontFamiliesU},
 	{"EnumFontFamiliesA", EnumFontFamiliesU},
 	{"EnumFontFamiliesExA", EnumFontFamiliesExU},
 	{"ExtTextOutA", ExtTextOutU},
@@ -223,6 +225,34 @@ HFONT WINAPI CreateFontIndirectExU(
 {
 	ENUMLOGFONTEXDVW elfedv_w;
 	return CreateFontIndirectExW(EnumLogfontExDVAToW(&elfedv_w, lpelfe));
+}
+
+int WINAPI AddFontResourceExU(
+    LPCSTR name,
+    DWORD fl,
+    PVOID res
+)
+{
+    int ret;
+    WCHAR_T_DEC(name);
+    WCHAR_T_CONV(name);
+    ret=AddFontResourceExW(name_w,fl,res);
+    WCHAR_T_FREE(name);
+    return ret;
+}
+
+int WINAPI RemoveFontResourceExU(
+    LPCSTR name,
+    DWORD fl,
+    PVOID res
+)
+{
+    int ret;
+    WCHAR_T_DEC(name);
+    WCHAR_T_CONV(name);
+    ret=RemoveFontResourceExW(name_w,fl,res);
+    WCHAR_T_FREE(name);
+    return ret;
 }
 
 typedef struct {

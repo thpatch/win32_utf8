@@ -44,6 +44,8 @@ WRAPPER_DEC(HWND WINAPI, CreateWindowEx,
 // Yep, both original functions use the same parameters
 #undef DefWindowProc
 #define DefWindowProc DefWindowProcW
+#undef CallWindowProc
+#define CallWindowProc CallWindowProcW
 
 WRAPPER_DEC(INT_PTR WINAPI, DialogBoxParam,
 	HINSTANCE hInstance,
@@ -98,6 +100,17 @@ WRAPPER_DEC(BOOL WINAPI, InsertMenuItem,
 #undef InsertMenuItem
 #define InsertMenuItem InsertMenuItemU
 
+WRAPPER_DEC(BOOL WINAPI, SetMenuItemInfo,
+    HMENU hmenu,
+    UINT item,
+    BOOL fByPositon,
+    LPCMENUITEMINFOA lpmi
+);
+
+#undef SetMenuItemInfo
+#define SetMenuItemInfo SetMenuItemInfoU
+
+
 WRAPPER_DEC(int WINAPI, LoadString,
 	HINSTANCE hInstance,
 	UINT uID,
@@ -115,6 +128,16 @@ WRAPPER_DEC(int WINAPI, MessageBox,
 );
 #undef MessageBox
 #define MessageBox MessageBoxU
+
+WRAPPER_DEC(int WINAPI, IsolationAwareMessageBox,
+    HWND hWnd,
+    LPCSTR lpText,
+    LPCSTR lpCaption,
+    UINT uType
+);
+#undef IsolationAwareMessageBox
+#define IsolationAwareMessageBox IsolationAwareMessageBoxU
+
 
 WRAPPER_DEC(ATOM WINAPI, RegisterClass,
 	CONST WNDCLASSA *lpWndClass

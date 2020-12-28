@@ -189,6 +189,16 @@ WRAPPER_DEC(DWORD WINAPI, GetTempPath,
 #undef GetTempPath
 #define GetTempPath GetTempPathU
 
+WRAPPER_DEC(UINT WINAPI, GetTempFileName,
+    LPCSTR lpPathName,
+    LPCSTR lpPrefixString,
+    UINT uUnique,
+    LPSTR lpTempFileName
+);
+
+#undef GetTempFileName
+#define GetTempFileName GetTempFileNameU
+
 // Only implemented using the fallback codepage, since UTF-8 has
 // no way to differentiate between continuation bytes and end bytes.
 BOOL WINAPI IsDBCSLeadByteFB(

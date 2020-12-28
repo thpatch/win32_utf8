@@ -39,6 +39,22 @@ WRAPPER_DEC(HFONT WINAPI, CreateFontIndirectEx,
 #undef CreateFontIndirectEx
 #define CreateFontIndirectEx CreateFontIndirectExU
 
+WRAPPER_DEC(int WINAPI, AddFontResourceEx,
+    LPCSTR name,
+    DWORD fl,
+    PVOID res
+);
+#undef AddFontResourceEx
+#define AddFontResourceEx AddFontResourceExU
+
+WRAPPER_DEC(int WINAPI, RemoveFontResourceEx,
+    LPCSTR name,
+    DWORD fl,
+    PVOID res
+);
+#undef RemoveFontResourceEx
+#define RemoveFontResourceEx RemoveFontResourceExU
+
 #undef EnumFonts
 #define EnumFonts EnumFontFamiliesU
 
