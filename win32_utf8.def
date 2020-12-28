@@ -33,6 +33,7 @@ EXPORTS
 	lower_CreateFontIndirectA
 	lower_EnumFontFamiliesA
 
+	AddFontResourceExU
 	CreateFontU
 	CreateFontIndirectU
 	CreateFontIndirectExU
@@ -41,6 +42,7 @@ EXPORTS
 	ExtTextOutU
 	GetGlyphOutlineU
 	GetTextExtentPoint32U
+	RemoveFontResourceExU
 	TextOutU
 
 	; kernel32.dll
@@ -65,6 +67,7 @@ EXPORTS
 	GetPrivateProfileIntU
 	GetPrivateProfileStringU
 	GetStartupInfoU
+	GetTempFileNameU
 	GetTempPathU
 	IsDBCSLeadByteFB
 	LoadLibraryU
@@ -100,6 +103,7 @@ EXPORTS
 	SHGetFolderPathU
 	SHGetPathFromIDListU
 	SHParseDisplayNameU
+	ShellExecuteU
 
 	; shlwapi.dll
 	; -----------
@@ -129,6 +133,7 @@ EXPORTS
 	RegisterClassU
 	RegisterClassExU
 	SetDlgItemTextU
+	SetMenuItemInfoU
 	SetWindowTextU
 	TabbedTextOutU
 	UnregisterClassU

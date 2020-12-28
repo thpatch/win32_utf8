@@ -13,6 +13,7 @@ const w32u8_pair_t shell32_pairs[] = {
 	{"SHBrowseForFolderA", SHBrowseForFolderU},
 	{"SHGetFolderPathA", SHGetFolderPathU},
 	{"SHGetPathFromIDListA", SHGetPathFromIDListU},
+	{"ShellExecuteA", ShellExecuteU},
 	{ NULL }
 };
 
@@ -253,5 +254,32 @@ HRESULT WINAPI SHParseDisplayNameU(
 	}
 	ret = SHParseDisplayName(pszName_w, pbc, ppidl, sfgaoIn, psfgaoOut);
 	WCHAR_T_FREE(pszName);
+	return ret;
+}
+
+HINSTANCE WINAPI ShellExecuteU(
+	HWND hwnd,
+	LPCSTR lpOperation,
+	LPCSTR lpFile,
+	LPCSTR lpParameters,
+	LPCSTR lpDirectory,
+	INT nShowCmd
+)
+{
+	HINSTANCE ret;
+	WCHAR_T_DEC(lpOperation);
+	WCHAR_T_DEC(lpFile);
+	WCHAR_T_DEC(lpParameters);
+	WCHAR_T_DEC(lpDirectory);
+
+	WCHAR_T_CONV(lpOperation);
+	WCHAR_T_CONV(lpFile);
+	WCHAR_T_CONV(lpParameters);
+	WCHAR_T_CONV(lpDirectory);
+	ret = ShellExecuteW(hwnd, lpOperation_w, lpFile_w, lpParameters_w, lpDirectory_w, nShowCmd);
+	WCHAR_T_FREE(lpOperation);
+	WCHAR_T_FREE(lpFile);
+	WCHAR_T_FREE(lpParameters);
+	WCHAR_T_FREE(lpDirectory);
 	return ret;
 }

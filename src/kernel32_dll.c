@@ -27,6 +27,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
 	{"GetPrivateProfileStringA", GetPrivateProfileStringU},
 	{"GetStartupInfoA", GetStartupInfoU},
+	{"GetTempFileNameA", GetTempFileNameU},
 	{"GetTempPathA", GetTempPathU},
 	{"IsDBCSLeadByte", IsDBCSLeadByteFB},
 	{"LoadLibraryA", LoadLibraryU},
@@ -768,6 +769,33 @@ VOID WINAPI GetStartupInfoU(
 	memcpy(lpSI, &si_w, sizeof(STARTUPINFOA));
 	lpSI->lpDesktop = startupinfo_desktop;
 	lpSI->lpTitle = startupinfo_title;
+}
+
+UINT WINAPI GetTempFileNameU(
+	LPCSTR lpPathName,
+	LPCSTR lpPrefixString,
+	UINT uUnique,
+	LPSTR lpTempFileName
+)
+{
+	UINT ret;
+	WCHAR_T_DEC(lpPathName);
+	WCHAR_T_DEC(lpPrefixString);
+	VLA(wchar_t, lpFilename_w, MAX_PATH);
+
+	WCHAR_T_CONV(lpPathName);
+	WCHAR_T_CONV(lpPrefixString);
+	ret = GetTempFileNameW(lpPathName_w, lpPrefixString_w, uUnique, lpFilename_w);
+	if(ret) {
+		StringToUTF8(lpTempFileName, lpFilename_w, MAX_PATH);
+		if(GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+			ret = 0;
+		}
+	}
+	VLA_FREE(lpFilename_w);
+	WCHAR_T_FREE(lpPathName);
+	WCHAR_T_FREE(lpPrefixString);
+	return ret;
 }
 
 DWORD WINAPI GetTempPathU(

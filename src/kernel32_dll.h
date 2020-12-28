@@ -182,6 +182,15 @@ WRAPPER_DEC(VOID WINAPI, GetStartupInfo,
 #undef GetStartupInfo
 #define GetStartupInfo GetStartupInfoU
 
+WRAPPER_DEC(UINT WINAPI, GetTempFileName,
+	LPCSTR lpPathName,
+	LPCSTR lpPrefixString,
+	UINT uUnique,
+	LPSTR lpTempFileName
+);
+#undef GetTempFileName
+#define GetTempFileName GetTempFileNameU
+
 WRAPPER_DEC(DWORD WINAPI, GetTempPath,
 	DWORD nBufferLength,
 	LPSTR lpBuffer

@@ -8,6 +8,14 @@
 
 #pragma once
 
+WRAPPER_DEC(int WINAPI, AddFontResourceEx,
+	LPCSTR name,
+	DWORD fl,
+	PVOID res
+);
+#undef AddFontResourceEx
+#define AddFontResourceEx AddFontResourceExU
+
 WRAPPER_DEC(HFONT WINAPI, CreateFont,
 	int cHeight,
 	int cWidth,
@@ -94,6 +102,14 @@ BOOL APIENTRY GetTextExtentPoint32U(
 );
 #undef GetTextExtentPoint32
 #define GetTextExtentPoint32 GetTextExtentPoint32U
+
+WRAPPER_DEC(int WINAPI, RemoveFontResourceEx,
+	LPCSTR name,
+	DWORD fl,
+	PVOID res
+);
+#undef RemoveFontResourceEx
+#define RemoveFontResourceEx RemoveFontResourceExU
 
 WRAPPER_DEC(BOOL WINAPI, TextOut,
 	HDC hdc,

@@ -11,6 +11,7 @@
 // parameters, but since we only ever create Unicode windows, we also have
 // to ensure that Unicode is used on the entire message path.
 const w32u8_pair_t user32_pairs[] = {
+	{"CallWindowProcA", CallWindowProcW},
 	{"CharNextA", CharNextU},
 	{"CreateDialogParamA", CreateDialogParamU},
 	{"CreateWindowExA", CreateWindowExU},
@@ -27,6 +28,7 @@ const w32u8_pair_t user32_pairs[] = {
 	{"RegisterClassA", RegisterClassU},
 	{"RegisterClassExA", RegisterClassExU},
 	{"SetDlgItemTextA", SetDlgItemTextU},
+	{"SetMenuItemInfoA", SetMenuItemInfoU},
 	{"SetWindowLongA", SetWindowLongW},
 	{"SetWindowLongPtrA", SetWindowLongPtrW},
 	{"SetWindowTextA", SetWindowTextU},
@@ -241,6 +243,33 @@ BOOL WINAPI InsertMenuItemU(
 		ZeroMemory(&lpmi_w, sizeof(MENUITEMINFOW));
 	}
 	ret = InsertMenuItemW(hmenu, item, fByPosition, &lpmi_w);
+	VLA_FREE(str_w);
+	return ret;
+}
+
+BOOL WINAPI SetMenuItemInfoU(
+	HMENU hmenu,
+	UINT item,
+	BOOL fByPosition,
+	LPCMENUITEMINFOA lpmi
+)
+{
+	BOOL ret;
+	MENUITEMINFOW lpmi_w;
+	wchar_t *str_w = NULL;
+	if(lpmi) {
+		memcpy(&lpmi_w, lpmi, sizeof(MENUITEMINFOW));
+		if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
+			// yes, [cch] is ignored
+			const char *str_local = lpmi->dwTypeData;
+			WCHAR_T_DEC(str_local);
+			WCHAR_T_CONV(str_local);
+			str_w = lpmi_w.dwTypeData = str_local_w;
+		}
+	} else {
+		ZeroMemory(&lpmi_w, sizeof(MENUITEMINFOW));
+	}
+	ret = SetMenuItemInfoW(hmenu, item, fByPosition, &lpmi_w);
 	VLA_FREE(str_w);
 	return ret;
 }

@@ -8,6 +8,9 @@
 
 #pragma once
 
+#undef CallWindowProc
+#define CallWindowProc CallWindowProcW
+
 WRAPPER_DEC(LPCSTR WINAPI, CharNext,
 	LPCSTR lpsz
 );
@@ -135,6 +138,15 @@ WRAPPER_DEC(BOOL WINAPI, SetDlgItemText,
 );
 #undef SetDlgItemText
 #define SetDlgItemText SetDlgItemTextU
+
+WRAPPER_DEC(BOOL WINAPI, SetMenuItemInfo,
+	HMENU hmenu,
+	UINT item,
+	BOOL fByPositon,
+	LPCMENUITEMINFOA lpmi
+);
+#undef SetMenuItemInfo
+#define SetMenuItemInfo SetMenuItemInfoU
 
 #undef SetWindowLong
 #undef SetWindowLongPtr

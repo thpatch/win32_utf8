@@ -76,3 +76,14 @@ WRAPPER_DEC(HRESULT WINAPI, SHParseDisplayName,
 	SFGAOF sfgaoIn,
 	SFGAOF *psfgaoOut
 );
+
+WRAPPER_DEC(HINSTANCE WINAPI, ShellExecute,
+	HWND hwnd,
+	LPCSTR lpOperation,
+	LPCSTR lpFile,
+	LPCSTR lpParameters,
+	LPCSTR lpDirectory,
+	INT nShowCmd
+);
+#undef ShellExecute
+#define ShellExecute ShellExecuteU
