@@ -80,7 +80,8 @@ static BOOL WrapOFN(
 		VLA_FREE(lpstrFile_w);
 		VLA_FREE(lpstrCustomFilter_w);
 		VLA_FREE(lpstrFilter_w);
-		return ret;
+        VLA_FREE(ofn_w_raw);
+        return ret;
 	}
 }
 /// --------

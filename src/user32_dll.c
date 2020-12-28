@@ -22,8 +22,10 @@ const w32u8_pair_t user32_pairs[] = {
 	{"GetWindowLongA", GetWindowLongW},
 	{"GetWindowLongPtrA", GetWindowLongPtrW},
 	{"InsertMenuItemA", InsertMenuItemU},
+    {"SetMenuItemInfoA", SetMenuItemInfoU},
 	{"LoadStringA", LoadStringU},
 	{"MessageBoxA", MessageBoxU},
+    {"IsolationAwareMessageBoxA", IsolationAwareMessageBoxU},
 	{"RegisterClassA", RegisterClassU},
 	{"RegisterClassExA", RegisterClassExU},
 	{"SetDlgItemTextA", SetDlgItemTextU},
@@ -245,6 +247,33 @@ BOOL WINAPI InsertMenuItemU(
 	return ret;
 }
 
+BOOL WINAPI SetMenuItemInfoU(
+    HMENU hmenu,
+    UINT item,
+    BOOL fByPosition,
+    LPCMENUITEMINFOA lpmi
+)
+{
+    BOOL ret;
+    MENUITEMINFOW lpmi_w;
+    wchar_t *str_w = NULL;
+    if(lpmi) {
+        memcpy(&lpmi_w, lpmi, sizeof(MENUITEMINFOW));
+        if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
+            // yes, [cch] is ignored
+            const char *str_local = lpmi->dwTypeData;
+            WCHAR_T_DEC(str_local);
+            WCHAR_T_CONV(str_local);
+            str_w = lpmi_w.dwTypeData = str_local_w;
+        }
+    } else {
+        ZeroMemory(&lpmi_w, sizeof(MENUITEMINFOW));
+    }
+    ret = SetMenuItemInfoW(hmenu, item, fByPosition, &lpmi_w);
+    VLA_FREE(str_w);
+    return ret;
+}
+
 int WINAPI LoadStringU(
 	HINSTANCE hInstance,
 	UINT uID,
@@ -292,6 +321,24 @@ int WINAPI MessageBoxU(
 	WCHAR_T_FREE(lpText);
 	WCHAR_T_FREE(lpCaption);
 	return ret;
+}
+
+int WINAPI IsolationAwareMessageBoxU(
+    HWND hWnd,
+    LPCSTR lpText,
+    LPCSTR lpCaption,
+    UINT uType
+)
+{
+    int ret;
+    WCHAR_T_DEC(lpText);
+    WCHAR_T_DEC(lpCaption);
+    WCHAR_T_CONV(lpText);
+    WCHAR_T_CONV(lpCaption);
+    ret = IsolationAwareMessageBoxW(hWnd, lpText_w, lpCaption_w, uType);
+    WCHAR_T_FREE(lpText);
+    WCHAR_T_FREE(lpCaption);
+    return ret;
 }
 
 ATOM WINAPI RegisterClassU(
