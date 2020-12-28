@@ -134,8 +134,7 @@ size_t zzstrlen(const char *str);
 
 #define WCHAR_T_CONV(src_char) \
 	if(src_char == NULL) { \
-		/* A string of length 0 can't have possibly been on the heap. */ \
-		src_char##_w = NULL; \
+		VLA_FREE(src_char##_w); \
 	} else { \
 		StringToUTF16(src_char##_w, src_char, src_char##_len) ; \
 	}
