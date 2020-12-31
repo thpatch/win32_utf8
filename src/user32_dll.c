@@ -305,7 +305,8 @@ int WINAPI LoadStringU(
 	return ret;
 }
 
-int WINAPI MessageBoxU(
+int WINAPI MessageBoxU_Generic(
+	w32u8_MessageBoxFunc_t *func,
 	HWND hWnd,
 	LPCSTR lpText,
 	LPCSTR lpCaption,
@@ -317,11 +318,22 @@ int WINAPI MessageBoxU(
 	WCHAR_T_DEC(lpCaption);
 	WCHAR_T_CONV(lpText);
 	WCHAR_T_CONV(lpCaption);
-	ret = MessageBoxW(hWnd, lpText_w, lpCaption_w, uType);
+	ret = func(hWnd, lpText_w, lpCaption_w, uType);
 	WCHAR_T_FREE(lpText);
 	WCHAR_T_FREE(lpCaption);
 	return ret;
 }
+
+int WINAPI MessageBoxU(
+	HWND hWnd,
+	LPCSTR lpText,
+	LPCSTR lpCaption,
+	UINT uType
+)
+{
+	return MessageBoxU_Generic(MessageBoxW, hWnd, lpText, lpCaption, uType);
+}
+
 
 ATOM WINAPI RegisterClassU(
 	CONST WNDCLASSA *lpWndClass

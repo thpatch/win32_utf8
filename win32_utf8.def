@@ -129,6 +129,7 @@ EXPORTS
 	GetClassInfoExU
 	InsertMenuItemU
 	LoadStringU
+	MessageBoxU_Generic
 	MessageBoxU
 	RegisterClassU
 	RegisterClassExU

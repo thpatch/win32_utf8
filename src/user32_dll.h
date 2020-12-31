@@ -110,6 +110,28 @@ WRAPPER_DEC(int WINAPI, LoadString,
 #undef LoadString
 #define LoadString LoadStringU
 
+typedef int WINAPI w32u8_MessageBoxFunc_t(
+	HWND hWnd,
+	LPCWSTR lpText,
+	LPCWSTR lpCaption,
+	UINT uType
+);
+
+int WINAPI MessageBoxU_Generic(
+	w32u8_MessageBoxFunc_t *func,
+	HWND hWnd,
+	LPCSTR lpText,
+	LPCSTR lpCaption,
+	UINT uType
+);
+
+#if ISOLATION_AWARE_ENABLED
+#	define IsolationAwareMessageBoxU(hWnd, lpText, lpCaption, uType) \
+		MessageBoxU_Generic(IsolationAwareMessageBoxW, (hWnd), (lpText), (lpCaption), (uType))
+#	undef IsolationAwareMessageBox
+#	define IsolationAwareMessageBox IsolationAwareMessageBoxU
+#endif
+
 WRAPPER_DEC(int WINAPI, MessageBox,
 	HWND hWnd,
 	LPCSTR lpText,
