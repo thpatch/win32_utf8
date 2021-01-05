@@ -156,6 +156,14 @@ WRAPPER_DEC(DWORD WINAPI, GetModuleFileName,
 #undef GetModuleFileName
 #define GetModuleFileName GetModuleFileNameU
 
+WRAPPER_DEC(BOOL WINAPI, GetModuleHandleEx,
+	DWORD dwFlags,
+	LPCSTR lpFilename,
+	HMODULE hModule
+);
+#undef GetModuleHandleEx
+#define GetModuleHandleEx GetModuleHandleExU
+
 WRAPPER_DEC(UINT WINAPI, GetPrivateProfileInt,
 	LPCSTR lpAppName,
 	LPCSTR lpKeyName,

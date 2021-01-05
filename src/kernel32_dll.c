@@ -24,6 +24,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetFullPathNameA", GetFullPathNameU},
 	{"GetCommandLineA", GetCommandLineU},
 	{"GetModuleFileNameA", GetModuleFileNameU},
+	{"GetModuleHandleEx", GetModuleHandleExU},
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
 	{"GetPrivateProfileStringA", GetPrivateProfileStringU},
 	{"GetStartupInfoA", GetStartupInfoU},
@@ -674,6 +675,20 @@ DWORD WINAPI GetModuleFileNameU(
 	}
 	ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
 	VLA_FREE(lpFilename_w);
+	return ret;
+}
+
+BOOL WINAPI GetModuleHandleExU(
+	DWORD dwFlags,
+	LPCSTR lpFilename,
+	HMODULE hModule
+)
+{
+	BOOL ret;
+	WCHAR_T_DEC(lpFilename);
+	WCHAR_T_CONV(lpFilename);
+	ret = GetModuleHandleExW(dwFlags, lpFilename, hModule);
+	WCHAR_T_FREE(lpFilename);
 	return ret;
 }
 
