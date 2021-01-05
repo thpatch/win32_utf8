@@ -159,7 +159,7 @@ WRAPPER_DEC(DWORD WINAPI, GetModuleFileName,
 WRAPPER_DEC(BOOL WINAPI, GetModuleHandleEx,
 	DWORD dwFlags,
 	LPCSTR lpFilename,
-	HMODULE hModule
+	HMODULE* hModule
 );
 #undef GetModuleHandleEx
 #define GetModuleHandleEx GetModuleHandleExU

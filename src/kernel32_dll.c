@@ -681,7 +681,7 @@ DWORD WINAPI GetModuleFileNameU(
 BOOL WINAPI GetModuleHandleExU(
 	DWORD dwFlags,
 	LPCSTR lpFilename,
-	HMODULE hModule
+	HMODULE* hModule
 )
 {
 	BOOL ret;
