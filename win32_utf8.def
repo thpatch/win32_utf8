@@ -64,6 +64,7 @@ EXPORTS
 	GetFileAttributesExU
 	GetFullPathNameU
 	GetModuleFileNameU
+	GetModuleHandleExU
 	GetPrivateProfileIntU
 	GetPrivateProfileStringU
 	GetStartupInfoU
