@@ -24,7 +24,7 @@ const w32u8_pair_t kernel32_pairs[] = {
 	{"GetFullPathNameA", GetFullPathNameU},
 	{"GetCommandLineA", GetCommandLineU},
 	{"GetModuleFileNameA", GetModuleFileNameU},
-	{"GetModuleHandleEx", GetModuleHandleExU},
+	{"GetModuleHandleExA", GetModuleHandleExU},
 	{"GetPrivateProfileIntA", GetPrivateProfileIntU},
 	{"GetPrivateProfileStringA", GetPrivateProfileStringU},
 	{"GetStartupInfoA", GetStartupInfoU},
