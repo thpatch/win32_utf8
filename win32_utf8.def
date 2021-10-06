@@ -121,6 +121,7 @@ EXPORTS
 
 	; user32.dll
 	; ----------
+	CharLowerU
 	CharNextU
 	CreateDialogParamU
 	CreateWindowExU

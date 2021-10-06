@@ -12,6 +12,7 @@
 // to ensure that Unicode is used on the entire message path.
 const w32u8_pair_t user32_pairs[] = {
 	{"CallWindowProcA", CallWindowProcW},
+	{"CharLowerA", CharLowerU},
 	{"CharNextA", CharNextU},
 	{"CreateDialogParamA", CreateDialogParamU},
 	{"CreateWindowExA", CreateWindowExU},
@@ -69,6 +70,24 @@ const w32u8_pair_t user32_pairs[] = {
 	VLA_FREE(lpszClassName_w); \
 	RESID_FREE(lpszMenuName, (a)->lpszMenuName);
 /// ---------------------
+
+LPSTR WINAPI CharLowerU(
+	LPSTR lpsz
+)
+{
+	if ((DWORD)lpsz & 0xFFFF0000) {
+		WCHAR_T_DEC(lpsz);
+		WCHAR_T_CONV(lpsz);
+		CharLowerW(lpsz_w);
+		WideCharToMultiByte(CP_UTF8, 0, lpsz_w, -1, lpsz, strlen(lpsz), 0, FALSE);
+		WCHAR_T_FREE(lpsz);
+		return lpsz;
+	}
+	else {
+		// TODO: implement
+		return CharLowerA(lpsz);
+	}
+}
 
 LPCSTR WINAPI CharNextU(
 	LPCSTR lpsz

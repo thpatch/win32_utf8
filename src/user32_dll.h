@@ -17,6 +17,12 @@ WRAPPER_DEC(LPCSTR WINAPI, CharNext,
 #undef CharNext
 #define CharNext CharNextU
 
+WRAPPER_DEC(LPSTR WINAPI, CharLower,
+	LPSTR lpsz
+);
+#undef CharLower
+#define CharLower CharLowerU
+
 WRAPPER_DEC(HWND WINAPI, CreateDialogParam,
 	HINSTANCE hInstance,
 	RESID lpTemplateRes,
