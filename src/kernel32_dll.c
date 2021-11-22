@@ -685,10 +685,14 @@ BOOL WINAPI GetModuleHandleExU(
 )
 {
 	BOOL ret;
-	WCHAR_T_DEC(lpFilename);
-	WCHAR_T_CONV(lpFilename);
-	ret = GetModuleHandleExW(dwFlags, lpFilename_w, hModule);
-	WCHAR_T_FREE(lpFilename);
+	if (lpFilename != NULL) {
+		WCHAR_T_DEC(lpFilename);
+		WCHAR_T_CONV(lpFilename);
+		ret = GetModuleHandleExW(dwFlags, lpFilename_w, hModule);
+		WCHAR_T_FREE(lpFilename);
+	} else {
+		ret = GetModuleHandleExW(dwFlags, NULL, hModule);
+	}
 	return ret;
 }
 
