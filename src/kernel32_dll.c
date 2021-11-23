@@ -685,13 +685,15 @@ BOOL WINAPI GetModuleHandleExU(
 )
 {
 	BOOL ret;
-	if (lpFilename != NULL) {
+	// dwFlags 4: GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS
+	// When this flag is set, [lpFilename] is an arbitrary address and not a string.
+	if (!(dwFlags & 4) && lpFilename != NULL)) {
 		WCHAR_T_DEC(lpFilename);
 		WCHAR_T_CONV(lpFilename);
 		ret = GetModuleHandleExW(dwFlags, lpFilename_w, hModule);
 		WCHAR_T_FREE(lpFilename);
 	} else {
-		ret = GetModuleHandleExW(dwFlags, NULL, hModule);
+		ret = GetModuleHandleExW(dwFlags, lpFilename, hModule);
 	}
 	return ret;
 }
