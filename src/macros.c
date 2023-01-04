@@ -174,7 +174,12 @@ const char* windows_version(void)
 
 	// As per https://msdn.microsoft.com/en-us/library/windows/hardware/ff563620(v=vs.85).aspx
 	if(major == 10) {
-		winver = "10";
+		// Windows 11 also use major = 10 and minor = 0
+		if(ver_info.dwBuildNumber >= 22000) {
+			winver = "11";
+		} else {
+			winver = "10";
+		}
 	} else if(major == 6 && minor == 3) {
 		winver = "8.1";
 	} else if(major == 6 && minor == 2 && product == VER_NT_WORKSTATION) {
