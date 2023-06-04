@@ -186,7 +186,81 @@ int WINAPI lower_EnumFontFamiliesA(
 	}
 	return down_func(hdc, plf, lpProc, lParam, 0);
 }
-/// ------------------
+///
+
+/// Promotion wrappers (Unicode)
+/// 
+HFONT WINAPI lower_CreateFontW(
+	CreateFontIndirectW_type* down_func,
+	int cHeight,
+	int cWidth,
+	int cEscapement,
+	int cOrientation,
+	int cWeight,
+	DWORD bItalic,
+	DWORD bUnderline,
+	DWORD bStrikeOut,
+	DWORD iCharSet,
+	DWORD iOutPrecision,
+	DWORD iClipPrecision,
+	DWORD iQuality,
+	DWORD iPitchAndFamily,
+	LPCWSTR pszFaceName
+)
+{
+	LOGFONTW lf_w = {
+		cHeight, cWidth, cEscapement, cOrientation, cWeight, (BYTE)bItalic,
+		(BYTE)bUnderline, (BYTE)bStrikeOut, (BYTE)iCharSet, (BYTE)iOutPrecision,
+		(BYTE)iClipPrecision, (BYTE)iQuality, (BYTE)iPitchAndFamily, L""
+	};
+	// Yes, Windows does the same internally. CreateFont() is *not* a way
+	// to pass a face name longer than 32 characters.
+	if (pszFaceName) {
+		wcsncpy(lf_w.lfFaceName, pszFaceName, elementsof(lf_w.lfFaceName));
+	}
+	return down_func(&lf_w);
+}
+
+HFONT WINAPI lower_CreateFontIndirectW(
+	CreateFontIndirectExW_type* down_func,
+	CONST LOGFONTW* lplf
+)
+{
+	ENUMLOGFONTEXDVW elfedv_w;
+	const size_t elfedv_lf_diff =
+		sizeof(ENUMLOGFONTEXDVW) - offsetof(ENUMLOGFONTEXDVW, elfEnumLogfontEx.elfFullName)
+		;
+	if (!lplf) {
+		return NULL;
+	}
+	memcpy(&elfedv_w.elfEnumLogfontEx.elfLogFont, lplf, sizeof(LOGFONTW));
+	ZeroMemory(&elfedv_w.elfEnumLogfontEx.elfFullName, elfedv_lf_diff);
+	return down_func(&elfedv_w);
+}
+
+int WINAPI lower_EnumFontFamiliesW(
+	EnumFontFamiliesExW_type* down_func,
+	HDC hdc,
+	LPCWSTR pszFaceName,
+	FONTENUMPROCW lpProc,
+	LPARAM lParam
+)
+{
+	LOGFONTW lf;
+	LOGFONTW* plf = NULL;
+
+	if (pszFaceName) {
+		if (!pszFaceName[0]) {
+			return 1;
+		}
+		wcsncpy(lf.lfFaceName, pszFaceName, elementsof(lf.lfFaceName));
+		lf.lfCharSet = DEFAULT_CHARSET;
+		lf.lfPitchAndFamily = 0;
+		plf = &lf;
+	}
+	return down_func(hdc, plf, lpProc, lParam, 0);
+}
+/// ---
 
 HFONT WINAPI CreateFontU(
 	int cHeight,

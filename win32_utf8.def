@@ -33,6 +33,10 @@ EXPORTS
 	lower_CreateFontIndirectA
 	lower_EnumFontFamiliesA
 
+	lower_CreateFontW
+	lower_CreateFontIndirectW
+	lower_EnumFontFamiliesW
+
 	AddFontResourceExU
 	CreateFontU
 	CreateFontIndirectU

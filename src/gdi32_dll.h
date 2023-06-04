@@ -38,11 +38,17 @@ WRAPPER_DEC(HFONT WINAPI, CreateFont,
 WRAPPER_DEC(HFONT WINAPI, CreateFontIndirect,
 	CONST LOGFONTA *lplf
 );
+typedef HFONT WINAPI CreateFontIndirectW_type(
+	const LOGFONTW *lplf
+);
 #undef CreateFontIndirect
 #define CreateFontIndirect CreateFontIndirectU
 
 WRAPPER_DEC(HFONT WINAPI, CreateFontIndirectEx,
 	CONST ENUMLOGFONTEXDVA *lpelfe
+);
+typedef HFONT WINAPI CreateFontIndirectExW_type(
+	CONST ENUMLOGFONTEXDVW *lpelfe
 );
 #undef CreateFontIndirectEx
 #define CreateFontIndirectEx CreateFontIndirectExU
@@ -56,6 +62,12 @@ WRAPPER_DEC(int WINAPI, EnumFontFamilies,
 	FONTENUMPROCA lpProc,
 	LPARAM lParam
 );
+typedef int WINAPI EnumFontFamiliesW_type(
+	HDC hdc,
+	LPCWSTR pszFaceName,
+	FONTENUMPROCW lpProc,
+	LPARAM lParam
+);
 #undef EnumFontFamilies
 #define EnumFontFamilies EnumFontFamiliesU
 
@@ -63,6 +75,13 @@ WRAPPER_DEC(int WINAPI, EnumFontFamiliesEx,
 	HDC hdc,
 	LPLOGFONTA lpLogfont,
 	FONTENUMPROCA lpProc,
+	LPARAM lParam,
+	DWORD dwFlags
+);
+typedef int WINAPI EnumFontFamiliesExW_type(
+	HDC hdc,
+	LPLOGFONTW lpLogfont,
+	FONTENUMPROCW lpProc,
 	LPARAM lParam,
 	DWORD dwFlags
 );
@@ -151,6 +170,37 @@ int WINAPI lower_EnumFontFamiliesA(
 	HDC hdc,
 	LPCSTR lpLogfont,
 	FONTENUMPROCA lpProc,
+	LPARAM lParam
+);
+
+HFONT WINAPI lower_CreateFontW(
+	CreateFontIndirectW_type *down_func,
+	int cHeight,
+	int cWidth,
+	int cEscapement,
+	int cOrientation,
+	int cWeight,
+	DWORD bItalic,
+	DWORD bUnderline,
+	DWORD bStrikeOut,
+	DWORD iCharSet,
+	DWORD iOutPrecision,
+	DWORD iClipPrecision,
+	DWORD iQuality,
+	DWORD iPitchAndFamily,
+	LPCWSTR pszFaceName
+);
+
+HFONT WINAPI lower_CreateFontIndirectW(
+	CreateFontIndirectExW_type *down_func,
+	CONST LOGFONTW *lplf
+);
+
+int WINAPI lower_EnumFontFamiliesW(
+	EnumFontFamiliesExW_type *down_func,
+	HDC hdc,
+	LPCWSTR lpLogfont,
+	FONTENUMPROCW lpProc,
 	LPARAM lParam
 );
 /// ------------------
