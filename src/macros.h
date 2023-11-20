@@ -10,14 +10,22 @@
 
 // C versions
 #if defined(__STDC__)
-# define C89
+# ifndef C89
+#  define C89 1
+# endif
 # if defined(__STDC_VERSION__)
-#  define C90
+#  ifndef C90
+#   define C90 1
+#  endif
 #  if (__STDC_VERSION__ >= 199409L)
-#   define C94
+#   ifndef C94
+#    define C94 1
+#   endif
 #  endif
 #  if (__STDC_VERSION__ >= 199901L)
-#   define C99
+#   ifndef C99
+#    define C99 1
+#   endif
 #  endif
 # endif
 #endif
