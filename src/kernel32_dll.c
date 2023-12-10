@@ -913,6 +913,110 @@ BOOL WINAPI MoveFileWithProgressU(
 	return ret;
 }
 
+static int getUtf8CodePointLength(const char *str, size_t len)
+{
+	if (len >= 4 &&
+		(str[0] & 0b11111000) == 0b11110000 &&
+		(str[1] & 0b11000000) == 0b10000000 &&
+		(str[2] & 0b11000000) == 0b10000000 &&
+		(str[3] & 0b11000000) == 0b10000000) {
+		return 4;
+	}
+	else if (len >= 3 &&
+		(str[0] & 0b11110000) == 0b11100000 &&
+		(str[1] & 0b11000000) == 0b10000000 &&
+		(str[2] & 0b11000000) == 0b10000000) {
+		return 3;
+	}
+	else if (len >= 2 &&
+		(str[0] & 0b11100000) == 0b11000000 &&
+		(str[1] & 0b11000000) == 0b10000000) {
+		return 2;
+	}
+	else if (len >= 1 &&
+		(str[0] & 0b10000000) == 0) {
+		// ASCII
+		return 1;
+	}
+	else {
+		// Invalid
+		return 0;
+	}
+}
+
+static int stringHasNoUtf8(const char *str, size_t len)
+{
+	while (len > 0) {
+		if (getUtf8CodePointLength(str, len) > 0) {
+			return 0;
+		}
+		str++; len--;
+	}
+	return 1;
+}
+
+int WINAPI MultiByteToWideChar_mixed_encoding(
+	UINT CodePage,
+	LPCSTR lpMultiByteStr,
+	int cbMultiByte,
+	LPWSTR lpWideCharStr,
+	int cchWideChar
+)
+{
+	int total_ret = 0;
+	int ret;
+
+	while (cbMultiByte > 0) {
+		int codePointLength = getUtf8CodePointLength(lpMultiByteStr, cbMultiByte);
+
+		if (codePointLength > 0) {
+			// Valid UTF-8
+			ret = MultiByteToWideChar(CP_UTF8, MB_PRECOMPOSED,
+				lpMultiByteStr, codePointLength, lpWideCharStr, cchWideChar
+			);
+			if (ret == 0) {
+				// Shouldn't happen
+				return total_ret;
+			}
+			goto loop;
+		}
+
+		// Character in CodePage
+		// Try with a code point of 1 byte first
+		codePointLength = 1;
+		ret = MultiByteToWideChar(CodePage, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS,
+			lpMultiByteStr, codePointLength, lpWideCharStr, cchWideChar
+		);
+		if (ret > 0) {
+			goto loop;
+		}
+
+		// Then try with a code point of 2 bytes
+		codePointLength = 2;
+		ret = MultiByteToWideChar(CodePage, MB_PRECOMPOSED | MB_ERR_INVALID_CHARS,
+			lpMultiByteStr, codePointLength, lpWideCharStr, cchWideChar
+		);
+		if (ret > 0) {
+			goto loop;
+		}
+
+		// Didn't work, convert 1 byte to the invalid character for the CodePage
+		codePointLength = 1;
+		ret = MultiByteToWideChar(CodePage, 0,
+			lpMultiByteStr, codePointLength, lpWideCharStr, cchWideChar
+		);
+
+		loop:
+		lpMultiByteStr += codePointLength;
+		cbMultiByte -= codePointLength;
+		lpWideCharStr += ret;
+		cchWideChar -= ret;
+		total_ret += ret;
+	}
+
+	return total_ret;
+}
+
 int WINAPI MultiByteToWideCharU(
 	UINT CodePage,
 	DWORD dwFlags,
@@ -936,9 +1040,16 @@ int WINAPI MultiByteToWideCharU(
 			// converted string if the original string wasn't null-terminated...
 			ZeroMemory(lpWideCharStr, cchWideChar * sizeof(wchar_t));
 		}
-		ret = MultiByteToWideChar(fallback_codepage, MB_PRECOMPOSED,
-			lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
-		);
+		if (stringHasNoUtf8(lpMultiByteStr, cbMultiByte)) {
+			ret = MultiByteToWideChar(fallback_codepage, MB_PRECOMPOSED,
+				lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
+			);
+		}
+		else {
+			ret = MultiByteToWideChar_mixed_encoding(fallback_codepage,
+				lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar
+			);
+		}
 	}
 	return ret;
 }
