@@ -17,15 +17,20 @@
 #  ifndef C90
 #   define C90 1
 #  endif
-#  if (__STDC_VERSION__ >= 199409L)
-#   ifndef C94
-#    define C94 1
-#   endif
+#  if !defined(C94) && (__STDC_VERSION__ >= 199409L)
+#   define C94 1
 #  endif
-#  if (__STDC_VERSION__ >= 199901L)
-#   ifndef C99
-#    define C99 1
-#   endif
+#  if !defined(C99) && (__STDC_VERSION__ >= 199901L)
+#   define C99 1
+#  endif
+#  if !defined(C11) && (__STDC_VERSION__ >= 201112L)
+#   define C11 1
+#  endif
+#  if !defined(C17) && (__STDC_VERSION__ >= 201710L)
+#   define C17 1
+#  endif
+#  if !defined(C2X) && (__STDC_VERSION__ > 201710L)
+#   define C2X 1
 #  endif
 # endif
 #endif
@@ -38,6 +43,13 @@
 #endif
 
 #include <stdlib.h>
+
+#ifndef MACRO_WRAP
+#define MACRO_WRAP(...) \
+	do { \
+		__VA_ARGS__ \
+	} while (0)
+#endif
 
 /**
   * Resource identifier type. Either a multi-byte or wide string or, if the
@@ -73,55 +85,31 @@ typedef const wchar_t* WRESID;
 // scheme, returning FALSE on success and automatically calling GetLastError()
 // on failure.
 #define W32_ERR_WRAP(x) \
-	x ? 0 : GetLastError()
+	((x) ? 0 : GetLastError())
 
 // Freeing
-#define SAFE_CLEANUP(func, x) \
-	if(x) { \
-		func(x); \
-		x = NULL; \
-	}
+#define SAFE_CLEANUP(func, x) MACRO_WRAP(\
+	if (x) { \
+		(void)func(x), (x) = 0; \
+	} \
+)
 #define SAFE_FREE(x) SAFE_CLEANUP(free, x)
 
-#define elementsof(x) (sizeof(x) / sizeof(x[0]))
+#define elementsof(x) (sizeof(x) / sizeof((x)[0]))
 
 // Variable length arrays
-#if defined(C99)
+#if defined(C99) || defined(C11) && (defined(__STDC_NO_VLA__) && __STDC_NO_VLA__ != 1)
 # define VLA(type, name, size) \
-	type name##_vla[size]; \
+	type name##_vla[(size)]; \
 	type *name = name##_vla /* to ensure that [name] is a modifiable lvalue */
-# define VLA_FREE(name)
+# define VLA_FREE(name) \
+	do; while(0) /* require a semi-colon */
 #else
 # define VLA(type, name, size) \
 	type *name = (type*)_malloca((size) * sizeof(type))
 # define VLA_FREE(name) \
-	if(name) { \
-		_freea(name); \
-		name = NULL; \
-	}
+	SAFE_CLEANUP(_freea, name)
 #endif
-
-// String functions with NULL pointer checking
-static __inline size_t w32u8_strlen(const char *str)
-{
-	return str ? strlen(str) : 0;
-}
-
-static __inline size_t w32u8_wcslen(const wchar_t *str)
-{
-	return str ? wcslen(str) : 0;
-}
-
-static __inline int w32u8_strcmp(const char *str1, const char *str2)
-{
-	assert(str1);
-	assert(str2);
-	return strcmp(str1, str2);
-}
-
-#define strlen w32u8_strlen
-#define wcslen w32u8_wcslen
-#define strcmp w32u8_strcmp
 
 // Returns the length of a double-null-terminated string, not including the
 // terminating two 0 bytes.
@@ -140,12 +128,13 @@ size_t zzstrlen(const char *str);
 	STRLEN_DEC(src_char); \
 	VLA(wchar_t, src_char##_w, src_char##_len)
 
-#define WCHAR_T_CONV(src_char) \
-	if(src_char == NULL) { \
+#define WCHAR_T_CONV(src_char) MACRO_WRAP(\
+	if((src_char) == NULL) { \
 		VLA_FREE(src_char##_w); \
 	} else { \
-		StringToUTF16(src_char##_w, src_char, src_char##_len) ; \
-	}
+		StringToUTF16(src_char##_w, src_char, src_char##_len); \
+	} \
+)
 
 #define WCHAR_T_FREE(src_char) \
 	VLA_FREE(src_char##_w)
@@ -165,7 +154,7 @@ size_t zzstrlen(const char *str);
 // Declare a wrapping function together with a corresponding typedef
 #define WRAPPER_DEC(rettype, name, ...) \
 	typedef rettype name##A_type(__VA_ARGS__); \
-	rettype name##U(__VA_ARGS__);
+	rettype name##U(__VA_ARGS__)
 
 /// Convenient dynamic binding for functions not available before Vista
 /// -------------------------------------------------------------------
@@ -181,7 +170,7 @@ size_t zzstrlen(const char *str);
 #define DLL_FUNC_GET(dll, func) \
 	DLL_FUNC(dll, func) = (DLL_FUNC_TYPE(dll, func)*)GetProcAddress(dll, #func)
 
-#define DLL_FUNC_CALL(dll, func, ...) \
+#define DLL_FUNC_CALL(dll, func, ...) MACRO_WRAP(\
 	if(DLL_FUNC(dll, func)) { \
 		ret = DLL_FUNC(dll, func)(__VA_ARGS__); \
 	} else { \
@@ -193,7 +182,8 @@ size_t zzstrlen(const char *str);
 		); \
 		SetLastError(ERROR_CALL_NOT_IMPLEMENTED); \
 		ret = 0; \
-	}
+	} \
+)
 /// -------------------------------------------------------------------
 
 /// IUnknown implementation for COM proxy classes
@@ -246,16 +236,29 @@ public: \
 /// ---------------------------------------------
 
 // Define Visual C++ warnings away
-#if (_MSC_VER >= 1600)
+#if (_MSC_VER >= 1600) && \
+    ((( defined _CRT_DECLARE_NONSTDC_NAMES && _CRT_DECLARE_NONSTDC_NAMES) || \
+      (!defined _CRT_DECLARE_NONSTDC_NAMES && !__STDC__                 )) && \
+    !(defined _CRT_NONSTDC_NO_DEPRECATE  && !defined _CRT_NONSTDC_NO_WARNINGS))
+// char* itoa(int _Value, char *_Buffer, int _Radix)
 # define itoa _itoa
 #ifndef strdup
+// char* strdup(const char *_Source)
 # define strdup _strdup
 #endif
-# define snprintf _snprintf
+// void* memccpy(void *_Dst, const void *_Src, int _Val, size_t _MaxCount)
+# define memccpy _memccpy
+// int snprintf(char *_Buffer, size_t _BufferCount, const char *_Format, ...)
+# define snprintf(...) _snprintf(__VA_ARGS__)
+// int strnicmp(const char *_String1, const char *_String2, size_t _MaxCount)
 # define strnicmp _strnicmp
+// int stricmp(const char *_String1, const char *_String2)
 # define stricmp _stricmp
+// char* strlwer(char *_String)
 # define strlwr _strlwr
-# define vsnwprintf _vsnwprintf
+// int vsnwprintf(wchar_t *_Buffer, size_t _BufferCount, const wchar_t *_Format, va_list _ArgList)
+# define vsnwprintf vsnwprintf
+// int wcsicmp(const wchar_t *_String1, const wchar_t *_String2)
 # define wcsicmp _wcsicmp
 #endif
 
@@ -265,28 +268,30 @@ public: \
 	int str_in##_w_len; \
 	VLA(wchar_t, str_in##_w, str_in##_len + 1); \
 	str_in##_w_len = StringToUTF16(str_in##_w, str_in, str_in##_len); \
-	str_in##_w[str_in##_w_len] = L'\0';
+	str_in##_w[str_in##_w_len] = L'\0'
 
 // Now, if Microsoft just had used integer identifiers for resources instead
 // of names plus the MAKEINTRESOURCE / MAKEINTATOM hacks, we could just
 // point all these calls to their wide versions and be done with it.
 // Instead, there is some maintenance to do...
 #define RESID_DEC(local) \
-	LPWSTR local##_w = NULL;
+	LPWSTR local##_w = NULL
 
-#define RESID_CONV(local, src) \
+#define RESID_CONV(local, src) MACRO_WRAP(\
 	if(HIWORD(src) != 0) { \
 		size_t local##_len = strlen(src) + 1; \
 		VLA(wchar_t, local##_w_vla, local##_len); \
 		local##_w = StringToUTF16_VLA(local##_w_vla, src, local##_len); \
 	} else { \
 		local##_w = (LPWSTR)(src); \
-	}
+	} \
+)
 
-#define RESID_FREE(local, src) \
+#define RESID_FREE(local, src) MACRO_WRAP(\
 	if(HIWORD(src) != 0) { \
 		WCHAR_T_FREE(local); \
-	}
+	} \
+)
 
 /// printf format specifier parsing
 /// -------------------------------

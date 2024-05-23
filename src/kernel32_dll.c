@@ -175,7 +175,7 @@ BOOL WINAPI CreateDirectoryU(
 	WCHAR_T_CONV(lpPathName);
 
 	// no, this isn't optimized away
-	lpPathName_w_len = w32u8_wcslen(lpPathName_w);
+	lpPathName_w_len = wcslen(lpPathName_w);
 	// If the last character is a \\ or a /, the directory will be created
 	// by the final CreateDirectory, and we don't want to create it here.
 	// So we don't check for the last character.
