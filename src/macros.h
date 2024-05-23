@@ -9,16 +9,23 @@
 #pragma once
 
 // C versions
-#if defined(__STDC__)
+#ifdef __STDC__
 # ifndef C89
 #  define C89 1
 # endif
+# ifndef C90
+#  define C90 1
+# endif
 # if defined(__STDC_VERSION__)
-#  ifndef C90
-#   define C90 1
-#  endif
-#  if !defined(C94) && (__STDC_VERSION__ >= 199409L)
-#   define C94 1
+#  if (__STDC_VERSION__ >= 199409L)
+#   ifndef C94
+#    define C94 1
+#   endif
+// The proper name for this version is C95,
+// but keep the C94 macro around just incase
+#   ifndef C95
+#    define C95 1
+#   endif
 #  endif
 #  if !defined(C99) && (__STDC_VERSION__ >= 199901L)
 #   define C99 1
@@ -38,7 +45,7 @@
 #if defined(_WIN32) && defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#elif !defined(C99)
+#elif !C99
 #include <malloc.h>
 #endif
 
@@ -98,7 +105,7 @@ typedef const wchar_t* WRESID;
 #define elementsof(x) (sizeof(x) / sizeof((x)[0]))
 
 // Variable length arrays
-#if defined(C99) || defined(C11) && (defined(__STDC_NO_VLA__) && __STDC_NO_VLA__ != 1)
+#if C99 || C11 && (defined(__STDC_NO_VLA__) && __STDC_NO_VLA__ != 1)
 # define VLA(type, name, size) \
 	type name##_vla[(size)]; \
 	type *name = name##_vla /* to ensure that [name] is a modifiable lvalue */
@@ -248,8 +255,6 @@ public: \
 #endif
 // void* memccpy(void *_Dst, const void *_Src, int _Val, size_t _MaxCount)
 # define memccpy _memccpy
-// int snprintf(char *_Buffer, size_t _BufferCount, const char *_Format, ...)
-# define snprintf(...) _snprintf(__VA_ARGS__)
 // int strnicmp(const char *_String1, const char *_String2, size_t _MaxCount)
 # define strnicmp _strnicmp
 // int stricmp(const char *_String1, const char *_String2)
@@ -257,7 +262,7 @@ public: \
 // char* strlwer(char *_String)
 # define strlwr _strlwr
 // int vsnwprintf(wchar_t *_Buffer, size_t _BufferCount, const wchar_t *_Format, va_list _ArgList)
-# define vsnwprintf vsnwprintf
+# define vsnwprintf _vsnwprintf
 // int wcsicmp(const wchar_t *_String1, const wchar_t *_String2)
 # define wcsicmp _wcsicmp
 #endif
