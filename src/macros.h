@@ -135,13 +135,8 @@ size_t zzstrlen(const char *str);
 	STRLEN_DEC(src_char); \
 	VLA(wchar_t, src_char##_w, src_char##_len)
 
-#define WCHAR_T_CONV(src_char) MACRO_WRAP(\
-	if((src_char) == NULL) { \
-		VLA_FREE(src_char##_w); \
-	} else { \
-		StringToUTF16(src_char##_w, src_char, src_char##_len); \
-	} \
-)
+#define WCHAR_T_CONV(src_char) \
+	StringToUTF16(src_char##_w, src_char, src_char##_len)
 
 #define WCHAR_T_FREE(src_char) \
 	VLA_FREE(src_char##_w)
