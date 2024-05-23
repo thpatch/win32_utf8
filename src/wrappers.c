@@ -11,7 +11,7 @@ size_t WINAPI Wrap1P(
 	LPCSTR lpsz
 )
 {
-	BOOL ret;
+	size_t ret;
 	WCHAR_T_DEC(lpsz);
 	WCHAR_T_CONV(lpsz);
 	ret = func(lpsz_w);

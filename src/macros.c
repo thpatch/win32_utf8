@@ -109,14 +109,19 @@ const char* windows_version(void)
 	char *p = version;
 	size_t rem = sizeof(version) / sizeof(version[0]);
 
+	// This function uses _snprintf to retain the previous behavior
+	// of wnsprintfA while still upgrading the buffer size parameter
+	// to a size_t to suppress type warnings on x64.
 #define snprintf_cat(fmt, ...) \
 	if(rem > 0) { \
-		int chars_printed = wnsprintfA(p, rem, fmt, __VA_ARGS__); \
-		if(chars_printed < 0) { \
-			chars_printed = rem; \
+		int chars_printed = _snprintf(p, rem, fmt, __VA_ARGS__); \
+		if (chars_printed >= 0) { \
+			p += chars_printed; \
+			rem -= chars_printed; \
+		} else { \
+			p += rem; \
+			rem = 0; \
 		} \
-		rem -= chars_printed; \
-		p += chars_printed; \
 	}
 
 	// Don't need to depend on the entire Driver Development Kit just for

@@ -75,7 +75,7 @@ LPSTR WINAPI CharLowerU(
 	LPSTR lpsz
 )
 {
-	if ((DWORD)lpsz & 0xFFFF0000) {
+	if ((uintptr_t)lpsz & ~(uintptr_t)0xFFFF) {
 		WCHAR_T_DEC(lpsz);
 		WCHAR_T_CONV(lpsz);
 		CharLowerW(lpsz_w);
