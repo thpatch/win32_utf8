@@ -42,7 +42,7 @@ static LOGFONTW* LogfontAToW(LOGFONTW *w, const LOGFONTA *a)
 		// This should maybe be done in StringToUTF16(), but I'm not
 		// sure whether that would break something else...
 		// (Fixes udm Self Extract Updater.)
-		int facename_len = strnlen(a->lfFaceName, LF_FACESIZE) + 1;
+		size_t facename_len = strnlen(a->lfFaceName, LF_FACESIZE) + 1;
 		memcpy(w, a, offsetof(LOGFONT, lfFaceName));
 		StringToUTF16(w->lfFaceName, a->lfFaceName, facename_len);
 	}

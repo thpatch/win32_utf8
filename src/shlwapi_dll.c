@@ -24,7 +24,7 @@ BOOL STDAPICALLTYPE PathFileExistsU(
 	LPCSTR pszPath
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)PathFileExistsW, pszPath);
+	return (BOOL)Wrap1P((Wrap1PFunc_t*)PathFileExistsW, pszPath);
 }
 
 LPSTR STDAPICALLTYPE PathFindFileNameU(
@@ -97,7 +97,7 @@ BOOL STDAPICALLTYPE PathIsDirectoryU(
 	LPCSTR pszPath
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)PathIsDirectoryW, pszPath);
+	return (BOOL)Wrap1P((Wrap1PFunc_t*)PathIsDirectoryW, pszPath);
 }
 
 BOOL STDAPICALLTYPE PathIsRelativeU(

@@ -109,7 +109,7 @@ LPCSTR WINAPI CharNextU(
 		ret = lpsz + 4;
 	}
 	else if(IsDBCSLeadByteEx(fallback_codepage, lpsz[0])) {
-		int lpsz_len = strlen(lpsz);
+		size_t lpsz_len = strlen(lpsz);
 		if(lpsz_len < 2) {
 			ret = lpsz + 1;
 		} else {

@@ -303,7 +303,7 @@ BOOL WINAPI DeleteFileU(
 	LPCSTR lpFileName
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)DeleteFileW, lpFileName);
+	return (BOOL)Wrap1P((Wrap1PFunc_t*)DeleteFileW, lpFileName);
 }
 
 static void CopyFindDataWToA(
@@ -570,7 +570,7 @@ DWORD WINAPI GetFileAttributesU(
 	LPCSTR lpFileName
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)GetFileAttributesW, lpFileName);
+	return (DWORD)Wrap1P((Wrap1PFunc_t*)GetFileAttributesW, lpFileName);
 }
 
 BOOL WINAPI GetFileAttributesExU(
@@ -961,14 +961,14 @@ BOOL WINAPI RemoveDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)RemoveDirectoryW, lpPathName);
+	return (BOOL)Wrap1P((Wrap1PFunc_t*)RemoveDirectoryW, lpPathName);
 }
 
 BOOL WINAPI SetCurrentDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return Wrap1P((Wrap1PFunc_t*)SetCurrentDirectoryW, lpPathName);
+	return (BOOL)Wrap1P((Wrap1PFunc_t*)SetCurrentDirectoryW, lpPathName);
 }
 
 BOOL WINAPI SetEnvironmentVariableU(
@@ -981,7 +981,7 @@ BOOL WINAPI SetEnvironmentVariableU(
 	WCHAR_T_DEC(lpValue);
 	WCHAR_T_CONV(lpName);
 	WCHAR_T_CONV(lpValue);
-	ret = SetEnvironmentVariableW(lpName_w, lpValue_w);
+	ret = (BOOL)SetEnvironmentVariableW(lpName_w, lpValue_w);
 	WCHAR_T_FREE(lpName);
 	WCHAR_T_FREE(lpValue);
 	return ret;

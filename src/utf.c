@@ -67,7 +67,7 @@ UINT CharToUTF16(UINT c_mb)
 	char *p = c_a;
 	size_t i;
 	for (i = 0; i < sizeof(UINT); i++) {
-		UINT shift = (sizeof(UINT) - 1 - i) * 8;
+		size_t shift = (sizeof(UINT) - 1 - i) * 8;
 		char byte = (c_mb & (0xFF << shift)) >> shift;
 		if (byte) {
 			*p++ = byte;
