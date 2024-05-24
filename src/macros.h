@@ -125,10 +125,10 @@ size_t zzstrlen(const char *str);
 /// Convenient wchar_t conversion macros
 /// ------------------------------------
 #define STRLEN_DEC(src_char) \
-	size_t src_char##_len = strlen(src_char) + 1
+	size_t src_char##_len = ((src_char) ? strlen(src_char) + 1 : 0)
 
 #define WCSLEN_DEC(src_wchar) \
-	size_t src_wchar##_len = (wcslen(src_wchar) * UTF8_MUL) + 1
+	size_t src_wchar##_len = ((src_wchar) ? (wcslen(src_wchar) * UTF8_MUL) + 1 : 0)
 
 // "create-wchar_t-from-strlen"
 #define WCHAR_T_DEC(src_char) \
