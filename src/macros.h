@@ -42,10 +42,17 @@
 # endif
 #endif
 
+// Clang and GCC both support VLAs regardless of C/C++
+#if __GNUC__ || __clang__ || C99 || (C11 && (defined(__STDC_NO_VLA__) && __STDC_NO_VLA__ != 1))
+#define VLA_SUPPORT 1
+#else
+#define VLA_SUPPORT 0
+#endif
+
 #if defined(_WIN32) && defined(_DEBUG)
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
-#elif !C99
+#elif !VLA_SUPPORT
 #include <malloc.h>
 #endif
 
@@ -105,17 +112,22 @@ typedef const wchar_t* WRESID;
 #define elementsof(x) (sizeof(x) / sizeof((x)[0]))
 
 // Variable length arrays
-#if C99 || C11 && (defined(__STDC_NO_VLA__) && __STDC_NO_VLA__ != 1)
+#if VLA_SUPPORT
 # define VLA(type, name, size) \
 	type name##_vla[(size)]; \
 	type *name = name##_vla /* to ensure that [name] is a modifiable lvalue */
 # define VLA_FREE(name) \
 	do; while(0) /* require a semi-colon */
-#else
+#elif !WINUTF8_FAST_VLA
 # define VLA(type, name, size) \
 	type *name = (type*)_malloca((size) * sizeof(type))
 # define VLA_FREE(name) \
 	SAFE_CLEANUP(_freea, name)
+#else
+# define VLA(type, name, size) \
+	type *name = (type*)_alloca((size) * sizeof(type))
+# define VLA_FREE(name) \
+	do; while(0) /* require a semi-colon */
 #endif
 
 // Returns the length of a double-null-terminated string, not including the
