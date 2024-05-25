@@ -256,10 +256,6 @@ public: \
     !(defined _CRT_NONSTDC_NO_DEPRECATE  && !defined _CRT_NONSTDC_NO_WARNINGS))
 // char* itoa(int _Value, char *_Buffer, int _Radix)
 # define itoa _itoa
-#ifndef strdup
-// char* strdup(const char *_Source)
-# define strdup _strdup
-#endif
 // void* memccpy(void *_Dst, const void *_Src, int _Val, size_t _MaxCount)
 # define memccpy _memccpy
 // int strnicmp(const char *_String1, const char *_String2, size_t _MaxCount)
@@ -272,6 +268,23 @@ public: \
 # define vsnwprintf _vsnwprintf
 // int wcsicmp(const wchar_t *_String1, const wchar_t *_String2)
 # define wcsicmp _wcsicmp
+#endif
+
+#if _MSC_VER
+#undef strdup
+static __inline char* w32u8_strdup(const char* src) {
+	size_t length = strlen(src) + 1;
+	return (char*)memcpy(malloc(length), src, length);
+}
+// char* strdup(const char *_Source)
+#define strdup w32u8_strdup
+
+static __inline wchar_t* w32u8_wcsdup(const wchar_t* src) {
+	size_t length = (wcslen(src) + 1) * sizeof(wchar_t);
+	return (wchar_t*)memcpy(malloc(length), src, length);
+}
+// wchar_t* wcsdup(const wchar_t *_Source)
+#define wcsdup w32u8_wcsdup
 #endif
 
 // Convenience macro to convert one fixed-length string to UTF-16.
