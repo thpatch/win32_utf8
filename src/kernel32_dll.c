@@ -248,54 +248,59 @@ BOOL WINAPI CreateProcessU(
 	LPPROCESS_INFORMATION lpProcessInformation
 )
 {
-	BOOL ret;
 	STARTUPINFOW lpSI_w;
-	WCHAR_T_DEC(lpAppName);
-	WCHAR_T_DEC(lpCmdLine);
-	WCHAR_T_DEC(lpCurrentDirectory);
-
-	WCHAR_T_CONV(lpAppName);
-	WCHAR_T_CONV(lpCmdLine);
-	WCHAR_T_CONV(lpCurrentDirectory);
-
-	if(lpSI) {
-		// At least the structure sizes are identical here
-		memcpy(&lpSI_w, lpSI, sizeof(STARTUPINFOW));
-		if(lpSI->lpDesktop) {
-			size_t si_lpDesktop_len = strlen(lpSI->lpDesktop) + 1;
-			VLA(wchar_t, si_lpDesktopW, si_lpDesktop_len);
-			StringToUTF16(si_lpDesktopW, lpSI->lpDesktop, si_lpDesktop_len);
-			lpSI_w.lpDesktop = si_lpDesktopW;
-		}
-		if(lpSI->lpTitle) {
-			size_t si_lpTitle_len = strlen(lpSI->lpTitle) + 1;
-			VLA(wchar_t, si_lpTitleW, si_lpTitle_len);
-			StringToUTF16(si_lpTitleW, lpSI->lpTitle, si_lpTitle_len);
-			lpSI_w.lpDesktop = si_lpTitleW;
-		}
-	} else {
-		ZeroMemory(&lpSI_w, sizeof(STARTUPINFOW));
-	}
-	// "Set this member to NULL before passing the structure to CreateProcess,"
-	// MSDN says.
+	// At least the structure sizes are identical here
+	memcpy(&lpSI_w, lpSI, sizeof(STARTUPINFOW));
 	lpSI_w.lpReserved = NULL;
-	ret = CreateProcessW(
-		lpAppName_w,
-		lpCmdLine_w,
+
+	size_t app_name_len = lpAppName ? strlen(lpAppName) + 1 : 0;
+	size_t cmd_line_len = lpCmdLine ? strlen(lpCmdLine) + 1 : 0;
+	size_t cur_dir_len = lpCurrentDirectory ? strlen(lpCurrentDirectory) + 1 : 0;
+	size_t desktop_len = lpSI_w.lpDesktop ? strlen((char*)lpSI_w.lpDesktop) + 1 : 0;
+	size_t title_len = lpSI_w.lpTitle ? strlen((char*)lpSI_w.lpTitle) + 1 : 0;
+
+	size_t total_len = app_name_len + cmd_line_len + cur_dir_len + desktop_len + title_len;
+	VLA(wchar_t, param_buffers, total_len);
+	wchar_t* param_buffer_write = param_buffers;
+	if (lpAppName) {
+		int written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
+		lpAppName = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpCmdLine) {
+		int written = StringToUTF16(param_buffer_write, lpCmdLine, cmd_line_len);
+		lpCmdLine = (LPSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpCurrentDirectory) {
+		int written = StringToUTF16(param_buffer_write, lpCurrentDirectory, cur_dir_len);
+		lpCurrentDirectory = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpSI_w.lpDesktop) {
+		int written = StringToUTF16(param_buffer_write, (char*)lpSI_w.lpDesktop, desktop_len);
+		lpSI_w.lpDesktop = param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpSI_w.lpTitle) {
+		StringToUTF16(param_buffer_write, (char*)lpSI_w.lpTitle, title_len);
+		lpSI_w.lpTitle = param_buffer_write;
+	}
+
+	BOOL ret = CreateProcessW(
+		(LPCWSTR)lpAppName,
+		(LPWSTR)lpCmdLine,
 		lpProcessAttributes,
 		lpThreadAttributes,
 		bInheritHandles,
 		dwCreationFlags,
 		lpEnvironment,
-		lpCurrentDirectory_w,
+		(LPCWSTR)lpCurrentDirectory,
 		&lpSI_w,
 		lpProcessInformation
 	);
-	VLA_FREE(lpSI_w.lpDesktop);
-	VLA_FREE(lpSI_w.lpTitle);
-	WCHAR_T_FREE(lpAppName);
-	WCHAR_T_FREE(lpCmdLine);
-	WCHAR_T_FREE(lpCurrentDirectory);
+
+	VLA_FREE(param_buffers);
 	return ret;
 }
 

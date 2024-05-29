@@ -137,10 +137,10 @@ size_t zzstrlen(const char *str);
 /// Convenient wchar_t conversion macros
 /// ------------------------------------
 #define STRLEN_DEC(src_char) \
-	size_t src_char##_len = ((src_char) ? strlen(src_char) + 1 : 0)
+	size_t src_char##_len = (strlen(src_char) + 1)
 
 #define WCSLEN_DEC(src_wchar) \
-	size_t src_wchar##_len = ((src_wchar) ? (wcslen(src_wchar) * UTF8_MUL) + 1 : 0)
+	size_t src_wchar##_len = ((wcslen(src_wchar) * UTF8_MUL) + 1)
 
 // "create-wchar_t-from-strlen"
 #define WCHAR_T_DEC(src_char) \
@@ -279,6 +279,7 @@ static __inline char* w32u8_strdup(const char* src) {
 // char* strdup(const char *_Source)
 #define strdup w32u8_strdup
 
+#undef wcsdup
 static __inline wchar_t* w32u8_wcsdup(const wchar_t* src) {
 	size_t length = (wcslen(src) + 1) * sizeof(wchar_t);
 	return (wchar_t*)memcpy(malloc(length), src, length);
