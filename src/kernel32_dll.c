@@ -410,6 +410,7 @@ DWORD WINAPI FormatMessageU(
 		: VOA_VA;
 
 	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
+		// TODO: Fix invalid VLA scoping
 		WCHAR_T_DEC(lpSource);
 		WCHAR_T_CONV(lpSource);
 
@@ -474,6 +475,7 @@ DWORD WINAPI FormatMessageU(
 					if((fmt.type == 's' || fmt.type == 'S') && inserts_w[insert] == NULL) {
 						void **argptr = voa_arg(Arguments, insert, voa);
 						const char *src = *argptr;
+						// TODO: Fix invalid VLA scoping
 						WCHAR_T_DEC(src);
 						WCHAR_T_CONV(src);
 						inserts_w[insert] = src_w;
@@ -668,6 +670,7 @@ DWORD WINAPI GetModuleFileNameU(
 			err = GetModuleFileNameW(hModule, lpFilename_w, ret);
 			insufficient = GetLastError() == ERROR_INSUFFICIENT_BUFFER;
 			if(insufficient) {
+				// TODO: Fix invalid VLA scoping
 				VLA(wchar_t, lpFilename_VLA, ret += MAX_PATH);
 				VLA_FREE(lpFilename_w);
 				lpFilename_w = lpFilename_VLA;

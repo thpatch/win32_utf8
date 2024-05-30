@@ -254,6 +254,7 @@ BOOL WINAPI InsertMenuItemU(
 		if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
 			// yes, [cch] is ignored
 			const char *str_local = lpmi->dwTypeData;
+			// TODO: Fix invalid VLA scoping
 			WCHAR_T_DEC(str_local);
 			WCHAR_T_CONV(str_local);
 			str_w = lpmi_w.dwTypeData = str_local_w;
@@ -281,6 +282,7 @@ BOOL WINAPI SetMenuItemInfoU(
 		if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
 			// yes, [cch] is ignored
 			const char *str_local = lpmi->dwTypeData;
+			// TODO: Fix invalid VLA scoping
 			WCHAR_T_DEC(str_local);
 			WCHAR_T_CONV(str_local);
 			str_w = lpmi_w.dwTypeData = str_local_w;

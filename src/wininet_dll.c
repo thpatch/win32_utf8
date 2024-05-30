@@ -69,6 +69,7 @@ BOOL WINAPI InternetCombineUrlU(
 	return ret;
 }
 
+// TODO: Fix invalid VLA scoping
 #define UC_SET_W(elm) \
 	if(lpUC->lpsz##elm) { \
 		VLA(wchar_t, lpsz##elm##_w, lpUC->dw##elm##Length + 1); \
