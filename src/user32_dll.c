@@ -254,8 +254,7 @@ BOOL WINAPI InsertMenuItemU(
 		if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
 			// yes, [cch] is ignored
 			const char *str_local = lpmi->dwTypeData;
-			// TODO: Fix invalid VLA scoping
-			WCHAR_T_DEC(str_local);
+			WCHAR_T_DECA(str_local);
 			WCHAR_T_CONV(str_local);
 			str_w = lpmi_w.dwTypeData = str_local_w;
 		}
@@ -263,7 +262,7 @@ BOOL WINAPI InsertMenuItemU(
 		ZeroMemory(&lpmi_w, sizeof(MENUITEMINFOW));
 	}
 	ret = InsertMenuItemW(hmenu, item, fByPosition, &lpmi_w);
-	VLA_FREE(str_w);
+	w32u8_freea(str_w);
 	return ret;
 }
 
@@ -282,8 +281,7 @@ BOOL WINAPI SetMenuItemInfoU(
 		if(lpmi->fMask & MIIM_TYPE || lpmi->fMask & MIIM_STRING) {
 			// yes, [cch] is ignored
 			const char *str_local = lpmi->dwTypeData;
-			// TODO: Fix invalid VLA scoping
-			WCHAR_T_DEC(str_local);
+			WCHAR_T_DECA(str_local);
 			WCHAR_T_CONV(str_local);
 			str_w = lpmi_w.dwTypeData = str_local_w;
 		}
@@ -291,7 +289,7 @@ BOOL WINAPI SetMenuItemInfoU(
 		ZeroMemory(&lpmi_w, sizeof(MENUITEMINFOW));
 	}
 	ret = SetMenuItemInfoW(hmenu, item, fByPosition, &lpmi_w);
-	VLA_FREE(str_w);
+	w32u8_freea(str_w);
 	return ret;
 }
 

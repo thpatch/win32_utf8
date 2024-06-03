@@ -69,17 +69,15 @@ BOOL WINAPI InternetCombineUrlU(
 	return ret;
 }
 
-// TODO: Fix invalid VLA scoping
 #define UC_SET_W(elm) \
 	if(lpUC->lpsz##elm) { \
-		VLA(wchar_t, lpsz##elm##_w, lpUC->dw##elm##Length + 1); \
-		lpUC_w.lpsz##elm = lpsz##elm##_w; \
+		lpUC_w.lpsz##elm = w32u8_alloca(wchar_t, lpUC->dw##elm##Length + 1); \
 	}
 
 #define UC_CONVERT_AND_FREE(elm) \
 	if(lpUC->lpsz##elm) { \
 		StringToUTF8(lpUC->lpsz##elm, lpUC_w.lpsz##elm, lpUC->dw##elm##Length	); \
-		VLA_FREE(lpUC_w.lpsz##elm); \
+		w32u8_freea(lpUC_w.lpsz##elm); \
 	}
 
 #define UC_MACRO_EXPAND(macro) \

@@ -111,6 +111,14 @@ typedef const wchar_t* WRESID;
 
 #define elementsof(x) (sizeof(x) / sizeof((x)[0]))
 
+#if !WINUTF8_FAST_VLA
+#define w32u8_alloca(type, size) ((type*)_malloca((size) * sizeof(type)))
+#define w32u8_freea(name) SAFE_CLEANUP(_freea, name)
+#else
+#define w32u8_alloca(type, size) ((type*)_alloca((size) * sizeof(type)))
+#define w32u8_freea(name) do; while(0) /* require a semi-colon */
+#endif
+
 // Variable length arrays
 #if VLA_SUPPORT
 # define VLA(type, name, size) \
@@ -118,16 +126,11 @@ typedef const wchar_t* WRESID;
 	type *name = name##_vla /* to ensure that [name] is a modifiable lvalue */
 # define VLA_FREE(name) \
 	do; while(0) /* require a semi-colon */
-#elif !WINUTF8_FAST_VLA
-# define VLA(type, name, size) \
-	type *name = (type*)_malloca((size) * sizeof(type))
-# define VLA_FREE(name) \
-	SAFE_CLEANUP(_freea, name)
 #else
 # define VLA(type, name, size) \
-	type *name = (type*)_alloca((size) * sizeof(type))
+	type *name = w32u8_alloca(type, size)
 # define VLA_FREE(name) \
-	do; while(0) /* require a semi-colon */
+	w32u8_freea(name)
 #endif
 
 // Returns the length of a double-null-terminated string, not including the
@@ -147,22 +150,36 @@ size_t zzstrlen(const char *str);
 	STRLEN_DEC(src_char); \
 	VLA(wchar_t, src_char##_w, src_char##_len)
 
+#define WCHAR_T_DECA(src_char) \
+	STRLEN_DEC(src_char); \
+	wchar_t* src_char##_w = w32u8_alloca(wchar_t, src_char##_len); \
+
 #define WCHAR_T_CONV(src_char) \
 	StringToUTF16(src_char##_w, src_char, src_char##_len)
 
 #define WCHAR_T_FREE(src_char) \
 	VLA_FREE(src_char##_w)
 
+#define WCHAR_T_FREEA(src_char) \
+	w32u8_freea(src_char##_w)
+
 // "create-UTF-8-from-wchar_t"
 #define UTF8_DEC(src_wchar) \
 	WCSLEN_DEC(src_wchar); \
 	VLA(char, src_wchar##_utf8, src_wchar##_len)
+
+#define UTF8_DECA(src_wchar) \
+	WCSLEN_DEC(src_wchar); \
+	char* src_wchar##_utf8 = w32_alloca(char, src_wchar##_len)
 
 #define UTF8_CONV(src_wchar) \
 	StringToUTF8(src_wchar##_utf8, src_wchar, src_wchar##_len)
 
 #define UTF8_FREE(src_wchar) \
 	VLA_FREE(src_wchar##_utf8)
+
+#define UTF8_FREEA(src_wchar) \
+	w32u8_freea(src_wchar##_utf8)
 /// ------------------------------------
 
 // Declare a wrapping function together with a corresponding typedef

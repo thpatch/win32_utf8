@@ -410,8 +410,7 @@ DWORD WINAPI FormatMessageU(
 		: VOA_VA;
 
 	if(lpSource && dwFlags & FORMAT_MESSAGE_FROM_STRING) {
-		// TODO: Fix invalid VLA scoping
-		WCHAR_T_DEC(lpSource);
+		WCHAR_T_DECA(lpSource);
 		WCHAR_T_CONV(lpSource);
 
 		if(dwFlags & ~FORMAT_MESSAGE_IGNORE_INSERTS && Arguments) {
@@ -475,8 +474,7 @@ DWORD WINAPI FormatMessageU(
 					if((fmt.type == 's' || fmt.type == 'S') && inserts_w[insert] == NULL) {
 						void **argptr = voa_arg(Arguments, insert, voa);
 						const char *src = *argptr;
-						// TODO: Fix invalid VLA scoping
-						WCHAR_T_DEC(src);
+						WCHAR_T_DECA(src);
 						WCHAR_T_CONV(src);
 						inserts_w[insert] = src_w;
 						inserts_used = max(insert + 1, inserts_used);
@@ -525,10 +523,10 @@ DWORD WINAPI FormatMessageU(
 	}
 end:
 	for(i = 0; i < inserts_used; i++) {
-		VLA_FREE(inserts_w[i]);
+		w32u8_freea(inserts_w[i]);
 	}
+	w32u8_freea(source_w);
 	LocalFree(lpBuffer_w);
-	VLA_FREE(source_w);
 	return ret;
 }
 
@@ -658,32 +656,38 @@ DWORD WINAPI GetModuleFileNameU(
 	  * is or this becomes more frequent some day, the code is here.
 	  */
 
-	DWORD err;
-	DWORD ret = nSize ? nSize : MAX_PATH;
-	VLA(wchar_t, lpFilename_w, ret);
+	// Only real VLAs can safely change size in a loop. Doing this with _malloca
+	// or _alloca just continually expands the stack and never deallocates.
 
-	if(lpFilename && nSize) {
-		err = GetModuleFileNameW(hModule, lpFilename_w, nSize);
-	} else {
-		BOOL insufficient = 1;
-		while(insufficient) {
-			err = GetModuleFileNameW(hModule, lpFilename_w, ret);
-			insufficient = GetLastError() == ERROR_INSUFFICIENT_BUFFER;
-			if(insufficient) {
-				// TODO: Fix invalid VLA scoping
-				VLA(wchar_t, lpFilename_VLA, ret += MAX_PATH);
-				VLA_FREE(lpFilename_w);
-				lpFilename_w = lpFilename_VLA;
+	DWORD wide_len = nSize ? nSize : MAX_PATH;
+#if !VLA_SUPPORT
+	wchar_t* lpFilename_w = (wchar_t*)malloc(wide_len * sizeof(wchar_t));
+#endif
+	for (;;) {
+#if VLA_SUPPORT
+		wchar_t lpFilename_w[wide_len];
+#endif
+
+		DWORD ret = GetModuleFileNameW(hModule, lpFilename_w, wide_len);
+		if (ret) {
+			if (lpFilename) {
+				// The last error and return value will be set correctly
+				// by the WideCharToMultiByte call inside StringToUTF8
+				ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
 			}
+#if !VLA_SUPPORT
+			free(lpFilename_w);
+#endif
 		}
-		nSize = 0;
+		else if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+			wide_len += MAX_PATH;
+#if !VLA_SUPPORT
+			lpFilename_w = (wchar_t*)realloc(lpFilename_w, wide_len * sizeof(wchar_t));
+#endif
+			continue;
+		}
+		return ret;
 	}
-	if(err == 0) {
-		return err;
-	}
-	ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
-	VLA_FREE(lpFilename_w);
-	return ret;
 }
 
 BOOL WINAPI GetModuleHandleExU(
