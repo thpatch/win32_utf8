@@ -670,21 +670,19 @@ DWORD WINAPI GetModuleFileNameU(
 
 		DWORD ret = GetModuleFileNameW(hModule, lpFilename_w, wide_len);
 		if (ret) {
-			if (lpFilename) {
-				// The last error and return value will be set correctly
-				// by the WideCharToMultiByte call inside StringToUTF8
-				ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
+			if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+				wide_len += MAX_PATH;
+#if !VLA_SUPPORT
+				lpFilename_w = (wchar_t*)realloc(lpFilename_w, wide_len * sizeof(wchar_t));
+#endif
+				continue;
 			}
+			// The last error and return value will be set correctly
+			// by the WideCharToMultiByte call inside StringToUTF8
+			ret = StringToUTF8(lpFilename, lpFilename_w, nSize);
 #if !VLA_SUPPORT
 			free(lpFilename_w);
 #endif
-		}
-		else if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
-			wide_len += MAX_PATH;
-#if !VLA_SUPPORT
-			lpFilename_w = (wchar_t*)realloc(lpFilename_w, wide_len * sizeof(wchar_t));
-#endif
-			continue;
 		}
 		return ret;
 	}
