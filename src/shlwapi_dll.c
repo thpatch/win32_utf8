@@ -10,6 +10,7 @@ const w32u8_pair_t shlwapi_pairs[] = {
 	{"PathFileExistsA", PathFileExistsU},
 	{"PathFindFileNameA", PathFindFileNameU},
 	{"PathMatchSpecA", PathMatchSpecU},
+	{"PathMatchSpecExA", PathMatchSpecExU},
 	{"PathRemoveFileSpecA", PathRemoveFileSpecU},
 	{"PathAddBackslashA", PathAddBackslashU},
 	{"PathIsDirectoryA", PathIsDirectoryU},
@@ -62,6 +63,23 @@ BOOL STDAPICALLTYPE PathMatchSpecU(
 	WCHAR_T_CONV(pszFile);
 	WCHAR_T_CONV(pszSpec);
 	ret = PathMatchSpecW(pszFile_w, pszSpec_w);
+	WCHAR_T_FREE(pszFile);
+	WCHAR_T_FREE(pszSpec);
+	return ret;
+}
+
+BOOL STDAPICALLTYPE PathMatchSpecExU(
+	LPCSTR pszFile,
+	LPCSTR pszSpec,
+	DWORD dwFlags
+)
+{
+	BOOL ret;
+	WCHAR_T_DEC(pszFile);
+	WCHAR_T_DEC(pszSpec);
+	WCHAR_T_CONV(pszFile);
+	WCHAR_T_CONV(pszSpec);
+	ret = PathMatchSpecExW(pszFile_w, pszSpec_w, dwFlags);
 	WCHAR_T_FREE(pszFile);
 	WCHAR_T_FREE(pszSpec);
 	return ret;

@@ -27,6 +27,14 @@ WRAPPER_DEC(BOOL STDAPICALLTYPE, PathMatchSpec,
 #undef PathMatchSpec
 #define PathMatchSpec PathMatchSpecU
 
+WRAPPER_DEC(HRESULT STDAPICALLTYPE, PathMatchSpecEx,
+	LPCSTR pszFile,
+	LPCSTR pszSpec,
+	DWORD dwFlags
+);
+#undef PathMatchSpecEx
+#define PathMatchSpecEx PathMatchSpecExU
+
 WRAPPER_DEC(BOOL STDAPICALLTYPE, PathRemoveFileSpec,
 	LPSTR pszPath
 );

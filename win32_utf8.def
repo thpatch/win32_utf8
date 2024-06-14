@@ -115,6 +115,7 @@ EXPORTS
 	PathFileExistsU
 	PathFindFileNameU
 	PathMatchSpecU
+	PathMatchSpecExU
 	PathRemoveFileSpecU
 	PathAddBackslashU
 	PathIsDirectoryU
