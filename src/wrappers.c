@@ -6,19 +6,6 @@
   * Generic call wrappers to cut down redundancy.
   */
 
-size_t WINAPI Wrap1P(
-	Wrap1PFunc_t *func,
-	LPCSTR lpsz
-)
-{
-	size_t ret;
-	WCHAR_T_DEC(lpsz);
-	WCHAR_T_CONV(lpsz);
-	ret = func(lpsz_w);
-	WCHAR_T_FREE(lpsz);
-	return ret;
-}
-
 DWORD WINAPI WrapGetString(
 	WrapGetStringFunc_t *func,
 	DWORD nBufferLength,

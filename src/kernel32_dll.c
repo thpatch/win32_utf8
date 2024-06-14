@@ -308,7 +308,12 @@ BOOL WINAPI DeleteFileU(
 	LPCSTR lpFileName
 )
 {
-	return (BOOL)Wrap1P((Wrap1PFunc_t*)DeleteFileW, lpFileName);
+	BOOL ret;
+	WCHAR_T_DEC(lpFileName);
+	WCHAR_T_CONV(lpFileName);
+	ret = DeleteFileW(lpFileName_w);
+	WCHAR_T_FREE(lpFileName);
+	return ret;
 }
 
 static void CopyFindDataWToA(
@@ -575,7 +580,12 @@ DWORD WINAPI GetFileAttributesU(
 	LPCSTR lpFileName
 )
 {
-	return (DWORD)Wrap1P((Wrap1PFunc_t*)GetFileAttributesW, lpFileName);
+	DWORD ret;
+	WCHAR_T_DEC(lpFileName);
+	WCHAR_T_CONV(lpFileName);
+	ret = GetFileAttributesW(lpFileName_w);
+	WCHAR_T_FREE(lpFileName);
+	return ret;
 }
 
 BOOL WINAPI GetFileAttributesExU(
@@ -971,14 +981,24 @@ BOOL WINAPI RemoveDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return (BOOL)Wrap1P((Wrap1PFunc_t*)RemoveDirectoryW, lpPathName);
+	BOOL ret;
+	WCHAR_T_DEC(lpPathName);
+	WCHAR_T_CONV(lpPathName);
+	ret = RemoveDirectoryW(lpPathName_w);
+	WCHAR_T_FREE(lpPathName);
+	return ret;
 }
 
 BOOL WINAPI SetCurrentDirectoryU(
 	LPCSTR lpPathName
 )
 {
-	return (BOOL)Wrap1P((Wrap1PFunc_t*)SetCurrentDirectoryW, lpPathName);
+	BOOL ret;
+	WCHAR_T_DEC(lpPathName);
+	WCHAR_T_CONV(lpPathName);
+	ret = SetCurrentDirectoryW(lpPathName_w);
+	WCHAR_T_FREE(lpPathName);
+	return ret;
 }
 
 BOOL WINAPI SetEnvironmentVariableU(
