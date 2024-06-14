@@ -680,7 +680,7 @@ DWORD WINAPI GetModuleFileNameU(
 
 		DWORD ret = GetModuleFileNameW(hModule, lpFilename_w, wide_len);
 		if (ret) {
-			if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+			if (ret == wide_len) {
 				wide_len += MAX_PATH;
 #if !VLA_SUPPORT
 				lpFilename_w = (wchar_t*)realloc(lpFilename_w, wide_len * sizeof(wchar_t));
