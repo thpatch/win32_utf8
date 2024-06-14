@@ -128,19 +128,31 @@ HINTERNET WINAPI InternetOpenU(
 	DWORD dwFlags
 )
 {
-	HINTERNET ret;
-	WCHAR_T_DEC(lpszAgent);
-	WCHAR_T_DEC(lpszProxy);
-	WCHAR_T_DEC(lpszProxyBypass);
-	WCHAR_T_CONV(lpszAgent);
-	WCHAR_T_CONV(lpszProxy);
-	WCHAR_T_CONV(lpszProxyBypass);
-	ret = InternetOpenW(
-		lpszAgent_w, dwAccessType, lpszProxy_w, lpszProxyBypass_w, dwFlags
+	size_t agent_len = strlen(lpszAgent) + 1;
+	size_t proxy_len = lpszProxy ? strlen(lpszProxy) + 1 : 0;
+	size_t proxy_bypass_len = lpszProxyBypass ? strlen(lpszProxyBypass) + 1 : 0;
+	size_t total_len = agent_len + proxy_len + proxy_bypass_len;
+	VLA(wchar_t, param_buffers, total_len);
+	wchar_t* param_buffer_write = param_buffers;
+
+	int written = StringToUTF16(param_buffer_write, lpszAgent, agent_len);
+	lpszAgent = (LPCSTR)param_buffer_write;
+	param_buffer_write += written;
+	if (lpszProxy) {
+		written = StringToUTF16(param_buffer_write, lpszProxy, proxy_len);
+		lpszProxy = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpszProxyBypass) {
+		StringToUTF16(param_buffer_write, lpszProxyBypass, proxy_bypass_len);
+		lpszProxyBypass = (LPCSTR)param_buffer_write;
+	}
+
+	HINTERNET ret = InternetOpenW(
+		(LPCWSTR)lpszAgent, dwAccessType, (LPCWSTR)lpszProxy, (LPCWSTR)lpszProxyBypass, dwFlags
 	);
-	WCHAR_T_FREE(lpszAgent);
-	WCHAR_T_FREE(lpszProxy);
-	WCHAR_T_FREE(lpszProxyBypass);
+
+	VLA_FREE(param_buffers);
 	return ret;
 }
 
@@ -154,19 +166,25 @@ HINTERNET WINAPI InternetOpenUrlU(
 )
 {
 	HINTERNET ret = NULL;
-	if(dwHeadersLength == -1) {
+	if(dwHeadersLength == -1 && lpszHeaders) {
 		dwHeadersLength = strlen(lpszHeaders) + 1;
 	}
 	if(lpszUrl) {
 		WCHAR_T_DEC(lpszUrl);
-		VLA(wchar_t, lpszHeaders_w, dwHeadersLength);
 		WCHAR_T_CONV(lpszUrl);
-		StringToUTF16(lpszHeaders_w, lpszHeaders, dwHeadersLength);
+
+		if (lpszHeaders) {
+			wchar_t* lpszHeaders_w = (wchar_t*)w32u8_alloca(wchar_t, dwHeadersLength);
+			dwHeadersLength = StringToUTF16(lpszHeaders_w, lpszHeaders, dwHeadersLength);
+			lpszHeaders = (LPCSTR)lpszHeaders_w;
+		}
 		ret = InternetOpenUrlW(
-			hInternet, lpszUrl_w, lpszHeaders ? lpszHeaders_w : NULL, dwHeadersLength, dwFlags, dwContext
+			hInternet, lpszUrl_w, (LPCWSTR)lpszHeaders, dwHeadersLength, dwFlags, dwContext
 		);
-		WCHAR_T_FREE(lpszHeaders);
 		WCHAR_T_FREE(lpszUrl);
+		if (lpszHeaders) {
+			w32u8_freea(lpszHeaders);
+		}
 	}
 	return ret;
 }

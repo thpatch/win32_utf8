@@ -68,13 +68,13 @@ BOOL STDAPICALLTYPE PathMatchSpecU(
 	return ret;
 }
 
-BOOL STDAPICALLTYPE PathMatchSpecExU(
+HRESULT STDAPICALLTYPE PathMatchSpecExU(
 	LPCSTR pszFile,
 	LPCSTR pszSpec,
 	DWORD dwFlags
 )
 {
-	BOOL ret;
+	HRESULT ret;
 	WCHAR_T_DEC(pszFile);
 	WCHAR_T_DEC(pszSpec);
 	WCHAR_T_CONV(pszFile);
