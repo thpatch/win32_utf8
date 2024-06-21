@@ -746,14 +746,41 @@ UINT WINAPI GetPrivateProfileStringU(
 	LPCSTR lpFileName
 )
 {
-	UINT ret = 0;
-	VLA(wchar_t, lpReturnedString_w, nSize);
-	INI_MACRO_EXPAND(WCHAR_T_DEC);
+	size_t app_name_len = lpAppName ? strlen(lpAppName) + 1 : 0;
+	size_t key_name_len = lpKeyName ? strlen(lpKeyName) + 1 : 0;
+	size_t default_len = lpDefault ? strlen(lpDefault) + 1 : 0;
+	size_t file_name_len = strlen(lpFileName) + 1;
+
+	size_t total_len = app_name_len + key_name_len + default_len + file_name_len + nSize;
+	VLA(wchar_t, param_buffers, total_len);
+	wchar_t* param_buffer_write = param_buffers;
+
+	if (lpAppName) {
+		int written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
+		lpAppName = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+	if (lpKeyName) {
+		int written = StringToUTF16(param_buffer_write, lpKeyName, key_name_len);
+		lpKeyName = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+
 	// Yes, we can't just ignore it, pass NULL for [lpDefault] to the function
 	// and memcpy() it ourselves if necessary. If [lpDefault] is NULL,
 	// GetPrivateProfileString() just uses the empty string instead, and
 	// there's no way of telling when it *did* use the default string.
-	WCHAR_T_DEC(lpDefault);
+	if (lpDefault) {
+		int written = StringToUTF16(param_buffer_write, lpDefault, default_len);
+		lpDefault = (LPCSTR)param_buffer_write;
+		param_buffer_write += written;
+	}
+
+	int written = StringToUTF16(param_buffer_write, lpFileName, file_name_len);
+	lpFileName = (LPCSTR)param_buffer_write;
+	param_buffer_write += written;
+
+	wchar_t* lpReturnedString_w = param_buffer_write;
 
 	// Windows crashes in this case as well. Just like GetModuleFileName(),
 	// this function can't retrieve the full length of the string anyway,
@@ -762,14 +789,13 @@ UINT WINAPI GetPrivateProfileStringU(
 	// implementation of the functionality.
 	assert(lpReturnedString);
 
-	INI_MACRO_EXPAND(WCHAR_T_CONV);
-	WCHAR_T_CONV(lpDefault);
-
-	EnsurePrivateProfileUTF16(lpFileName_w);
+	EnsurePrivateProfileUTF16((LPCWSTR)lpFileName);
 	DWORD ret_w = GetPrivateProfileStringW(
-		lpAppName_w, lpKeyName_w, lpDefault_w,
-		lpReturnedString_w, nSize, lpFileName_w
+		(LPCWSTR)lpAppName, (LPCWSTR)lpKeyName, (LPCWSTR)lpDefault,
+		lpReturnedString_w, nSize, (LPCWSTR)lpFileName
 	);
+
+	UINT ret = 0;
 
 	if(nSize) {
 		ret = StringToMBFixed(
@@ -781,8 +807,7 @@ UINT WINAPI GetPrivateProfileStringU(
 		}
 	}
 
-	INI_MACRO_EXPAND(WCHAR_T_FREE);
-	WCHAR_T_FREE(lpDefault);
+	VLA_FREE(param_buffers);
 	return ret;
 }
 
