@@ -23,66 +23,87 @@ static BOOL WrapOFN(
 	LPOPENFILENAMEA ofn_a
 )
 {
-	if(!ofn_a) {
-		return func(NULL);
-	} else {
-		BOOL ret;
+	if (ofn_a) {
+		size_t lpstrFilter_len = ofn_a->lpstrFilter ? zzstrlen(ofn_a->lpstrFilter) + 2 : 0;
+		size_t lpstrInitialDir_len = ofn_a->lpstrInitialDir ? strlen(ofn_a->lpstrInitialDir) + 1 : 0;
+		size_t lpstrTitle_len = ofn_a->lpstrTitle ? strlen(ofn_a->lpstrTitle) + 1 : 0;
+		size_t lpstrDefExt_len = ofn_a->lpstrDefExt ? strlen(ofn_a->lpstrDefExt) + 1 : 0;
+		size_t lpTemplateName_len = RESID_IS_STR(ofn_a->lpTemplateName) ? strlen(ofn_a->lpTemplateName) + 1 : 0;
+		size_t lpstrCustomFilter_len = ofn_a->lpstrCustomFilter ? ofn_a->nMaxCustFilter : 0;
+		size_t lpstrFileTitle_len = ofn_a->lpstrFileTitle ? ofn_a->nMaxFileTitle : 0;
+
+		size_t total_len = lpstrFilter_len + lpstrCustomFilter_len + ofn_a->nMaxFile + lpstrFileTitle_len + lpstrInitialDir_len + lpstrTitle_len + lpstrDefExt_len + lpTemplateName_len;
+		VLA(wchar_t, param_buffers, total_len);
+		wchar_t* param_buffer_write = param_buffers;
+
 		VLA(BYTE, ofn_w_raw, ofn_a->lStructSize);
-		OPENFILENAMEW *ofn_w = (OPENFILENAMEW *)ofn_w_raw;
-
-		size_t lpstrFilter_len = zzstrlen(ofn_a->lpstrFilter) + 2;
-		size_t lpstrInitialDir_len = strlen(ofn_a->lpstrInitialDir) + 1;
-		size_t lpstrTitle_len = strlen(ofn_a->lpstrTitle) + 1;
-		size_t lpstrDefExt_len = strlen(ofn_a->lpstrDefExt) + 1;
-		VLA(wchar_t, lpstrFilter_w, lpstrFilter_len);
-		VLA(wchar_t, lpstrCustomFilter_w, ofn_a->nMaxCustFilter);
-		VLA(wchar_t, lpstrFile_w, ofn_a->nMaxFile);
-		VLA(wchar_t, lpstrFileTitle_w, ofn_a->nMaxFileTitle);
-		VLA(wchar_t, lpstrInitialDir_w, lpstrInitialDir_len);
-		VLA(wchar_t, lpstrTitle_w, lpstrTitle_len);
-		VLA(wchar_t, lpstrDefExt_w, lpstrDefExt_len);
-		RESID_DEC(lpTemplateName);
-
+		OPENFILENAMEW* ofn_w = (OPENFILENAMEW*)ofn_w_raw;
 		memcpy(ofn_w, ofn_a, ofn_a->lStructSize);
-		ofn_w->lpstrFilter = StringToUTF16_VLA(lpstrFilter_w, ofn_a->lpstrFilter, lpstrFilter_len);
-		ofn_w->lpstrCustomFilter = StringToUTF16_VLA(lpstrCustomFilter_w, ofn_a->lpstrCustomFilter, ofn_a->nMaxCustFilter);
-		ofn_w->lpstrFile = StringToUTF16_VLA(lpstrFile_w, ofn_a->lpstrFile, ofn_a->nMaxFile);
-		ofn_w->lpstrFileTitle = StringToUTF16_VLA(lpstrFileTitle_w, ofn_a->lpstrFileTitle, ofn_a->nMaxFileTitle);
-		ofn_w->lpstrInitialDir = StringToUTF16_VLA(lpstrInitialDir_w, ofn_a->lpstrInitialDir, lpstrInitialDir_len);
-		ofn_w->lpstrTitle = StringToUTF16_VLA(lpstrTitle_w, ofn_a->lpstrTitle, lpstrTitle_len);
-		ofn_w->lpstrDefExt = StringToUTF16_VLA(lpstrDefExt_w, ofn_a->lpstrDefExt, lpstrDefExt_len);
-		RESID_CONV(lpTemplateName, ofn_a->lpTemplateName);
-		ofn_w->lpTemplateName = lpTemplateName_w;
 
-		ret = func(ofn_w);
+		if (ofn_a->lpstrFilter) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrFilter, lpstrFilter_len);
+			ofn_w->lpstrFilter = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (ofn_a->lpstrCustomFilter) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrCustomFilter, ofn_a->nMaxCustFilter);
+			ofn_w->lpstrCustomFilter = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (ofn_a->lpstrFileTitle) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrFileTitle, ofn_a->nMaxFileTitle);
+			ofn_w->lpstrFileTitle = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (ofn_a->lpstrInitialDir) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrInitialDir, lpstrInitialDir_len);
+			ofn_w->lpstrInitialDir = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (ofn_a->lpstrTitle) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrTitle, lpstrTitle_len);
+			ofn_w->lpstrTitle = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (ofn_a->lpstrDefExt) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrDefExt, lpstrDefExt_len);
+			ofn_w->lpstrDefExt = param_buffer_write;
+			param_buffer_write += written;
+		}
+		if (RESID_IS_STR(ofn_a->lpTemplateName)) {
+			int written = StringToUTF16(param_buffer_write, ofn_a->lpTemplateName, lpTemplateName_len);
+			ofn_w->lpstrDefExt = param_buffer_write;
+			param_buffer_write += written;
+		}
 
-		if(ofn_a->lpstrFile) {
+		StringToUTF16(param_buffer_write, ofn_a->lpstrFile, ofn_a->nMaxFile);
+		ofn_w->lpstrFile = param_buffer_write;
+
+		BOOL ret = func(ofn_w);
+
+		if (ret) {
 			StringToUTF8(ofn_a->lpstrFile, ofn_w->lpstrFile, ofn_a->nMaxFile);
 			ofn_a->nFileOffset = WideCharToMultiByte(
 				CP_UTF8, 0, ofn_w->lpstrFile, ofn_w->nFileOffset, NULL, 0, NULL, NULL
 			);
-			ofn_a->nFileExtension = WideCharToMultiByte(
+			ofn_a->nFileExtension = ofn_w->nFileExtension ? WideCharToMultiByte(
 				CP_UTF8, 0, ofn_w->lpstrFile, ofn_w->nFileExtension, NULL, 0, NULL, NULL
-			);
+			) : 0;
+		} else {
+			*(WORD*)ofn_a->lpstrFile = *(WORD*)ofn_w->lpstrFile;
 		}
-		if(ofn_a->lpstrFileTitle) {
-			StringToUTF8(ofn_a->lpstrFileTitle, ofn_w->lpstrFileTitle, ofn_a->nMaxFileTitle);
-		}
-		if(ofn_a->lpstrCustomFilter) {
+		if (ofn_a->lpstrCustomFilter) {
 			StringToUTF8(ofn_a->lpstrCustomFilter, ofn_w->lpstrCustomFilter, ofn_a->nMaxCustFilter);
 		}
+		if (ofn_a->lpstrFileTitle) {
+			StringToUTF8(ofn_a->lpstrFileTitle, ofn_w->lpstrFileTitle, ofn_a->nMaxFileTitle);
+		}
 
-		RESID_FREE(lpTemplateName, ofn_a->lpTemplateName);
-		VLA_FREE(lpstrDefExt_w);
-		VLA_FREE(lpstrTitle_w);
-		VLA_FREE(lpstrInitialDir_w);
-		VLA_FREE(lpstrFileTitle_w);
-		VLA_FREE(lpstrFile_w);
-		VLA_FREE(lpstrCustomFilter_w);
-		VLA_FREE(lpstrFilter_w);
 		VLA_FREE(ofn_w_raw);
+		VLA_FREE(param_buffers);
 		return ret;
 	}
+	return func(NULL);
 }
 /// --------
 

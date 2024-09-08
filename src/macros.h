@@ -320,8 +320,11 @@ static __inline wchar_t* w32u8_wcsdup(const wchar_t* src) {
 #define RESID_DEC(local) \
 	LPWSTR local##_w = NULL
 
+#define RESID_IS_STR(src) \
+	(HIWORD(src) != 0)
+
 #define RESID_CONV(local, src) MACRO_WRAP(\
-	if(HIWORD(src) != 0) { \
+	if(RESID_IS_STR(src)) { \
 		size_t local##_len = strlen(src) + 1; \
 		VLA(wchar_t, local##_w_vla, local##_len); \
 		local##_w = StringToUTF16_VLA(local##_w_vla, src, local##_len); \
@@ -331,7 +334,7 @@ static __inline wchar_t* w32u8_wcsdup(const wchar_t* src) {
 )
 
 #define RESID_FREE(local, src) MACRO_WRAP(\
-	if(HIWORD(src) != 0) { \
+	if(RESID_IS_STR(src)) { \
 		WCHAR_T_FREE(local); \
 	} \
 )
