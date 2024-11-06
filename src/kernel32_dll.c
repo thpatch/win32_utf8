@@ -224,14 +224,17 @@ HANDLE WINAPI CreateFileMappingU(
 	LPCSTR lpName
 )
 {
-	HANDLE ret;
-	WCHAR_T_DEC(lpName);
-	WCHAR_T_CONV(lpName);
-	ret = CreateFileMappingW(
+	size_t name_length = lpName ? strlen(lpName) + 1 : 0;
+	VLA(wchar_t, name_w, name_length);
+	if (lpName) {
+		StringToUTF16(name_w, lpName, name_length);
+		lpName = (LPCSTR)name_w;
+	}
+	HANDLE ret = CreateFileMappingW(
 		hFile, lpFileMappingAttributes, flProtect,
-		dwMaximumSizeHigh, dwMaximumSizeLow, lpName_w
+		dwMaximumSizeHigh, dwMaximumSizeLow, (LPCWSTR)lpName
 	);
-	WCHAR_T_FREE(lpName);
+	VLA_FREE(name_w);
 	return ret;
 }
 
