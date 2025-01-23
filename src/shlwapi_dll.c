@@ -166,7 +166,9 @@ LPSTR STDAPICALLTYPE PathCombineU(
 	LPCSTR pszFile
 )
 {
-	strcpy(pszDest, pszDir);
+	if (pszDest != pszDir) {
+		strcpy(pszDest, pszDir);
+	}
 	if (PathIsRelativeU(pszFile)) {
 		strcpy(PathAddBackslashU(pszDest), pszFile);
 	}

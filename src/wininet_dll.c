@@ -173,17 +173,17 @@ HINTERNET WINAPI InternetOpenUrlU(
 		WCHAR_T_DEC(lpszUrl);
 		WCHAR_T_CONV(lpszUrl);
 
+		wchar_t* lpszHeaders_w = NULL;
 		if (lpszHeaders) {
-			wchar_t* lpszHeaders_w = (wchar_t*)w32u8_alloca(wchar_t, dwHeadersLength);
+			lpszHeaders_w = (wchar_t*)w32u8_alloca(wchar_t, dwHeadersLength);
 			dwHeadersLength = StringToUTF16(lpszHeaders_w, lpszHeaders, dwHeadersLength);
-			lpszHeaders = (LPCSTR)lpszHeaders_w;
 		}
 		ret = InternetOpenUrlW(
-			hInternet, lpszUrl_w, (LPCWSTR)lpszHeaders, dwHeadersLength, dwFlags, dwContext
+			hInternet, lpszUrl_w, lpszHeaders_w, dwHeadersLength, dwFlags, dwContext
 		);
 		WCHAR_T_FREE(lpszUrl);
-		if (lpszHeaders) {
-			w32u8_freea(lpszHeaders);
+		if (lpszHeaders_w) {
+			w32u8_freea(lpszHeaders_w);
 		}
 	}
 	return ret;
