@@ -41,37 +41,37 @@ static BOOL WrapOFN(
 		memcpy(ofn_w, ofn_a, ofn_a->lStructSize);
 
 		if (ofn_a->lpstrFilter) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrFilter, lpstrFilter_len);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrFilter, lpstrFilter_len);
 			ofn_w->lpstrFilter = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (ofn_a->lpstrCustomFilter) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrCustomFilter, ofn_a->nMaxCustFilter);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrCustomFilter, ofn_a->nMaxCustFilter);
 			ofn_w->lpstrCustomFilter = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (ofn_a->lpstrFileTitle) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrFileTitle, ofn_a->nMaxFileTitle);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrFileTitle, ofn_a->nMaxFileTitle);
 			ofn_w->lpstrFileTitle = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (ofn_a->lpstrInitialDir) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrInitialDir, lpstrInitialDir_len);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrInitialDir, lpstrInitialDir_len);
 			ofn_w->lpstrInitialDir = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (ofn_a->lpstrTitle) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrTitle, lpstrTitle_len);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrTitle, lpstrTitle_len);
 			ofn_w->lpstrTitle = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (ofn_a->lpstrDefExt) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpstrDefExt, lpstrDefExt_len);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpstrDefExt, lpstrDefExt_len);
 			ofn_w->lpstrDefExt = param_buffer_write;
 			param_buffer_write += written;
 		}
 		if (RESID_IS_STR(ofn_a->lpTemplateName)) {
-			int written = StringToUTF16(param_buffer_write, ofn_a->lpTemplateName, lpTemplateName_len);
+			size_t written = StringToUTF16(param_buffer_write, ofn_a->lpTemplateName, lpTemplateName_len);
 			ofn_w->lpstrDefExt = param_buffer_write;
 			param_buffer_write += written;
 		}

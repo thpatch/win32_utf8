@@ -135,7 +135,7 @@ HINTERNET WINAPI InternetOpenU(
 	VLA(wchar_t, param_buffers, total_len);
 	wchar_t* param_buffer_write = param_buffers;
 
-	int written = StringToUTF16(param_buffer_write, lpszAgent, agent_len);
+	size_t written = StringToUTF16(param_buffer_write, lpszAgent, agent_len);
 	lpszAgent = (LPCSTR)param_buffer_write;
 	param_buffer_write += written;
 	if (lpszProxy) {

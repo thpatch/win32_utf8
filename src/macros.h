@@ -308,7 +308,7 @@ static __inline wchar_t* w32u8_wcsdup(const wchar_t* src) {
 // Convenience macro to convert one fixed-length string to UTF-16.
 #define FixedLengthStringConvert(str_in, str_len) \
 	size_t str_in##_len = (str_len != -1 ? str_len : strlen(str_in)); \
-	int str_in##_w_len; \
+	size_t str_in##_w_len; \
 	VLA(wchar_t, str_in##_w, str_in##_len + 1); \
 	str_in##_w_len = StringToUTF16(str_in##_w, str_in, str_in##_len); \
 	str_in##_w[str_in##_w_len] = L'\0'

@@ -266,22 +266,22 @@ BOOL WINAPI CreateProcessU(
 	VLA(wchar_t, param_buffers, total_len);
 	wchar_t* param_buffer_write = param_buffers;
 	if (lpAppName) {
-		int written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
+		size_t written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
 		lpAppName = (LPCSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
 	if (lpCmdLine) {
-		int written = StringToUTF16(param_buffer_write, lpCmdLine, cmd_line_len);
+		size_t written = StringToUTF16(param_buffer_write, lpCmdLine, cmd_line_len);
 		lpCmdLine = (LPSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
 	if (lpCurrentDirectory) {
-		int written = StringToUTF16(param_buffer_write, lpCurrentDirectory, cur_dir_len);
+		size_t written = StringToUTF16(param_buffer_write, lpCurrentDirectory, cur_dir_len);
 		lpCurrentDirectory = (LPCSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
 	if (lpSI_w.lpDesktop) {
-		int written = StringToUTF16(param_buffer_write, (char*)lpSI_w.lpDesktop, desktop_len);
+		size_t written = StringToUTF16(param_buffer_write, (char*)lpSI_w.lpDesktop, desktop_len);
 		lpSI_w.lpDesktop = param_buffer_write;
 		param_buffer_write += written;
 	}
@@ -759,12 +759,12 @@ UINT WINAPI GetPrivateProfileStringU(
 	wchar_t* param_buffer_write = param_buffers;
 
 	if (lpAppName) {
-		int written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
+		size_t written = StringToUTF16(param_buffer_write, lpAppName, app_name_len);
 		lpAppName = (LPCSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
 	if (lpKeyName) {
-		int written = StringToUTF16(param_buffer_write, lpKeyName, key_name_len);
+		size_t written = StringToUTF16(param_buffer_write, lpKeyName, key_name_len);
 		lpKeyName = (LPCSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
@@ -774,12 +774,12 @@ UINT WINAPI GetPrivateProfileStringU(
 	// GetPrivateProfileString() just uses the empty string instead, and
 	// there's no way of telling when it *did* use the default string.
 	if (lpDefault) {
-		int written = StringToUTF16(param_buffer_write, lpDefault, default_len);
+		size_t written = StringToUTF16(param_buffer_write, lpDefault, default_len);
 		lpDefault = (LPCSTR)param_buffer_write;
 		param_buffer_write += written;
 	}
 
-	int written = StringToUTF16(param_buffer_write, lpFileName, file_name_len);
+	size_t written = StringToUTF16(param_buffer_write, lpFileName, file_name_len);
 	lpFileName = (LPCSTR)param_buffer_write;
 	param_buffer_write += written;
 

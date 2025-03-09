@@ -6,20 +6,19 @@
   * Unicode conversion functions.
   */
 
-int StringToUTF16(wchar_t *str_w, const char *str_mb, int str_len)
+size_t StringToUTF16(wchar_t *str_w, const char *str_mb, size_t str_len)
 {
-	int str_len_w;
 	if(!str_mb || !str_len) {
 		return 0;
 	}
 	if(str_len == -1) {
 		str_len = strlen(str_mb) + 1;
 	}
-	str_len_w = str_w ? str_len : 0;
+	size_t str_len_w = str_w ? str_len : 0;
 	return MultiByteToWideCharU(0, 0, str_mb, str_len, str_w, str_len_w);
 }
 
-wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len)
+wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, size_t str_len)
 {
 	if(str_mb) {
 		StringToUTF16(str_w, str_mb, str_len);
@@ -28,7 +27,7 @@ wchar_t* StringToUTF16_VLA(wchar_t *str_w, const char *str_mb, int str_len)
 	return NULL;
 }
 
-int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len)
+size_t StringToUTF8(char *str_utf8, const wchar_t *str_w, size_t str_utf8_len)
 {
 	int ret = WideCharToMultiByte(
 		CP_UTF8, 0, str_w, -1, str_utf8, str_utf8_len, NULL, NULL
@@ -36,7 +35,7 @@ int StringToUTF8(char *str_utf8, const wchar_t *str_w, int str_utf8_len)
 	return str_w ? ret - 1 : ret;
 }
 
-int StringToMBFixed(char *str_mb, const wchar_t *str_w, int str_mb_len, int str_w_len)
+size_t StringToMBFixed(char *str_mb, const wchar_t *str_w, size_t str_mb_len, size_t str_w_len)
 {
 	BOOL invalid = FALSE;
 	extern UINT fallback_codepage;
@@ -104,7 +103,7 @@ UINT CharToUTF16(UINT c_mb)
 	return codepoint;
 }
 
-char* EnsureUTF8(const char *str, int str_len)
+char* EnsureUTF8(const char *str, size_t str_len)
 {
 	char *str_utf8 = NULL;
 	if(str) {

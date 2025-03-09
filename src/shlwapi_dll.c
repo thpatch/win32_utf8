@@ -103,13 +103,13 @@ LPSTR STDAPICALLTYPE PathAddBackslashU(
 	LPSTR pszPath
 )
 {
-	if (pszPath == 0 || *pszPath == '\x00') {
+	if (pszPath == 0 || *pszPath == '\0') {
 		return NULL;
 	}
 	size_t pszPathLen = strlen(pszPath);
 	if (pszPath[pszPathLen - 1] != '\\' && pszPath[pszPathLen - 1] != '/') {
 		pszPath[pszPathLen] = '\\';
-		pszPath[pszPathLen + 1] = '\x00';
+		pszPath[pszPathLen + 1] = '\0';
 		return (pszPath + pszPathLen + 1);
 	} else {
 		return (pszPath + pszPathLen);
@@ -166,21 +166,20 @@ LPSTR STDAPICALLTYPE PathCombineU(
 	LPCSTR pszFile
 )
 {
-	if (pszDest != pszDir) {
-		strcpy(pszDest, pszDir);
+	if (pszDest) {
+		if (pszDir && pszDest != pszDir) {
+			strcpy(pszDest, pszDir);
+		}
+		if (pszFile) {
+			strcpy(PathIsRelativeU(pszFile) ? PathAddBackslashU(pszDest) : pszDest, pszFile);
+		}
+		char final_buffer[MAX_PATH];
+		BOOL ret = PathCanonicalizeU(final_buffer, pszDest);
+		if (!ret) {
+			return NULL;
+		}
+		strcpy(pszDest, final_buffer);
 	}
-	if (PathIsRelativeU(pszFile)) {
-		strcpy(PathAddBackslashU(pszDest), pszFile);
-	}
-	else {
-		strcpy(pszDest, pszFile);
-	}
-	char final_buffer[MAX_PATH];
-	BOOL ret = PathCanonicalizeU(final_buffer, pszDest);
-	if (!ret) {
-		return NULL;
-	}
-	strcpy(pszDest, final_buffer);
 	return pszDest;
 }
 
