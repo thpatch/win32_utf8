@@ -74,6 +74,17 @@ WRAPPER_DEC(int WINAPI, DrawText,
 #undef DrawText
 #define DrawText DrawTextU
 
+WRAPPER_DEC(int WINAPI, DrawTextEx,
+	HDC              hdc,
+	LPSTR            lpchText,
+	int              cchText,
+	LPRECT           lprc,
+	UINT             format,
+	LPDRAWTEXTPARAMS lpdtp
+);
+#undef DrawTextEx
+#define DrawTextEx DrawTextExU
+
 WRAPPER_DEC(BOOL WINAPI, GetClassInfo,
 	HINSTANCE hInstance,
 	LPCSTR lpClassName,

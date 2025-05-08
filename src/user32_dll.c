@@ -19,6 +19,7 @@ const w32u8_pair_t user32_pairs[] = {
 	{"DefWindowProcA", DefWindowProcW},
 	{"DialogBoxParamA", DialogBoxParamU},
 	{"DrawTextA", DrawTextU},
+	{"DrawTextExA", DrawTextExU},
 	{"GetClassInfoA", GetClassInfoU},
 	{"GetClassInfoExA", GetClassInfoExU},
 	{"GetWindowLongA", GetWindowLongW},
@@ -199,6 +200,21 @@ int WINAPI DrawTextU(
 	int ret;
 	FixedLengthStringConvert(lpchText, cchText);
 	ret = DrawTextW(hdc, lpchText_w, lpchText_w_len, lprc, format);
+	WCHAR_T_FREE(lpchText);
+	return ret;
+}
+
+int WINAPI DrawTextExU(
+	HDC              hdc,
+	LPSTR            lpchText,
+	int              cchText,
+	LPRECT           lprc,
+	UINT             format,
+	LPDRAWTEXTPARAMS lpdtp
+) {
+	int ret;
+	FixedLengthStringConvert(lpchText, cchText);
+	ret = DrawTextExW(hdc, lpchText_w, lpchText_w_len, lprc, format, lpdtp);
 	WCHAR_T_FREE(lpchText);
 	return ret;
 }
