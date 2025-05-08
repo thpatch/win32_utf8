@@ -448,7 +448,7 @@ BOOL WINAPI PolyTextOutU(
 {
 	BOOL ret = TRUE;
 	for (int i = 0; i < nstrings; i++) {
-		if (!ExtTextOutW(hdc, ppt[i].x, ppt[i].y, ppt[i].uiFlags, &ppt[i].rcl, ppt[i].lpstr, ppt[i].n, ppt[i].pdx)) {
+		if (!ExtTextOutU(hdc, ppt[i].x, ppt[i].y, ppt[i].uiFlags, &ppt[i].rcl, ppt[i].lpstr, ppt[i].n, ppt[i].pdx)) {
 			ret = FALSE;
 		}
 	}
