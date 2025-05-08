@@ -19,6 +19,7 @@ const w32u8_pair_t gdi32_pairs[] = {
 	{"GetTextExtentPoint32A", GetTextExtentPoint32U},
 	{"RemoveFontResourceExA", RemoveFontResourceExU},
 	{"TextOutA", TextOutU},
+	{"PolyTextOutA", PolyTextOutU},
 	{ NULL }
 };
 
@@ -437,4 +438,19 @@ BOOL WINAPI TextOutU(
 )
 {
 	return ExtTextOutU(hdc, x, y, 0, NULL, lpString, c, NULL);
+}
+
+BOOL WINAPI PolyTextOutU(
+	HDC hdc,
+	const POLYTEXTA* ppt,
+	int nstrings
+)
+{
+	BOOL ret = TRUE;
+	for (int i = 0; i < nstrings; i++) {
+		if (!ExtTextOutW(hdc, ppt[i].x, ppt[i].y, ppt[i].uiFlags, &ppt[i].rcl, ppt[i].lpstr, ppt[i].n, ppt[i].pdx)) {
+			ret = FALSE;
+		}
+	}
+	return ret;
 }

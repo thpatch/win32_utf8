@@ -140,6 +140,14 @@ WRAPPER_DEC(BOOL WINAPI, TextOut,
 #undef TextOut
 #define TextOut TextOutU
 
+WRAPPER_DEC(BOOL WINAPI, PolyTextOut,
+	HDC hdc,
+	const POLYTEXTA* ppt,
+	int nstrings
+);
+#undef PolyTextOut
+#define PolyTextOut PolyTextOutU
+
 /// Promotion wrappers
 /// ------------------
 HFONT WINAPI lower_CreateFontA(

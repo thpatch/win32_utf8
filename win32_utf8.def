@@ -48,6 +48,7 @@ EXPORTS
 	GetTextExtentPoint32U
 	RemoveFontResourceExU
 	TextOutU
+	PolyTextOutU
 
 	; kernel32.dll
 	; ------------
