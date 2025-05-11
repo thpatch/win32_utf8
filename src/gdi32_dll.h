@@ -113,7 +113,7 @@ WRAPPER_DEC(DWORD WINAPI, GetGlyphOutline,
 #undef GetGlyphOutline
 #define GetGlyphOutline GetGlyphOutlineU
 
-BOOL APIENTRY GetTextExtentPoint32U(
+WRAPPER_DEC(BOOL APIENTRY, GetTextExtentPoint32,
 	HDC hdc,
 	LPCSTR lpString,
 	int c,
